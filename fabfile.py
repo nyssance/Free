@@ -8,7 +8,7 @@ from PyInquirer import Separator, prompt
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.1.0'
+VERSION = '0.2.0'
 
 
 @task(default=True)
@@ -25,21 +25,14 @@ def hello(c, path='参数值'):
 @task
 def cleanup(c):
     """清理"""
-    if not c.config.sudo.password:
-        c.run('fab cleanup --prompt-for-sudo-password', echo=False)
-        return
-    hint('cleanup Homebrew, RubyGems')
+    hint('cleanup Homebrew')
     c.run('brew cleanup')
     c.run('brew doctor', warn=True)
-    c.sudo('gem cleanup')
 
 
 @task
 def install(c, pypi_mirror=True):
     """安装"""
-    if not c.config.sudo.password:
-        c.run('fab install --prompt-for-sudo-password', echo=False)
-        return
     questions = [{
         'type': 'list',
         'name': 'proxy',
@@ -150,8 +143,6 @@ def uninstall(c):
             'value': ''
         }]
     }])['role']
-    if not role:
-        return
     if role == 'python':
         hint('uninstall Pipenv, Python')
         c.run('brew uninstall pipenv python@3.8')
@@ -161,9 +152,6 @@ def uninstall(c):
 @task(help={'config': '更新 .fabric.yaml, .zshrc 配置文件'})
 def update(c, config=False, pypi_mirror=True):
     """更新"""
-    if not c.config.sudo.password:
-        c.run(f'fab update --prompt-for-sudo-password{" --config" if config else ""}', echo=False)
-        return
     hint(f'update 自己 当前版本 {VERSION} 更新在下次执行时生效')
     download(c, 'https://raw.githubusercontent.com/nyssance/Free/master/fabfile.py')
     if HTTP_PROXY:
@@ -186,10 +174,6 @@ def update(c, config=False, pypi_mirror=True):
     c.run(f'pip install -U fabric colorama PyInquirer{mirror} | grep -v already')
     hint('update Pylint, Flake8, isort, YAPF, twine')
     c.run(f'pip install -U pylint flake8 isort yapf twine{mirror} | grep -v already')
-    hint('update RubyGems')
-    c.run('gem sources')
-    c.sudo('gem update --system')
-    c.sudo('gem update')
     cleanup(c)
     print(Fore.LIGHTCYAN_EX + '''
 更新完毕
