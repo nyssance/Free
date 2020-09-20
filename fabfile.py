@@ -8,7 +8,7 @@ from PyInquirer import Separator, prompt
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.2.0'
+VERSION = '0.3.0'
 
 
 @task(default=True)
@@ -56,10 +56,10 @@ def install(c, pypi_mirror=True):
             {'name': 'gulp'},
             Separator('= Apps ='),
             {'name': 'GitHub Desktop, Google Chrome, Postman, Visual Studio Code', 'value': 'apps'},
-            {'name': 'MySQL Workbench', 'value': 'mysqlworkbench'},
             Separator('= Others ='),
             {'name': 'Docker', 'value': 'docker'},
-            {'name': 'fastlane'}
+            {'name': 'fastlane'},
+            {'name': 'MySQL Workbench', 'value': 'mysqlworkbench'}
         ],
         'validate': lambda roles: 'You must choose at least one topping.' if len(roles) == 0 else True
     }]  # yapf: disable
@@ -69,43 +69,43 @@ def install(c, pypi_mirror=True):
     if HTTP_PROXY != proxy:
         c.run(f'sed -i "" "s|HTTP_PROXY = \'{HTTP_PROXY}\'|HTTP_PROXY = \'{proxy}\'|g" fabfile.py')
     hint('install Oh My Zsh')
-    proxy_run(c,
-              'sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"',
-              warn=True)
+    c.run('sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"', warn=True)
     hint('configure .zshrc')
     download(c, 'https://raw.githubusercontent.com/nyssance/Free/master/zshrc', '.zshrc', proxy)
+    c.run(f'echo $"\nexport HTTPS_PROXY=http://{HTTP_PROXY}" >> .zshrc')
     c.run('zsh -lc "source .zshrc"')
     hint('configure RubyGems')
     c.run('gem sources --add https://gems.ruby-china.com/ --remove https://rubygems.org/')
+    c.run('echo $HTTPS_PROXY')
     hint('install Fira Code')
-    proxy_run(c, 'brew tap homebrew/cask-fonts')
-    proxy_run(c, 'brew cask install font-fira-code')
+    c.run('brew tap homebrew/cask-fonts')
+    c.run('brew cask install font-fira-code')
     if 'android' in roles:
         hint('install Android Studio, ktlint')
-        proxy_run(c, 'brew cask install android-studio')
-        proxy_run(c, 'brew install ktlint')
+        c.run('brew cask install android-studio')
+        c.run('brew install ktlint')
     if 'ios' in roles:
         hint('install CocoaPods SwiftFormat, SwiftLint')
-        proxy_run(c, 'brew install cocoapods swiftformat swiftlint')
+        c.run('brew install cocoapods swiftformat swiftlint')
     if 'java' in roles:
         hint('install OpenJDK')
-        proxy_run(c, 'brew install openjdk')
+        c.run('brew install openjdk')
     if 'python' in roles:
         hint('install Pylint, Flake8, isort, YAPF, twine')  # 上传到pypi需要twine
         c.run(f'pip install pylint flake8 isort yapf twine{f" -i {PYPI_MIRROR}" if pypi_mirror else ""}')
         hint('install gettext')
-        proxy_run(c, 'brew install gettext')
+        c.run('brew install gettext')
     # 数据库
     if 'mysql' in roles:
         hint('install MySQL')
-        proxy_run(c, 'brew install mysql')
+        c.run('brew install mysql')
     if 'redis' in roles:
         hint('install Redis')
-        proxy_run(c, 'brew install redis')
+        c.run('brew install redis')
     # 前端
     if 'angular' in roles or 'gulp' in roles:
         hint('install Node.js')
-        proxy_run(c, 'brew install node')
+        c.run('brew install node')
     if 'angular' in roles:
         hint('install Angular CLI')
         c.run('npm install -g @angular/cli')
@@ -115,16 +115,17 @@ def install(c, pypi_mirror=True):
     # 应用
     if 'apps' in roles:
         hint('install GitHub Desktop, Google Chrome, Postman, Visual Studio Code')
-        proxy_run(c, 'brew cask install github google-chrome postman visual-studio-code')
-        hint('install MySQL Workbench')
-        proxy_run(c, 'brew cask install mysqlworkbench')
+        c.run('brew cask install github google-chrome postman visual-studio-code')
     # 其他
     if 'docker' in roles:
         hint('install Docker')
-        proxy_run(c, 'brew cask install docker')
+        c.run('brew cask install docker')
     if 'fastlane' in roles:
         hint('install fastlane')
-        proxy_run(c, 'brew install fastlane')
+        c.run('brew install fastlane')
+    if 'mysqlworkbench' in roles:
+        hint('install MySQL Workbench')
+        c.run('brew cask install mysqlworkbench')
     cleanup(c)
 
 
@@ -160,10 +161,12 @@ def update(c, config=False, pypi_mirror=True):
         hint('configure .fabric.yaml, .zshrc')
         download(c, 'https://raw.githubusercontent.com/nyssance/Free/master/fabric.yaml', '.fabric.yaml')
         download(c, 'https://raw.githubusercontent.com/nyssance/Free/master/zshrc', '.zshrc')
+        c.run(f'echo $"\nexport HTTPS_PROXY=http://{HTTP_PROXY}" >> .zshrc')
         c.run('zsh -lc "source .zshrc"')
+    c.run('echo $HTTPS_PROXY')
     hint('update Homebrew')
-    proxy_run(c, 'brew update')
-    proxy_run(c, 'brew upgrade')
+    c.run('brew update')
+    c.run('brew upgrade')
     if Path('/usr/local/bin/node').exists():
         hint('update npm')
         c.run('npm update -g')
@@ -196,15 +199,6 @@ def download(c, url, name=None, proxy=HTTP_PROXY):
 
 def get_text(str: str):
     return LANG[str] if locale.getdefaultlocale()[0] in ['zh_CN'] else str.capitalize()
-
-
-def proxy_run(c, command, **kwargs):
-    proxy = ''
-    if HTTP_PROXY:
-        proxy = f'export HTTPS_PROXY=http://{HTTP_PROXY} && '
-    else:
-        print('没有代理，速度较慢。')
-    c.run(f'{proxy}{command}', **kwargs)
 
 
 def hint(value):
