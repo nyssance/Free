@@ -3,31 +3,31 @@
 [![macOS](https://img.shields.io/badge/macOS-10.15-blue)](https://www.apple.com/macos/catalina/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://opensource.org/licenses/MIT)
 
-井井兮其有理也 [中文](https://github.com/nyssance/Free/blob/master/README-zh_CN.md)
+井井兮其有理也 [English](https://github.com/nyssance/Free/blob/master/README.md)
 
 ---
 
-## Installation
+## 安装
 
-1. Install [Homebrew].
+1. 安装 [Homebrew]。
 
     ```sh
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     ```
 
-2. Install [Python], [Pipenv].
+2. 安装 [Python], [Pipenv]。
 
     ```sh
     brew install pipenv
     ```
 
-3. Install [Fabric], [colorama], [PyInquirer].
+3. 安装 [Fabric], [colorama], [PyInquirer]。
 
     ```sh
-    pip install fabric colorama PyInquirer
+    pip install fabric colorama PyInquirer -i https://pypi.douban.com/simple/
     ```
 
-4. Download `fabfile.py`, `.fabric.yaml` and run install.
+4. 下载 `fabfile.py`, `.fabric.yaml` 并运行安装。
 
     ```sh
     cd ~
@@ -48,30 +48,30 @@
 - [Colorama]
 - [PyInquirer]
 
-## Tools
+## 安装的工具
 
-### Browser
+### 浏览器
 
 - [Google Chrome](https://www.google.com/chrome/)
 
-### Develop
+### 开发
 
 - [GitHub Desktop](https://desktop.github.com)
 - [Visual Studio Code](https://code.visualstudio.com)
 
-### Debug
+### 调试
 
 - [Postman](https://www.getpostman.com)
 
-### Deploy
+### 部署
 
 - [Docker](https://www.docker.com)
 
-### Distribute
+### 分发
 
 - [fastlane](https://fastlane.tools)
 
-### Font
+### 字体
 
 - [Fira Code](https://github.com/tonsky/FiraCode)
 
@@ -86,7 +86,7 @@
 - [SwiftFormat](https://github.com/nicklockwood/SwiftFormat)
 - [SwiftLint](https://github.com/realm/SwiftLint)
 
-### Front-end
+### 前端
 
 - [Node.js](https://nodejs.org)
 - [Angular CLI](https://cli.angular.io)
@@ -105,13 +105,13 @@
   - [YAPF](https://github.com/google/yapf)
 - [twine](https://github.com/pypa/twine)
 
-### Database
+### 数据库
 
 - [MySQL](https://www.mysql.com)
 - [MySQL Workbench](https://www.mysql.com/products/workbench/)
 - [Redis](https://redis.io)
 
-### I18n and l10n
+### 国际化和本地化
 
 - [gettext](https://www.gnu.org/software/gettext/)
 

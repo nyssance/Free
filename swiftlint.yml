@@ -1,0 +1,88 @@
+included: # paths to include during linting. `--path` is ignored if present.
+  - Source
+  # NY
+  - */Classes # 修改为自己的代码路径
+  - Pods/Genos
+excluded: # paths to ignore during linting. Takes precedence over `included`.
+  - Carthage
+  - Pods
+
+disabled_rules: # rule identifiers to exclude from running
+  - todo
+opt_in_rules: # some rules are only opt-in
+  - empty_count
+  - file_header
+  # - explicit_init
+  - closure_spacing
+  - overridden_super_call
+  - redundant_nil_coalescing
+  - private_outlet
+  - nimble_operator
+  - attributes
+  - operator_usage_whitespace
+  - closure_end_indentation
+  - first_where
+  - sorted_imports
+  - object_literal
+  - number_separator
+  - prohibited_super_call
+  - fatal_error_message
+  - vertical_parameter_alignment_on_call
+  - let_var_whitespace
+  - unneeded_parentheses_in_closure_argument
+  - extension_access_modifier
+  - pattern_matching_keywords
+  - array_init
+  - literal_expression_end_indentation
+  # 其他
+  # # - conditional_returns_on_newline
+  # - contains_over_first_not_nil
+  # - discouraged_object_literal
+  # # - discouraged_optional_boolean
+  # # - explicit_acl
+  # # - explicit_enum_raw_value
+  # # - explicit_top_level_acl
+  # # - explicit_type_interface
+  # # - force_unwrapping
+  # - implicit_return
+  # # - implicitly_unwrapped_optional
+  # - joined_default_parameter
+  # # - multiline_arguments
+  # - multiline_parameters
+  # - no_extension_access_modifier
+  # # - no_grouping_extension
+  # - override_in_extension
+  # # - prefixed_toplevel_constant
+  # - private_action
+  # - quick_discouraged_call
+  # - quick_discouraged_focused_test
+  # - quick_discouraged_pending_test
+  # - required_enum_case
+  # - single_test_class
+  # - sorted_first_last
+  # # - strict_fileprivate
+  # - switch_case_on_newline
+  # # - trailing_closure
+  # - yoda_condition
+
+  # Find all the available rules by running:
+  # swiftlint rules
+file_header:
+  required_pattern: |
+                    \/\/
+                    \/\/  Copyright © \d{4} NY \<nyssance@icloud.com\>\. All rights reserved\.
+                    \/\/
+file_length:
+  warning: 200
+  error: 300
+identifier_name:
+  allowed_symbols: "_"
+  excluded:
+    - id
+    - x
+    - y
+line_length: 300
+number_separator:
+  minimum_length: 6
+type_name:
+  excluded: Me
