@@ -8,7 +8,7 @@ from PyInquirer import Separator, prompt
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.3.0'
+VERSION = '0.3.1'
 
 
 @task(default=True)
@@ -106,6 +106,8 @@ def install(c, pypi_mirror=True):
     if 'angular' in roles or 'gulp' in roles:
         hint('install Node.js')
         c.run('brew install node')
+        hint('configure npm')
+        c.run('npm config set registry https://registry.npm.taobao.org')
     if 'angular' in roles:
         hint('install Angular CLI')
         c.run('npm install -g @angular/cli')
