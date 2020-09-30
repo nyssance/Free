@@ -8,7 +8,7 @@ from PyInquirer import Separator, prompt
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.3.1'
+VERSION = '0.3.2'
 
 
 @task(default=True)
@@ -75,7 +75,7 @@ def install(c, pypi_mirror=True):
     c.run(f'echo $"\nexport HTTPS_PROXY=http://{HTTP_PROXY}" >> .zshrc')
     c.run('zsh -lc "source .zshrc"')
     hint('configure RubyGems')
-    c.run('gem sources --add https://gems.ruby-china.com/ --remove https://rubygems.org/')
+    c.run('gem sources --add https://mirrors.aliyun.com/rubygems/ --remove https://rubygems.org/')
     c.run('echo $HTTPS_PROXY')
     hint('install Fira Code')
     c.run('brew tap homebrew/cask-fonts')
