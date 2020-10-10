@@ -8,7 +8,7 @@ from PyInquirer import Separator, prompt
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.3.2'
+VERSION = '0.3.3'
 
 
 @task(default=True)
@@ -92,7 +92,7 @@ def install(c, pypi_mirror=True):
         c.run('brew install openjdk')
     if 'python' in roles:
         hint('install Pylint, Flake8, isort, YAPF, twine')  # 上传到pypi需要twine
-        c.run(f'pip install pylint flake8 isort yapf twine{f" -i {PYPI_MIRROR}" if pypi_mirror else ""}')
+        c.run(f'pip3 install pylint flake8 isort yapf twine{f" -i {PYPI_MIRROR}" if pypi_mirror else ""}')
         hint('install gettext')
         c.run('brew install gettext')
     # 数据库
@@ -148,8 +148,8 @@ def uninstall(c):
     }])['role']
     if role == 'python':
         hint('uninstall Pipenv, Python')
-        c.run('brew uninstall pipenv python@3.8')
-        c.sudo('rm -rf /usr/local/lib/python3.8/')
+        c.run('brew uninstall pipenv python@3.9')
+        c.sudo('rm -rf /usr/local/lib/python3.9/')
 
 
 @task(help={'config': '更新 .fabric.yaml, .zshrc 配置文件'})
@@ -174,11 +174,11 @@ def update(c, config=False, pypi_mirror=True):
         c.run('npm update -g')
     mirror = f' -i {PYPI_MIRROR}' if pypi_mirror else ''
     hint('update pip, setuptools, wheel')
-    c.run(f'pip install -U pip setuptools wheel{mirror} | grep -v already')
+    c.run(f'pip3 install -U pip setuptools wheel{mirror} | grep -v already')
     hint('update Fabric, colorama, PyInquirer')
-    c.run(f'pip install -U fabric colorama PyInquirer{mirror} | grep -v already')
+    c.run(f'pip3 install -U fabric colorama PyInquirer{mirror} | grep -v already')
     hint('update Pylint, Flake8, isort, YAPF, twine')
-    c.run(f'pip install -U pylint flake8 isort yapf twine{mirror} | grep -v already')
+    c.run(f'pip3 install -U pylint flake8 isort yapf twine{mirror} | grep -v already')
     cleanup(c)
     print(Fore.LIGHTCYAN_EX + '''
 更新完毕

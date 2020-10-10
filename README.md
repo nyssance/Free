@@ -19,21 +19,20 @@
 
     ```sh
     brew install pipenv
+    brew link --overwrite --force python@3.9
     ```
 
 3. Install [Fabric], [colorama], [PyInquirer].
 
     ```sh
-    pip install fabric colorama PyInquirer
+    pip3 install fabric colorama PyInquirer
     ```
 
 4. Download `fabfile.py`, `.fabric.yaml` and run install.
 
     ```sh
     cd ~
-
     curl -fsSL -O https://raw.githubusercontent.com/nyssance/Free/master/fabfile.py -o .fabric.yaml https://raw.githubusercontent.com/nyssance/Free/master/fabric.yaml
-
     fab install
     ```
 
