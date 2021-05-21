@@ -8,7 +8,7 @@ from PyInquirer import Separator, prompt
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.3.4'
+VERSION = '0.3.5'
 
 
 @task(default=True)
@@ -70,6 +70,8 @@ def install(c, pypi_mirror=True):
         c.run(f'sed -i "" "s|HTTP_PROXY = \'{HTTP_PROXY}\'|HTTP_PROXY = \'{proxy}\'|g" fabfile.py')
     hint('install Oh My Zsh')
     c.run('sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"', warn=True)
+    c.run('git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions')
+    c.run('git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting')
     hint('configure .zshrc')
     download(c, 'https://raw.githubusercontent.com/nyssance/Free/master/zshrc', '.zshrc', proxy)
     c.run(f'echo $"\nexport HTTPS_PROXY=http://{HTTP_PROXY}" >> .zshrc')
@@ -161,6 +163,8 @@ def update(c, config=False, pypi_mirror=True):
         c.run(f'sed -i "" "s|HTTP_PROXY = \'\'|HTTP_PROXY = \'{HTTP_PROXY}\'|g" fabfile.py')
     if config:
         hint('configure .fabric.yaml, .zshrc')
+        c.run('git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions')
+        c.run('git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting')
         download(c, 'https://raw.githubusercontent.com/nyssance/Free/master/fabric.yaml', '.fabric.yaml')
         download(c, 'https://raw.githubusercontent.com/nyssance/Free/master/zshrc', '.zshrc')
         c.run(f'echo $"\nexport HTTPS_PROXY=http://{HTTP_PROXY}" >> .zshrc')

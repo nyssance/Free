@@ -2,16 +2,19 @@
     "editor.fontFamily": "FiraCode-Retina",
     "editor.fontLigatures": "'ss03', 'ss05', 'ss07'",
     "editor.fontSize": 14,
-    "editor.renameOnType": true,
+    "editor.linkedEditing": true,
     "editor.semanticTokenColorCustomizations": {
         "enabled": true
     },
+    "files.autoSave": "afterDelay",
+    "files.eol": "\n",
     "files.insertFinalNewline": true,
     "files.trimFinalNewlines": true,
     "workbench.activityBar.visible": false,
     "workbench.colorTheme": "Visual Studio Light",
+    "workbench.iconTheme": "vscode-icons",
     "[css]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
+        "editor.defaultFormatter": "vscode.css-language-features"
     },
     "[html]": {
         "editor.defaultFormatter": "vscode.html-language-features"
@@ -23,7 +26,7 @@
         "editor.defaultFormatter": "vscode.json-language-features"
     },
     "[markdown]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
+        "editor.defaultFormatter": "vscode.markdown-language-features"
     },
     "[typescript]": {
         "editor.defaultFormatter": "vscode.typescript-language-features"
@@ -34,25 +37,11 @@
     },
     "python.formatting.provider": "yapf",
     "python.linting.flake8Enabled": true,
-    // Vue
-    "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
-    "vetur.format.defaultFormatter.js": "vscode-typescript",
-    // "vetur.format.defaultFormatterOptions": {
-    //     "prettier": {
-    //         "semi": false,
-    //         "singleQuote": true
-    //     }
-    // },
-    "eslint.validate": [
-        "javascript",
-        "javascriptreact",
-        "html",
+    "explorer.confirmDragAndDrop": false,
+    "workbench.editorAssociations": [
         {
-            "language": "vue",
-            "autoFix": true
+            "viewType": "jupyter.notebook.ipynb",
+            "filenamePattern": "*.ipynb"
         }
-    ],
-    "sync.gist": "",
-    "todo-tree.tree.showScanModeButton": false,
-    "todo-tree.highlights.enabled": false
+    ]
 }
