@@ -8,7 +8,7 @@ from PyInquirer import Separator, prompt
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.3.8'
+VERSION = '0.3.9'
 
 
 @task(default=True)
@@ -70,16 +70,12 @@ def install(c, pypi_mirror=True):
         c.run(f'sed -i "" "s|HTTP_PROXY = \'{HTTP_PROXY}\'|HTTP_PROXY = \'{proxy}\'|g" fabfile.py')
     hint('install Oh My Zsh, autoupdate-zsh-plugin, zsh-autosuggestions, zsh-syntax-highlighting')
     c.run('sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"', warn=True)
-    c.run('git clone https://github.com/TamCore/autoupdate-oh-my-zsh-plugins $ZSH_CUSTOM/plugins/autoupdate')
-    c.run('git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions')
-    c.run('git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting')
-    hint('configure .zshrc')
-    download(c, 'https://raw.githubusercontent.com/nyssance/Free/master/zshrc', '.zshrc', proxy)
-    c.run(f'echo "\n# {gettext("HTTP Proxy")}\nexport HTTPS_PROXY=http://{HTTP_PROXY}" >> .zshrc')
-    c.run('zsh -lc "source .zshrc"')
+    c.run('git clone https://github.com/TamCore/autoupdate-oh-my-zsh-plugins $ZSH_CUSTOM/plugins/autoupdate', warn=True)
+    c.run('git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions', warn=True)
+    c.run('git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting', warn=True)
+    configure_zsh(c, proxy)
     hint('configure RubyGems')
     c.run('gem sources --add https://mirrors.aliyun.com/rubygems/ --remove https://rubygems.org/')
-    c.run('echo $HTTPS_PROXY')
     hint('install Fira Code')
     c.run('brew tap homebrew/cask-fonts')
     c.run('brew install --cask font-fira-code')
@@ -163,12 +159,9 @@ def update(c, config=False, pypi_mirror=True):
     if HTTP_PROXY:
         c.run(f'sed -i "" "s|HTTP_PROXY = \'\'|HTTP_PROXY = \'{HTTP_PROXY}\'|g" fabfile.py')
     if config:
-        hint('configure .fabric.yaml, .zshrc')
+        hint('configure .fabric.yaml')
         download(c, 'https://raw.githubusercontent.com/nyssance/Free/master/fabric.yaml', '.fabric.yaml')
-        download(c, 'https://raw.githubusercontent.com/nyssance/Free/master/zshrc', '.zshrc')
-        c.run(f'echo "\n# {gettext("HTTP Proxy")}\nexport HTTPS_PROXY=http://{HTTP_PROXY}" >> .zshrc')
-        c.run('zsh -lc "source .zshrc"')
-    c.run('echo $HTTPS_PROXY')
+        configure_zsh(c)
     hint('update Homebrew')
     c.run('brew update')
     c.run('brew upgrade')
@@ -195,6 +188,13 @@ def format(c):
     """格式化"""
     c.run('isort fabfile.py')
     c.run('yapf -irp fabfile.py')
+
+
+def configure_zsh(c, proxy=None):
+    hint('configure .zshrc')
+    download(c, 'https://raw.githubusercontent.com/nyssance/Free/master/zshrc', '.zshrc', proxy)
+    c.run(f'echo "\n# {gettext("HTTP Proxy")}\nexport HTTPS_PROXY=http://{HTTP_PROXY}" >> .zshrc')
+    c.run('zsh -lc "source .zshrc"')
 
 
 def download(c, url, name=None, proxy=HTTP_PROXY):
