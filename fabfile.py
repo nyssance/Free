@@ -8,7 +8,7 @@ from PyInquirer import Separator, prompt
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.4.6'
+VERSION = '0.4.7'
 
 
 @task(default=True)
@@ -214,18 +214,18 @@ def download(c, url, name=None, proxy=HTTP_PROXY):
 
 
 def getcode(message: str) -> str:
-    return f'\033[0;37;42m{message}\033[0m'
+    return Fore.GREEN + message + Fore.RESET
 
 
 def gettext(message: str) -> str:
     return LANG[message] if locale.getdefaultlocale()[0] in ['zh_CN'] else message.capitalize()
 
 
-def hint(value):
-    operation, str = value.split(' ', 1)
+def hint(value: str):
+    operation, message = value.split(' ', 1)
     color = Back.LIGHTWHITE_EX
     if operation == 'cleanup':
-        color = Back.YELLOW
+        color = Back.LIGHTYELLOW_EX
     elif operation == 'configure':
         color = Back.LIGHTCYAN_EX
     elif operation == 'install':
@@ -234,7 +234,7 @@ def hint(value):
         color = Back.LIGHTRED_EX
     elif operation == 'update':
         color = Back.LIGHTBLUE_EX
-    print(color + gettext(operation) + Back.RESET, str)
+    print(color + gettext(operation) + Back.RESET, message)
 
 
 LANG = {
