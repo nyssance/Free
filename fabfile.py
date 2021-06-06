@@ -8,7 +8,7 @@ from PyInquirer import Separator, prompt
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.4.3'
+VERSION = '0.4.5'
 
 
 @task(default=True)
@@ -75,8 +75,12 @@ def install(c, pypi_mirror=True):
     hint('install Oh My Zsh, autoupdate-zsh-plugin, zsh-autosuggestions, zsh-syntax-highlighting')
     c.run('sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"', warn=True)
     c.run('git clone https://github.com/TamCore/autoupdate-oh-my-zsh-plugins $ZSH_CUSTOM/plugins/autoupdate', warn=True)
-    c.run('git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions', warn=True)
-    c.run('git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting', warn=True)
+    c.run(
+        'git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions',
+        warn=True)
+    c.run(
+        'git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting',
+        warn=True)
     configure_zsh(c, proxy)
     if locale.getdefaultlocale()[0] in ['zh_CN']:
         hint('configure RubyGems')
@@ -186,7 +190,7 @@ def update(c, config=False, pypi_mirror=True):
     print(Fore.LIGHTCYAN_EX + f'''
 更新完毕
 如果更新了python, 可能需要重新创建虚拟环境.
-如果遇到yapf无法执行, 可能需要{getcode('fab uninstall')}然后重装python.
+如果遇到yapf无法执行, 可能需要{getcode('`fab uninstall`')}然后重装python.
 ''' + Fore.RESET)
 
 
