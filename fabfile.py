@@ -8,7 +8,7 @@ from PyInquirer import Separator, prompt
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.3.9'
+VERSION = '0.4.0'
 
 
 @task(default=True)
@@ -56,6 +56,8 @@ def install(c, pypi_mirror=True):
             {'name': 'gulp'},
             Separator('= Apps ='),
             {'name': 'GitHub Desktop, Google Chrome, Postman, Visual Studio Code', 'value': 'apps'},
+            Separator('= Fonts ='),
+            {'name': 'Fira Code', 'value': 'font-fira-code'},
             Separator('= Others ='),
             {'name': 'Docker', 'value': 'docker'},
             {'name': 'fastlane'},
@@ -66,6 +68,8 @@ def install(c, pypi_mirror=True):
     answers = prompt(questions)
     proxy = answers['proxy']
     roles = answers['roles']
+    if not roles:
+        return
     if HTTP_PROXY != proxy:
         c.run(f'sed -i "" "s|HTTP_PROXY = \'{HTTP_PROXY}\'|HTTP_PROXY = \'{proxy}\'|g" fabfile.py')
     hint('install Oh My Zsh, autoupdate-zsh-plugin, zsh-autosuggestions, zsh-syntax-highlighting')
@@ -74,11 +78,9 @@ def install(c, pypi_mirror=True):
     c.run('git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions', warn=True)
     c.run('git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting', warn=True)
     configure_zsh(c, proxy)
-    hint('configure RubyGems')
-    c.run('gem sources --add https://mirrors.aliyun.com/rubygems/ --remove https://rubygems.org/')
-    hint('install Fira Code')
-    c.run('brew tap homebrew/cask-fonts')
-    c.run('brew install --cask font-fira-code')
+    if locale.getdefaultlocale()[0] in ['zh_CN']:
+        hint('configure RubyGems')
+        c.run('gem sources --add https://mirrors.aliyun.com/rubygems/ --remove https://rubygems.org/')
     if 'android' in roles:
         hint('install Android Studio, ktlint')
         c.run('brew install --cask android-studio')
@@ -117,6 +119,11 @@ def install(c, pypi_mirror=True):
     if 'apps' in roles:
         hint('install GitHub Desktop, Google Chrome, Postman, Visual Studio Code')
         c.run('brew install --cask github google-chrome postman visual-studio-code')
+    # 字体
+    if 'font-fira-code' in roles:
+        hint('install Fira Code')
+        c.run('brew tap homebrew/cask-fonts')
+        c.run('brew install --cask font-fira-code')
     # 其他
     if 'docker' in roles:
         hint('install Docker')
@@ -219,6 +226,7 @@ def hint(value):
         color = Fore.LIGHTRED_EX
     elif operation == 'update':
         color = Fore.LIGHTBLUE_EX
+    print('\n')
     print(color + gettext(operation) + Fore.RESET, str)
 
 
