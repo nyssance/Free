@@ -8,7 +8,7 @@ from PyInquirer import Separator, prompt
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.4.7'
+VERSION = '0.4.8'
 
 
 @task(default=True)
@@ -96,10 +96,8 @@ def install(c, pypi_mirror=True):
         hint('install OpenJDK')
         c.run('brew install openjdk')
     if 'python' in roles:
-        hint('install Pylint, Flake8, isort, YAPF, twine')  # 上传到pypi需要twine
-        c.run(f'pip install pylint flake8 isort yapf twine{f" -i {PYPI_MIRROR}" if pypi_mirror else ""}')
-        hint('install gettext')
-        c.run('brew install gettext')
+        hint('install Flake8, isort, Pylint, YAPF, twine')  # 上传到pypi需要twine
+        c.run(f'pip install flake8 isort pylint yapf twine{f" -i {PYPI_MIRROR}" if pypi_mirror else ""}')
     # 数据库
     if 'mysql' in roles:
         hint('install MySQL')
@@ -184,14 +182,14 @@ def update(c, config=False, pypi_mirror=True):
     c.run(f'pip install -U pip setuptools wheel{mirror} | grep -v already')
     hint('update Fabric, colorama, PyInquirer')
     c.run(f'pip install -U fabric colorama PyInquirer{mirror} | grep -v already')
-    hint('update Pylint, Flake8, isort, YAPF, twine')
-    c.run(f'pip install -U pylint flake8 isort yapf twine{mirror} | grep -v already')
+    hint('update Flake8, isort, Pylint, YAPF, twine')
+    c.run(f'pip install -U flake8 isort pylint yapf twine{mirror} | grep -v already')
     cleanup(c)
-    print(Fore.LIGHTCYAN_EX + f'''
+    print(f'''
 更新完毕
 如果更新了python, 可能需要重新创建虚拟环境.
 如果遇到yapf无法执行, 可能需要{getcode('`fab uninstall`')}然后重装python.
-''' + Fore.RESET)
+''')
 
 
 @task
@@ -214,7 +212,7 @@ def download(c, url, name=None, proxy=HTTP_PROXY):
 
 
 def getcode(message: str) -> str:
-    return Fore.GREEN + message + Fore.RESET
+    return Fore.LIGHTGREEN_EX + message + Fore.RESET
 
 
 def gettext(message: str) -> str:

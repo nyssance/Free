@@ -114,10 +114,6 @@
 - [MySQL Workbench](https://www.mysql.com/products/workbench/)
 - [Redis](https://redis.io)
 
-### I18n and l10n
-
-- [gettext](https://www.gnu.org/software/gettext/)
-
 Free is released under the MIT license. [See LICENSE](https://github.com/nyssance/Free/blob/master/LICENSE) for details.
 
 [HomeBrew]: https://brew.sh
