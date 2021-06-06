@@ -8,7 +8,7 @@ from PyInquirer import Separator, prompt
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.3.6'
+VERSION = '0.3.8'
 
 
 @task(default=True)
@@ -166,7 +166,7 @@ def update(c, config=False, pypi_mirror=True):
         hint('configure .fabric.yaml, .zshrc')
         download(c, 'https://raw.githubusercontent.com/nyssance/Free/master/fabric.yaml', '.fabric.yaml')
         download(c, 'https://raw.githubusercontent.com/nyssance/Free/master/zshrc', '.zshrc')
-        c.run(f'echo "\n# 代理服务器\nexport HTTPS_PROXY=http://{HTTP_PROXY}" >> .zshrc')
+        c.run(f'echo "\n# {gettext("HTTP Proxy")}\nexport HTTPS_PROXY=http://{HTTP_PROXY}" >> .zshrc')
         c.run('zsh -lc "source .zshrc"')
     c.run('echo $HTTPS_PROXY')
     hint('update Homebrew')
