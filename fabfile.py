@@ -8,7 +8,7 @@ from PyInquirer import Separator, prompt
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.3.5'
+VERSION = '0.3.6'
 
 
 @task(default=True)
@@ -68,8 +68,9 @@ def install(c, pypi_mirror=True):
     roles = answers['roles']
     if HTTP_PROXY != proxy:
         c.run(f'sed -i "" "s|HTTP_PROXY = \'{HTTP_PROXY}\'|HTTP_PROXY = \'{proxy}\'|g" fabfile.py')
-    hint('install Oh My Zsh')
+    hint('install Oh My Zsh, autoupdate-zsh-plugin, zsh-autosuggestions, zsh-syntax-highlighting')
     c.run('sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"', warn=True)
+    c.run('git clone https://github.com/TamCore/autoupdate-oh-my-zsh-plugins $ZSH_CUSTOM/plugins/autoupdate')
     c.run('git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions')
     c.run('git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting')
     hint('configure .zshrc')
@@ -81,10 +82,10 @@ def install(c, pypi_mirror=True):
     c.run('echo $HTTPS_PROXY')
     hint('install Fira Code')
     c.run('brew tap homebrew/cask-fonts')
-    c.run('brew cask install font-fira-code')
+    c.run('brew install --cask font-fira-code')
     if 'android' in roles:
         hint('install Android Studio, ktlint')
-        c.run('brew cask install android-studio')
+        c.run('brew install --cask android-studio')
         c.run('brew install ktlint')
     if 'ios' in roles:
         hint('install CocoaPods SwiftFormat, SwiftLint')
@@ -119,17 +120,17 @@ def install(c, pypi_mirror=True):
     # 应用
     if 'apps' in roles:
         hint('install GitHub Desktop, Google Chrome, Postman, Visual Studio Code')
-        c.run('brew cask install github google-chrome postman visual-studio-code')
+        c.run('brew install --cask github google-chrome postman visual-studio-code')
     # 其他
     if 'docker' in roles:
         hint('install Docker')
-        c.run('brew cask install docker')
+        c.run('brew install --cask docker')
     if 'fastlane' in roles:
         hint('install fastlane')
         c.run('brew install fastlane')
     if 'mysqlworkbench' in roles:
         hint('install MySQL Workbench')
-        c.run('brew cask install mysqlworkbench')
+        c.run('brew install --cask mysqlworkbench')
     cleanup(c)
 
 
@@ -163,8 +164,6 @@ def update(c, config=False, pypi_mirror=True):
         c.run(f'sed -i "" "s|HTTP_PROXY = \'\'|HTTP_PROXY = \'{HTTP_PROXY}\'|g" fabfile.py')
     if config:
         hint('configure .fabric.yaml, .zshrc')
-        c.run('git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions')
-        c.run('git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting')
         download(c, 'https://raw.githubusercontent.com/nyssance/Free/master/fabric.yaml', '.fabric.yaml')
         download(c, 'https://raw.githubusercontent.com/nyssance/Free/master/zshrc', '.zshrc')
         c.run(f'echo $"\nexport HTTPS_PROXY=http://{HTTP_PROXY}" >> .zshrc')

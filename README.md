@@ -12,7 +12,7 @@
 1. Install [Homebrew].
 
     ```sh
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     ```
 
 2. Install [Python], [Pipenv].
@@ -25,7 +25,7 @@
 3. Install [Fabric], [colorama], [PyInquirer].
 
     ```sh
-    pip3 install fabric colorama PyInquirer
+    pip install fabric colorama PyInquirer
     ```
 
 4. Download `fabfile.py`, `.fabric.yaml` and run install.
@@ -39,7 +39,11 @@
 ## Vendor
 
 - [Homebrew]
-- [Oh My Zsh]
+- Zsh
+  - [Oh My Zsh]
+  - [autoupdate-zsh-plugin](https://github.com/TamCore/autoupdate-oh-my-zsh-plugins)
+  - [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)
+  - [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting)
 - [Python]
   - [Pipenv]
 - [Fabric]

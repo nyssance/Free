@@ -12,7 +12,7 @@
 1. 安装 [Homebrew]。
 
     ```sh
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     ```
 
 2. 安装 [Python], [Pipenv]。
@@ -25,7 +25,7 @@
 3. 安装 [Fabric], [colorama], [PyInquirer]。
 
     ```sh
-    pip3 install fabric colorama PyInquirer -i https://pypi.douban.com/simple/
+    pip install fabric colorama PyInquirer -i https://pypi.douban.com/simple/
     ```
 
 4. 下载 `fabfile.py`, `.fabric.yaml` 并运行安装。
@@ -39,7 +39,11 @@
 ## Vendor
 
 - [Homebrew]
-- [Oh My Zsh]
+- Zsh
+  - [Oh My Zsh]
+  - [autoupdate-zsh-plugin](https://github.com/TamCore/autoupdate-oh-my-zsh-plugins)
+  - [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)
+  - [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting)
 - [Python]
   - [Pipenv]
 - [Fabric]
