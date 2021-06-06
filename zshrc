@@ -10,6 +10,3 @@ source $ZSH/oh-my-zsh.sh
 
 # Python
 export PATH="/usr/local/opt/python@3.9/bin:$PATH"
-
-# Proxy
-export HTTPS_PROXY=http://127.0.0.1:7890

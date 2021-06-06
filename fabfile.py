@@ -16,7 +16,7 @@ def hello(c, path='参数值'):
     """Hello"""
     init(autoreset=True)
     print(Fore.LIGHTMAGENTA_EX + f'Hello ~ {get_local_user()}')
-    print(Fore.LIGHTGREEN_EX + f'{get_text("HTTP Proxy")}: http://{HTTP_PROXY}')
+    print(Fore.LIGHTGREEN_EX + f'{gettext("HTTP Proxy")}: http://{HTTP_PROXY}')
     print(Fore.LIGHTBLUE_EX + f'Version: {VERSION}')
     print('fab task -h 可以查看 task')
     c.run('fab -l', echo=False)
@@ -36,12 +36,12 @@ def install(c, pypi_mirror=True):
     questions = [{
         'type': 'list',
         'name': 'proxy',
-        'message': get_text('HTTP Proxy'),
+        'message': gettext('HTTP Proxy'),
         'choices': ['127.0.0.1:7890', {'name': 'None', 'value': ''}]
     }, {
         'type': 'checkbox',
         'name': 'roles',
-        'message': get_text('install'),
+        'message': gettext('install'),
         # 'qmark': '🦄',
         'choices': [
             {'name': 'Android', 'value': 'android'},
@@ -75,7 +75,7 @@ def install(c, pypi_mirror=True):
     c.run('git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting')
     hint('configure .zshrc')
     download(c, 'https://raw.githubusercontent.com/nyssance/Free/master/zshrc', '.zshrc', proxy)
-    c.run(f'echo $"\nexport HTTPS_PROXY=http://{HTTP_PROXY}" >> .zshrc')
+    c.run(f'echo "\n# {gettext("HTTP Proxy")}\nexport HTTPS_PROXY=http://{HTTP_PROXY}" >> .zshrc')
     c.run('zsh -lc "source .zshrc"')
     hint('configure RubyGems')
     c.run('gem sources --add https://mirrors.aliyun.com/rubygems/ --remove https://rubygems.org/')
@@ -143,9 +143,9 @@ def uninstall(c):
     role = prompt([{
         'type': 'list',
         'name': 'role',
-        'message': get_text('uninstall'),
+        'message': gettext('uninstall'),
         'choices': ['python', {
-            'name': get_text('cancel'),
+            'name': gettext('cancel'),
             'value': ''
         }]
     }])['role']
@@ -166,7 +166,7 @@ def update(c, config=False, pypi_mirror=True):
         hint('configure .fabric.yaml, .zshrc')
         download(c, 'https://raw.githubusercontent.com/nyssance/Free/master/fabric.yaml', '.fabric.yaml')
         download(c, 'https://raw.githubusercontent.com/nyssance/Free/master/zshrc', '.zshrc')
-        c.run(f'echo $"\nexport HTTPS_PROXY=http://{HTTP_PROXY}" >> .zshrc')
+        c.run(f'echo "\n# 代理服务器\nexport HTTPS_PROXY=http://{HTTP_PROXY}" >> .zshrc')
         c.run('zsh -lc "source .zshrc"')
     c.run('echo $HTTPS_PROXY')
     hint('update Homebrew')
@@ -202,8 +202,8 @@ def download(c, url, name=None, proxy=HTTP_PROXY):
     c.run(f'curl -fsSL{f" -x {proxy}" if proxy else ""} {command}')
 
 
-def get_text(str: str):
-    return LANG[str] if locale.getdefaultlocale()[0] in ['zh_CN'] else str.capitalize()
+def gettext(message: str) -> str:
+    return LANG[message] if locale.getdefaultlocale()[0] in ['zh_CN'] else message.capitalize()
 
 
 def hint(value):
@@ -219,7 +219,7 @@ def hint(value):
         color = Fore.LIGHTRED_EX
     elif operation == 'update':
         color = Fore.LIGHTBLUE_EX
-    print(color + get_text(operation) + Fore.RESET, str)
+    print(color + gettext(operation) + Fore.RESET, str)
 
 
 LANG = {
