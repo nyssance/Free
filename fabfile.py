@@ -1,14 +1,14 @@
 import locale
 from pathlib import Path
 
-from colorama import Fore, init
+from colorama import Back, Fore, init
 from fabric import task
 from fabric.util import get_local_user
 from PyInquirer import Separator, prompt
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.4.5'
+VERSION = '0.4.6'
 
 
 @task(default=True)
@@ -223,19 +223,18 @@ def gettext(message: str) -> str:
 
 def hint(value):
     operation, str = value.split(' ', 1)
-    color = Fore.LIGHTWHITE_EX
+    color = Back.LIGHTWHITE_EX
     if operation == 'cleanup':
-        color = Fore.LIGHTYELLOW_EX
+        color = Back.YELLOW
     elif operation == 'configure':
-        color = Fore.LIGHTCYAN_EX
+        color = Back.LIGHTCYAN_EX
     elif operation == 'install':
-        color = Fore.LIGHTGREEN_EX
+        color = Back.LIGHTGREEN_EX
     elif operation == 'uninstall':
-        color = Fore.LIGHTRED_EX
+        color = Back.LIGHTRED_EX
     elif operation == 'update':
-        color = Fore.LIGHTBLUE_EX
-    print('\n')
-    print(color + gettext(operation) + Fore.RESET, str)
+        color = Back.LIGHTBLUE_EX
+    print(color + gettext(operation) + Back.RESET, str)
 
 
 LANG = {
