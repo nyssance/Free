@@ -8,7 +8,7 @@ from PyInquirer import Separator, prompt
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.4.2'
+VERSION = '0.4.3'
 
 
 @task(default=True)
@@ -210,7 +210,7 @@ def download(c, url, name=None, proxy=HTTP_PROXY):
 
 
 def getcode(message: str) -> str:
-    return f'\033[38;5;247m{message}\033[0m'
+    return f'\033[0;37;42m{message}\033[0m'
 
 
 def gettext(message: str) -> str:
