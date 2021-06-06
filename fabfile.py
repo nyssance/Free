@@ -8,7 +8,7 @@ from PyInquirer import Separator, prompt
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.4.0'
+VERSION = '0.4.1'
 
 
 @task(default=True)
@@ -183,10 +183,10 @@ def update(c, config=False, pypi_mirror=True):
     hint('update Pylint, Flake8, isort, YAPF, twine')
     c.run(f'pip install -U pylint flake8 isort yapf twine{mirror} | grep -v already')
     cleanup(c)
-    print(Fore.LIGHTCYAN_EX + '''
+    print(Fore.LIGHTCYAN_EX + f'''
 更新完毕
 如果更新了python, 可能需要重新创建虚拟环境.
-如果遇到yapf无法执行, 可能需要`fab uninstall`然后重装python.
+如果遇到yapf无法执行, 可能需要{getcode('fab uninstall')}然后重装python.
 ''' + Fore.RESET)
 
 
@@ -207,6 +207,10 @@ def configure_zsh(c, proxy=None):
 def download(c, url, name=None, proxy=HTTP_PROXY):
     command = f'{url} > {name}' if name else f'-O {url}'
     c.run(f'curl -fsSL{f" -x {proxy}" if proxy else ""} {command}')
+
+
+def getcode(message: str) -> str:
+    return f'`\033[38;5;247m{message}`'
 
 
 def gettext(message: str) -> str:
