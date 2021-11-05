@@ -19,7 +19,7 @@
 
     ```sh
     brew install pipenv
-    brew link --overwrite --force python@3.9
+    brew link --overwrite --force python@3.10
     ```
 
 3. 安装 [Fabric], [colorama], [PyInquirer]。

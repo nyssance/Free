@@ -8,7 +8,7 @@ from PyInquirer import Separator, prompt
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.4.8'
+VERSION = '0.4.9'
 
 
 @task(default=True)
@@ -90,7 +90,7 @@ def install(c, pypi_mirror=True):
         c.run('brew install --cask android-studio')
         c.run('brew install ktlint')
     if 'ios' in roles:
-        hint('install CocoaPods SwiftFormat, SwiftLint')
+        hint('install CocoaPods, SwiftFormat, SwiftLint')
         c.run('brew install cocoapods swiftformat swiftlint')
     if 'java' in roles:
         hint('install OpenJDK')
@@ -156,8 +156,8 @@ def uninstall(c):
     }])['role']
     if role == 'python':
         hint('uninstall Pipenv, Python')
-        c.run('brew uninstall pipenv python@3.9')
-        c.sudo('rm -rf /usr/local/lib/python3.9/')
+        c.run('brew uninstall pipenv python@3.10')
+        c.sudo('rm -rf /usr/local/lib/python3.10/')
 
 
 @task(help={'config': '更新 .fabric.yaml, .zshrc 配置文件'})
