@@ -4,11 +4,11 @@ from pathlib import Path
 from colorama import Back, Fore, init
 from fabric import task
 from fabric.util import get_local_user
-from PyInquirer import Separator, prompt
+from inquirer2 import Separator, prompt
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.4.9'
+VERSION = '0.5.0'
 
 
 @task(default=True)
@@ -180,8 +180,8 @@ def update(c, config=False, pypi_mirror=True):
     mirror = f' -i {PYPI_MIRROR}' if pypi_mirror else ''
     hint('update pip, setuptools, wheel')
     c.run(f'pip install -U pip setuptools wheel{mirror} | grep -v already')
-    hint('update Fabric, colorama, PyInquirer')
-    c.run(f'pip install -U fabric colorama PyInquirer{mirror} | grep -v already')
+    hint('update Fabric, colorama, PyInquirer2')
+    c.run(f'pip install -U fabric colorama inquirer2{mirror} | grep -v already')
     hint('update Flake8, isort, Pylint, YAPF, twine')
     c.run(f'pip install -U flake8 isort pylint yapf twine{mirror} | grep -v already')
     cleanup(c)

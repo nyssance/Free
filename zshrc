@@ -9,4 +9,4 @@ plugins=(autoupdate fabric git osx z zsh-autosuggestions zsh-syntax-highlighting
 source $ZSH/oh-my-zsh.sh
 
 # Python
-export PATH="/usr/local/opt/python@3.10/bin:$PATH"
+export PATH="/usr/local/opt/python@3.10/Frameworks/Python.framework/Versions/3.10/bin:$PATH"

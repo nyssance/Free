@@ -22,10 +22,10 @@
     brew link --overwrite --force python@3.10
     ```
 
-3. 安装 [Fabric], [colorama], [PyInquirer]。
+3. 安装 [Fabric], [colorama], [PyInquirer2]。
 
     ```sh
-    pip install fabric colorama PyInquirer -i https://pypi.douban.com/simple/
+    pip install fabric colorama inquirer2 -i https://pypi.douban.com/simple/
     ```
 
 4. 下载 `fabfile.py`, `.fabric.yaml` 并运行安装。
@@ -49,7 +49,7 @@
 - [Fabric]
   - [Invoke](https://www.pyinvoke.org)
 - [Colorama]
-- [PyInquirer]
+- [PyInquirer2]
 
 ## 安装的工具
 
@@ -122,4 +122,4 @@ Free is released under the MIT license. [See LICENSE](https://github.com/nyssanc
 [Pipenv]: https://github.com/pypa/pipenv
 [Fabric]: https://www.fabfile.org
 [Colorama]: https://github.com/tartley/colorama
-[PyInquirer]: https://github.com/CITGuru/PyInquirer
+[PyInquirer2]: https://github.com/zeusxs/PyInquirer2
