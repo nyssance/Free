@@ -8,7 +8,7 @@ from inquirer2 import Separator, prompt
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.5.0'
+VERSION = '0.5.1'
 
 
 @task(default=True)
@@ -96,8 +96,8 @@ def install(c, pypi_mirror=True):
         hint('install OpenJDK')
         c.run('brew install openjdk')
     if 'python' in roles:
-        hint('install Flake8, isort, Pylint, YAPF, twine')  # 上传到pypi需要twine
-        c.run(f'pip install flake8 isort pylint yapf twine{f" -i {PYPI_MIRROR}" if pypi_mirror else ""}')
+        hint('install Pipenv, twine, Flake8, isort, Pylint, YAPF')  # 上传到pypi需要twine
+        c.run(f'pip install pipenv twine flake8 isort pylint yapf{f" -i {PYPI_MIRROR}" if pypi_mirror else ""}')
     # 数据库
     if 'mysql' in roles:
         hint('install MySQL')
@@ -155,8 +155,8 @@ def uninstall(c):
         }]
     }])['role']
     if role == 'python':
-        hint('uninstall Pipenv, Python')
-        c.run('brew uninstall pipenv python@3.10')
+        hint('uninstall Python')
+        c.run('brew uninstall python@3.10')
         c.sudo('rm -rf /usr/local/lib/python3.10/')
 
 
@@ -182,8 +182,8 @@ def update(c, config=False, pypi_mirror=True):
     c.run(f'pip install -U pip setuptools wheel{mirror} | grep -v already')
     hint('update Fabric, colorama, PyInquirer2')
     c.run(f'pip install -U fabric colorama inquirer2{mirror} | grep -v already')
-    hint('update Flake8, isort, Pylint, YAPF, twine')
-    c.run(f'pip install -U flake8 isort pylint yapf twine{mirror} | grep -v already')
+    hint('update Pipenv, twine, Flake8, isort, Pylint, YAPF')
+    c.run(f'pip install -U pipenv twine flake8 isort pylint yapf{mirror} | grep -v already')
     cleanup(c)
     print(f'''
 更新完毕

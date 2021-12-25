@@ -15,10 +15,10 @@
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     ```
 
-2. Install [Python], [Pipenv].
+2. Install [Python].
 
     ```sh
-    brew install pipenv
+    brew install python@3.10
     brew link --overwrite --force python@3.10
     ```
 
@@ -45,11 +45,10 @@
   - [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)
   - [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting)
 - [Python]
-  - [Pipenv]
-- [Fabric]
-  - [Invoke](https://www.pyinvoke.org)
-- [Colorama]
-- [PyInquirer2]
+  - [Fabric]
+    - [Invoke](https://www.pyinvoke.org)
+  - [Colorama]
+  - [PyInquirer2]
 
 ## Tools
 
@@ -101,12 +100,13 @@
 
 ### Python
 
+- [Pipenv](https://github.com/pypa/pipenv)
+- [twine](https://github.com/pypa/twine)
 - Lint
   - [Flake8](https://gitlab.com/pycqa/flake8)
   - [isort](https://timothycrosley.github.io/isort/)
   - [Pylint](https://www.pylint.org)
   - [YAPF](https://github.com/google/yapf)
-- [twine](https://github.com/pypa/twine)
 
 ### Database
 
@@ -119,7 +119,6 @@ Free is released under the MIT license. [See LICENSE](https://github.com/nyssanc
 [HomeBrew]: https://brew.sh
 [Oh My Zsh]: https://ohmyz.sh
 [Python]: https://www.python.org
-[Pipenv]: https://github.com/pypa/pipenv
 [Fabric]: https://www.fabfile.org
 [Colorama]: https://github.com/tartley/colorama
 [PyInquirer2]: https://github.com/zeusxs/PyInquirer2
