@@ -10,7 +10,7 @@ from InquirerPy.separator import Separator
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.5.4'
+VERSION = '0.5.5'
 
 
 @task(default=True)
@@ -166,7 +166,7 @@ def uninstall(c):
 @task(help={'config': '更新 .fabric.yaml, .zshrc 配置文件'})
 def update(c, config=False, pypi_mirror=True):
     """更新"""
-    hint(f'update 自己 当前版本 {VERSION} 更新在下次执行时生效')
+    hint(f'update 自己 当前版本 {getcode(VERSION)} 更新在下次执行时生效')
     download(c, 'https://raw.githubusercontent.com/nyssance/Free/master/fabfile.py')
     if HTTP_PROXY:
         c.run(f'sed -i "" "s|HTTP_PROXY = \'\'|HTTP_PROXY = \'{HTTP_PROXY}\'|g" fabfile.py')
