@@ -4,11 +4,12 @@ from pathlib import Path
 from colorama import Back, Fore, init
 from fabric import task
 from fabric.util import get_local_user
-from InquirerPy import Separator, prompt
+from InquirerPy import prompt
+from InquirerPy.separator import Separator
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.5.2'
+VERSION = '0.5.3'
 
 
 @task(default=True)
