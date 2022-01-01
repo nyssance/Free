@@ -5,11 +5,12 @@ from colorama import Back, Fore, init
 from fabric import task
 from fabric.util import get_local_user
 from InquirerPy import prompt
+from InquirerPy.base.control import Choice
 from InquirerPy.separator import Separator
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.5.3'
+VERSION = '0.5.4'
 
 
 @task(default=True)
@@ -36,39 +37,43 @@ def install(c, pypi_mirror=True):
     """安装"""
     questions = [{
         'type': 'list',
-        'name': 'proxy',
         'message': gettext('HTTP Proxy'),
-        'choices': ['127.0.0.1:7890', {'name': 'None', 'value': ''}]
+        'choices': ['127.0.0.1:7890', Choice('', 'No proxy')],
+        'name': 'proxy'
     }, {
         'type': 'checkbox',
-        'name': 'roles',
         'message': gettext('install'),
-        # 'qmark': '🦄',
+        'instruction': '(Space for select)',
+        'transformer': lambda result: ', '.join(result) if len(result) > 0 else '',
+        'validate': lambda result: len(result) > 0,
+        'invalid_message': 'should be at least 1 selection',
         'choices': [
-            {'name': 'Android', 'value': 'android'},
-            {'name': 'iOS / macOS', 'value': 'ios'},
-            {'name': 'Java', 'value': 'java'},
-            {'name': 'Python', 'value': 'python'},
-            Separator('= Database ='),
-            {'name': 'MySQL', 'value': 'mysql'},
-            {'name': 'Redis', 'value': 'redis'},
-            Separator('= Front-end ='),
-            {'name': 'Angular', 'value': 'angular'},
-            {'name': 'gulp'},
-            Separator('= Apps ='),
-            {'name': 'GitHub Desktop, Google Chrome, Postman, Visual Studio Code', 'value': 'apps'},
-            Separator('= Fonts ='),
-            {'name': 'Fira Code', 'value': 'font-fira-code'},
-            Separator('= Others ='),
-            {'name': 'Docker', 'value': 'docker'},
-            {'name': 'fastlane'},
-            {'name': 'MySQL Workbench', 'value': 'mysqlworkbench'}
+            Separator(),
+            Choice('android', 'Android'),
+            Choice('ios', 'iOS / macOS'),
+            Choice('java', 'Java'),
+            Choice('python', 'Python'),
+            Separator('-- Database ---'),
+            Choice('mysql', 'MySQL'),
+            Choice('redis', 'Redis'),
+            Separator('-- Front-end --'),
+            Choice('angular', 'Angular'),
+            'gulp',
+            Separator('-- Apps -------'),
+            Choice('apps', 'GitHub Desktop, Google Chrome, Postman, Visual Studio Code'),
+            Separator('-- Fonts ------'),
+            Choice('font-fira-code', 'Fira Code'),
+            Separator('-- Others -----'),
+            Choice('docker', 'Docker'),
+            'fastlane',
+            Choice('mysqlworkbench', 'MySQL Workbench'),
+            Separator()
         ],
-        'validate': lambda roles: 'You must choose at least one topping.' if len(roles) == 0 else True
+        'name': 'roles'
     }]  # yapf: disable
-    answers = prompt(questions)
-    proxy = answers['proxy']
-    roles = answers['roles']
+    result = prompt(questions)
+    proxy = result['proxy']
+    roles = result['roles']
     if not roles:
         return
     if HTTP_PROXY != proxy:
@@ -143,20 +148,17 @@ def install(c, pypi_mirror=True):
 @task
 def uninstall(c):
     """卸载"""
-    if not c.config.sudo.password:
-        c.run('fab uninstall --prompt-for-sudo-password', echo=False)
-        return
-    role = prompt([{
+    # if not c.config.sudo.password:
+    #     c.run('fab uninstall --prompt-for-sudo-password', echo=False)
+    #     return
+    result = prompt([{
         'type': 'list',
-        'name': 'role',
         'message': gettext('uninstall'),
-        'choices': ['python', {
-            'name': gettext('cancel'),
-            'value': ''
-        }]
-    }])['role']
-    if role == 'python':
+        'choices': ['python', Choice('', gettext('cancel'))]
+    }])
+    if result[0] == 'python':
         hint('uninstall Python')
+
         c.run('brew uninstall python@3.10')
         c.sudo('rm -rf /usr/local/lib/python3.10/')
 
