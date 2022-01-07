@@ -78,9 +78,9 @@ def install(c, pypi_mirror=True):
         return
     if HTTP_PROXY != proxy:
         c.run(f'sed -i "" "s|HTTP_PROXY = \'{HTTP_PROXY}\'|HTTP_PROXY = \'{proxy}\'|g" fabfile.py')
-    if locale.getdefaultlocale()[0] in ['zh_CN']:
-        hint('configure RubyGems')
-        c.run('gem sources --add https://mirrors.aliyun.com/rubygems/ --remove https://rubygems.org/')
+    # if locale.getdefaultlocale()[0] in ['zh_CN']:
+    #     hint('configure RubyGems')
+    #     c.run('gem sources --add https://mirrors.aliyun.com/rubygems/ --remove https://rubygems.org/')
     if 'android' in roles:
         hint('install Android Studio, ktlint')
         c.run('brew install --cask android-studio')
@@ -105,8 +105,9 @@ def install(c, pypi_mirror=True):
     if 'angular' in roles or 'gulp' in roles:
         hint('install Node.js')
         c.run('brew install node')
-        hint('configure npm')
-        c.run('npm config set registry https://registry.npm.taobao.org')
+        if locale.getdefaultlocale()[0] in ['zh_CN']:
+            hint('configure npm')
+            c.run('npm config set registry https://registry.npm.taobao.org')
     if 'angular' in roles:
         hint('install Angular CLI')
         c.run('npm install -g @angular/cli')
@@ -162,7 +163,10 @@ def update(c, config=False, pypi_mirror=True):
     if config:
         hint('configure .fabric.yaml')
         download(c, 'https://raw.githubusercontent.com/nyssance/Free/master/fabric.yaml', '.fabric.yaml')
-        configure_zsh(c)
+        hint('configure .zshrc')
+        download(c, 'https://raw.githubusercontent.com/nyssance/Free/master/zshrc', '.zshrc')
+        c.run(f'echo "\n# {gettext("HTTP Proxy")}\nexport HTTPS_PROXY=http://{HTTP_PROXY}" >> .zshrc')
+        c.run('zsh -lc "source .zshrc"')
     hint('update Homebrew')
     c.run('brew update')
     c.run('brew upgrade')
@@ -189,13 +193,6 @@ def format(c):
     """格式化"""
     c.run('isort fabfile.py')
     c.run('yapf -irp fabfile.py')
-
-
-def configure_zsh(c, proxy=None):
-    hint('configure .zshrc')
-    download(c, 'https://raw.githubusercontent.com/nyssance/Free/master/zshrc', '.zshrc', proxy)
-    c.run(f'echo "\n# {gettext("HTTP Proxy")}\nexport HTTPS_PROXY=http://{HTTP_PROXY}" >> .zshrc')
-    c.run('zsh -lc "source .zshrc"')
 
 
 def download(c, url, name=None, proxy=HTTP_PROXY):

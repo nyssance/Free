@@ -22,20 +22,20 @@
     brew link --overwrite --force python@3.10
     ```
 
-3. 安装 [Fabric], [colorama], [InquirerPy]。
+3. 安装 [Fabric]，[colorama]，[InquirerPy]。
 
     ```sh
     pip install fabric colorama InquirerPy -i https://pypi.douban.com/simple/
     ```
 
-4.  安装 [Oh My Zsh], [zsh-autosuggestions], [zsh-syntax-highlighting]。
+4. 安装 [Oh My Zsh]，[zsh-autosuggestions]，[zsh-syntax-highlighting]。
 
     ```sh
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
     brew install zsh-autosuggestions zsh-syntax-highlighting
     ```
 
-5. 下载 `fabfile.py`, `.fabric.yaml`, `.zshrc` 并运行安装。
+5. 下载 `fabfile.py`，`.fabric.yaml`，`.zshrc` 并运行安装。
 
     ```sh
     cd ~
@@ -49,8 +49,8 @@
 - [Homebrew]
 - [Zsh](https://www.zsh.org)
   - [Oh My Zsh]
-  - [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)
-  - [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting)
+  - [zsh-autosuggestions]
+  - [zsh-syntax-highlighting]
 - [Python]
   - [Fabric]
     - [Invoke](https://www.pyinvoke.org)
@@ -89,7 +89,7 @@
 - [Android Studio](https://developer.android.com/studio/)
 - [ktlint](https://github.com/pinterest/ktlint)
 
-### iOS
+### iOS / macOS
 
 - [CocoaPods](https://cocoapods.org)
 - [SwiftFormat](https://github.com/nicklockwood/SwiftFormat)

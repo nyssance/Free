@@ -49,8 +49,8 @@
 - [Homebrew]
 - [Zsh](https://www.zsh.org)
   - [Oh My Zsh]
-  - [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)
-  - [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting)
+  - [zsh-autosuggestions]
+  - [zsh-syntax-highlighting]
 - [Python]
   - [Fabric]
     - [Invoke](https://www.pyinvoke.org)
@@ -89,7 +89,7 @@
 - [Android Studio](https://developer.android.com/studio/)
 - [ktlint](https://github.com/pinterest/ktlint)
 
-### iOS
+### iOS / macOS
 
 - [CocoaPods](https://cocoapods.org)
 - [SwiftFormat](https://github.com/nicklockwood/SwiftFormat)
