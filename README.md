@@ -28,11 +28,19 @@
     pip install fabric colorama InquirerPy
     ```
 
-4. Download `fabfile.py`, `.fabric.yaml` and run install.
+4. Install [Oh My Zsh], [zsh-autosuggestions], [zsh-syntax-highlighting].
+
+    ```sh
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    brew install zsh-autosuggestions zsh-syntax-highlighting
+    ```
+
+5. Download `fabfile.py`, `.fabric.yaml`, `.zshrc` and run install.
 
     ```sh
     cd ~
-    curl -fsSL -O https://raw.githubusercontent.com/nyssance/Free/master/fabfile.py -o .fabric.yaml https://raw.githubusercontent.com/nyssance/Free/master/fabric.yaml
+    curl -fsSL -O https://raw.githubusercontent.com/nyssance/Free/master/fabfile.py -o .fabric.yaml https://raw.githubusercontent.com/nyssance/Free/master/fabric.yaml -o .zshrc https://raw.githubusercontent.com/nyssance/Free/master/zshrc
+    source .zshrc
     fab install
     ```
 
@@ -117,6 +125,8 @@ Free is released under the MIT license. [See LICENSE](https://github.com/nyssanc
 
 [HomeBrew]: https://brew.sh
 [Oh My Zsh]: https://ohmyz.sh
+[zsh-autosuggestions]: https://github.com/zsh-users/zsh-autosuggestions
+[zsh-syntax-highlighting]: https://github.com/zsh-users/zsh-syntax-highlighting
 [Python]: https://www.python.org
 [Fabric]: https://www.fabfile.org
 [Colorama]: https://github.com/tartley/colorama

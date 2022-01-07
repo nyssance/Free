@@ -1,5 +1,3 @@
-  GNU nano 2.0.6                         File: /Users/NY/.zshrc                                              Modified  
-
 # Homebrew
 export PATH="/usr/local/sbin:$PATH"
 export HOMEBREW_NO_AUTO_UPDATE=1

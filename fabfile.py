@@ -10,7 +10,7 @@ from InquirerPy.separator import Separator
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.5.7'
+VERSION = '0.5.8'
 
 
 @task(default=True)
@@ -19,7 +19,7 @@ def hello(c, path='参数值'):
     init(autoreset=True)
     print(Fore.LIGHTMAGENTA_EX + f'Hello ~ {get_local_user()}')
     print(Fore.LIGHTGREEN_EX + f'{gettext("HTTP Proxy")}: http://{HTTP_PROXY}')
-    print(Fore.LIGHTBLUE_EX + f'Version: {VERSION}')
+    print(Fore.LIGHTYELLOW_EX + f'Version: {VERSION}')
     print('fab task -h 可以查看 task')
     c.run('fab -l', echo=False)
 
@@ -78,10 +78,6 @@ def install(c, pypi_mirror=True):
         return
     if HTTP_PROXY != proxy:
         c.run(f'sed -i "" "s|HTTP_PROXY = \'{HTTP_PROXY}\'|HTTP_PROXY = \'{proxy}\'|g" fabfile.py')
-    hint('install Oh My Zsh, zsh-autosuggestions, zsh-syntax-highlighting')
-    c.run('sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"', warn=True)
-    c.run('brew install zsh-autosuggestions zsh-syntax-highlighting')
-    configure_zsh(c, proxy)
     if locale.getdefaultlocale()[0] in ['zh_CN']:
         hint('configure RubyGems')
         c.run('gem sources --add https://mirrors.aliyun.com/rubygems/ --remove https://rubygems.org/')
@@ -152,7 +148,6 @@ def uninstall(c):
     }])
     if result[0] == 'python':
         hint('uninstall Python')
-
         c.run('brew uninstall python@3.10')
         c.sudo('rm -rf /usr/local/lib/python3.10/')
 
