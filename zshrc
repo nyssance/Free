@@ -3,10 +3,9 @@ export PATH="/usr/local/sbin:$PATH"
 export HOMEBREW_NO_AUTO_UPDATE=1
 
 # Oh My Zsh
-export ZSH=$HOME/.oh-my-zsh
-ZSH_THEME="steeef"
+export ZSH="$HOME/.oh-my-zsh"
+ZSH_THEME=steeef
 plugins=(autoupdate fabric git macos z zsh-autosuggestions zsh-syntax-highlighting)
-source $ZSH/oh-my-zsh.sh
 
 # Python
 export PATH="/usr/local/opt/python@3.10/Frameworks/Python.framework/Versions/3.10/bin:$PATH"

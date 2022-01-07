@@ -10,7 +10,7 @@ from InquirerPy.separator import Separator
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.5.5'
+VERSION = '0.5.6'
 
 
 @task(default=True)
@@ -81,12 +81,8 @@ def install(c, pypi_mirror=True):
     hint('install Oh My Zsh, autoupdate-zsh-plugin, zsh-autosuggestions, zsh-syntax-highlighting')
     c.run('sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"', warn=True)
     c.run('git clone https://github.com/TamCore/autoupdate-oh-my-zsh-plugins $ZSH_CUSTOM/plugins/autoupdate', warn=True)
-    c.run(
-        'git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions',
-        warn=True)
-    c.run(
-        'git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting',
-        warn=True)
+    c.run('git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions', warn=True)
+    c.run('git clone https://github.com/zsh-users/zsh-syntax-highlighting $ZSH_CUSTOM/plugins/zsh-syntax-highlighting', warn=True)
     configure_zsh(c, proxy)
     if locale.getdefaultlocale()[0] in ['zh_CN']:
         hint('configure RubyGems')
