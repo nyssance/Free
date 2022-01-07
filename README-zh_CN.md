@@ -39,8 +39,8 @@
 ## Vendor
 
 - [Homebrew]
-- [Oh My Zsh]
-  - [autoupdate-zsh-plugin](https://github.com/TamCore/autoupdate-oh-my-zsh-plugins)
+- [Zsh](https://www.zsh.org)
+  - [Oh My Zsh]
   - [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)
   - [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting)
 - [Python]
