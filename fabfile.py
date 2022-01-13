@@ -10,7 +10,7 @@ from InquirerPy.separator import Separator
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.5.8'
+VERSION = '0.5.9'
 
 
 @task(default=True)
@@ -210,17 +210,19 @@ def gettext(message: str) -> str:
 
 def hint(value: str):
     operation, message = value.split(' ', 1)
-    color = Back.LIGHTWHITE_EX
-    if operation == 'cleanup':
-        color = Back.LIGHTYELLOW_EX
-    elif operation == 'configure':
-        color = Back.LIGHTCYAN_EX
-    elif operation == 'install':
-        color = Back.LIGHTGREEN_EX
-    elif operation == 'uninstall':
-        color = Back.LIGHTRED_EX
-    elif operation == 'update':
-        color = Back.LIGHTBLUE_EX
+    match operation:
+        case 'cleanup':
+            color = Back.LIGHTYELLOW_EX
+        case 'configure':
+            color = Back.LIGHTCYAN_EX
+        case 'install':
+            color = Back.LIGHTGREEN_EX
+        case 'uninstall':
+            color = Back.LIGHTRED_EX
+        case 'update':
+            color = Back.LIGHTBLUE_EX
+        case _:
+            color = Back.LIGHTWHITE_EX
     print(color + gettext(operation) + Back.RESET, message)
 
 
