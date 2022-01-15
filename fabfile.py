@@ -10,11 +10,11 @@ from InquirerPy.separator import Separator
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.5.9'
+VERSION = '0.6.0'
 
 
 @task(default=True)
-def hello(c, path='参数值'):
+def hello(c):
     """Hello"""
     init(autoreset=True)
     print(Fore.LIGHTMAGENTA_EX + f'Hello ~ {get_local_user()}')
@@ -92,8 +92,8 @@ def install(c, pypi_mirror=True):
         hint('install OpenJDK')
         c.run('brew install openjdk')
     if 'python' in roles:
-        hint('install Pipenv, twine, Flake8, isort, Pylint, YAPF')  # 上传到pypi需要twine
-        c.run(f'pip install pipenv twine flake8 isort pylint yapf{f" -i {PYPI_MIRROR}" if pypi_mirror else ""}')
+        hint('install Pipenv, twine, isort, Pylint, YAPF')  # 上传到pypi需要twine
+        c.run(f'pip install pipenv twine isort pylint yapf{f" -i {PYPI_MIRROR}" if pypi_mirror else ""}')
     # 数据库
     if 'mysql' in roles:
         hint('install MySQL')
@@ -178,8 +178,8 @@ def update(c, config=False, pypi_mirror=True):
     c.run(f'pip install -U pip setuptools wheel{mirror} | grep -v already')
     hint('update Fabric, colorama, InquirerPy')
     c.run(f'pip install -U fabric colorama InquirerPy{mirror} | grep -v already')
-    hint('update Pipenv, twine, Flake8, isort, Pylint, YAPF')
-    c.run(f'pip install -U pipenv twine flake8 isort pylint yapf{mirror} | grep -v already')
+    hint('update Pipenv, twine, isort, Pylint, YAPF')
+    c.run(f'pip install -U pipenv twine isort pylint yapf{mirror} | grep -v already')
     cleanup(c)
     print(f'''
 更新完毕
@@ -189,15 +189,17 @@ def update(c, config=False, pypi_mirror=True):
 
 
 @task
-def format(c):
-    """格式化"""
-    c.run('isort fabfile.py')
-    c.run('yapf -irp fabfile.py')
-
-
 def download(c, url, name=None, proxy=HTTP_PROXY):
+    """下载"""
     command = f'{url} > {name}' if name else f'-O {url}'
     c.run(f'curl -fsSL{f" -x {proxy}" if proxy else ""} {command}')
+
+
+@task
+def reformat(c):
+    """格式化"""
+    c.run('isort fabfile.py')
+    # c.run('yapf -irp fabfile.py')
 
 
 def getcode(message: str) -> str:

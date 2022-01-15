@@ -110,7 +110,6 @@
 - [Pipenv](https://github.com/pypa/pipenv)
 - [twine](https://github.com/pypa/twine)
 - Lint
-  - [Flake8](https://gitlab.com/pycqa/flake8)
   - [isort](https://timothycrosley.github.io/isort/)
   - [Pylint](https://www.pylint.org)
   - [YAPF](https://github.com/google/yapf)
