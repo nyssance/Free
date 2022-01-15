@@ -2,10 +2,9 @@
 profile = "django"
 include_trailing_comma = false
 line_length = 120
-#multi_line_output = 0
 
 [tool.pylint.format]
-good-names-rgxs="^[_a-z][_a-z0-9]?$"
+good-names-rgxs = "^[_a-z][_a-z0-9]?$"
 max-line-length = 120
 
 [tool.pylint.messages_control]
