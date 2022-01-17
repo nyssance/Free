@@ -110,7 +110,8 @@
 - [Pipenv](https://github.com/pypa/pipenv)
 - [twine](https://github.com/pypa/twine)
 - Lint
-  - [isort](https://timothycrosley.github.io/isort/)
+  - [Black](https://github.com/psf/black)
+  - [isort](https://pycqa.github.io/isort/)
   - [Pylint](https://www.pylint.org)
   - [YAPF](https://github.com/google/yapf)
 
