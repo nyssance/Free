@@ -1,11 +1,8 @@
 {
-    "editor.fontFamily": "FiraCode-Retina",
-    "editor.fontLigatures": "'ss03', 'ss05', 'ss07'",
+    "editor.fontFamily": "Cascadia Code",
+    "editor.fontLigatures": true,
     "editor.fontSize": 14,
     "editor.linkedEditing": true,
-    "editor.semanticTokenColorCustomizations": {
-        "enabled": true
-    },
     "files.autoSave": "afterDelay",
     "files.eol": "\n",
     "files.insertFinalNewline": true,
@@ -36,12 +33,6 @@
         "*.py-tpl": "python"
     },
     "python.formatting.provider": "yapf",
-    "python.linting.flake8Enabled": true,
-    "explorer.confirmDragAndDrop": false,
-    "workbench.editorAssociations": [
-        {
-            "viewType": "jupyter.notebook.ipynb",
-            "filenamePattern": "*.ipynb"
-        }
-    ]
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true
 }

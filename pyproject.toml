@@ -1,5 +1,5 @@
 [tool.isort]
-profile = "django"
+profile = "black"
 include_trailing_comma = false
 line_length = 120
 
