@@ -10,7 +10,7 @@ from InquirerPy.separator import Separator
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.6.0'
+VERSION = '0.6.1'
 
 
 @task(default=True)
@@ -62,6 +62,7 @@ def install(c, pypi_mirror=True):
             Separator('-- Apps -------'),
             Choice('apps', 'GitHub Desktop, Google Chrome, Postman, Visual Studio Code'),
             Separator('-- Fonts ------'),
+            Choice('font-cascadia-code', 'Cascadia Code'),
             Choice('font-fira-code', 'Fira Code'),
             Separator('-- Others -----'),
             Choice('docker', 'Docker'),
@@ -119,6 +120,10 @@ def install(c, pypi_mirror=True):
         hint('install GitHub Desktop, Google Chrome, Postman, Visual Studio Code')
         c.run('brew install --cask github google-chrome postman visual-studio-code')
     # 字体
+    if 'font-cascadia-code' in roles:
+        hint('install Cascadia Code')
+        c.run('brew tap homebrew/cask-fonts')
+        c.run('brew install --cask font-cascadia-code')
     if 'font-fira-code' in roles:
         hint('install Fira Code')
         c.run('brew tap homebrew/cask-fonts')
