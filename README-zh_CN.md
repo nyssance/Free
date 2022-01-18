@@ -22,10 +22,10 @@
     brew link --overwrite --force python@3.10
     ```
 
-3. 安装 [Fabric]，[InquirerPy]，[tqdm]，[twine]。
+3. 安装 [Fabric]，[InquirerPy]，[twine]。
 
     ```sh
-    pip install fabric InquirerPy tqdm twine -i https://pypi.doubanio.com/simple/
+    pip install fabric InquirerPy twine -i https://pypi.doubanio.com/simple/
     ```
 
 4. 安装 [Oh My Zsh]，[zsh-autosuggestions]，[zsh-syntax-highlighting]。
@@ -55,7 +55,6 @@
   - [Fabric]
     - [Invoke](https://www.pyinvoke.org)
   - [InquirerPy]
-  - [tqdm]
   - [twine]
 
 ## 安装的工具
@@ -130,5 +129,4 @@ Free is released under the MIT license. [See LICENSE](https://github.com/nyssanc
 [Python]: https://www.python.org
 [Fabric]: https://www.fabfile.org
 [InquirerPy]: https://github.com/kazhala/InquirerPy
-[tqdm]: https://github.com/tqdm/tqdm
 [twine]: https://github.com/pypa/twine

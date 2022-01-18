@@ -181,8 +181,8 @@ def update(c, config=False, pypi_mirror=True):
     mirror = f' -i {PYPI_MIRROR}' if pypi_mirror else ''
     hint('update pip, setuptools, wheel')
     c.run(f'pip install -U pip setuptools wheel{mirror} | grep -v already')
-    hint('update Fabric, InquirerPy, tdqm, twine')
-    c.run(f'pip install -U fabric InquirerPy tdqm twine{mirror} | grep -v already')
+    hint('update Fabric, InquirerPy, twine')
+    c.run(f'pip install -U fabric InquirerPy twine{mirror} | grep -v already')
     hint('update Pipenv, Black, isort, Pylint, YAPF')
     c.run(f'pip install -U pipenv black isort pylint yapf{mirror} | grep -v already')
     cleanup(c)
