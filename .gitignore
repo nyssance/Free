@@ -1,4 +1,4 @@
-# [Python](https://github.com/github/gitignore/blob/master/Python.gitignore)
+# [Python](https://github.com/github/gitignore/blob/main/Python.gitignore)
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -152,7 +152,7 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-# [macOS](https://github.com/github/gitignore/blob/master/Global/macOS.gitignore)
+# [macOS](https://github.com/github/gitignore/blob/main/Global/macOS.gitignore)
 # General
 .DS_Store
 .AppleDouble

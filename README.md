@@ -4,7 +4,7 @@
 [![python](https://img.shields.io/badge/python-3.10-blue)](https://www.python.org)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://opensource.org/licenses/MIT)
 
-井井兮其有理也 [中文](https://github.com/nyssance/Free/blob/master/README-zh_CN.md)
+井井兮其有理也 [中文](https://github.com/nyssance/Free/blob/main/README-zh_CN.md)
 
 ---
 
@@ -40,7 +40,7 @@
 
     ```sh
     cd ~
-    curl -fsSL -O https://raw.githubusercontent.com/nyssance/Free/master/fabfile.py -o .fabric.yaml https://raw.githubusercontent.com/nyssance/Free/master/fabric.yaml -o .zshrc https://raw.githubusercontent.com/nyssance/Free/master/zshrc
+    curl -fsSL -O https://raw.githubusercontent.com/nyssance/Free/main/fabfile.py -o .fabric.yaml https://raw.githubusercontent.com/nyssance/Free/main/fabric.yaml -o .zshrc https://raw.githubusercontent.com/nyssance/Free/main/zshrc
     source .zshrc
     fab install
     ```
@@ -121,7 +121,7 @@
 - [MySQL Workbench](https://www.mysql.com/products/workbench/)
 - [Redis](https://redis.io)
 
-Free is released under the MIT license. [See LICENSE](https://github.com/nyssance/Free/blob/master/LICENSE) for details.
+Free is released under the MIT license. [See LICENSE](https://github.com/nyssance/Free/blob/main/LICENSE) for details.
 
 [HomeBrew]: https://brew.sh
 [Oh My Zsh]: https://ohmyz.sh

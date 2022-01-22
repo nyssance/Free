@@ -1,4 +1,4 @@
-# [Swift](https://github.com/github/gitignore/blob/master/Swift.gitignore)
+# [Swift](https://github.com/github/gitignore/blob/main/Swift.gitignore)
 # Xcode
 #
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
@@ -75,7 +75,7 @@ fastlane/test_output
 
 iOSInjectionProject/
 
-# [macOS](https://github.com/github/gitignore/blob/master/Global/macOS.gitignore)
+# [macOS](https://github.com/github/gitignore/blob/main/Global/macOS.gitignore)
 # General
 .DS_Store
 .AppleDouble

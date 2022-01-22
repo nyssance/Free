@@ -1,4 +1,4 @@
-# [Android](https://github.com/github/gitignore/blob/master/Android.gitignore)
+# [Android](https://github.com/github/gitignore/blob/main/Android.gitignore)
 # Gradle files
 .gradle/
 build/
@@ -30,7 +30,7 @@ google-services.json
 # Android Profiling
 *.hprof
 
-# [macOS](https://github.com/github/gitignore/blob/master/Global/macOS.gitignore)
+# [macOS](https://github.com/github/gitignore/blob/main/Global/macOS.gitignore)
 # General
 .DS_Store
 .AppleDouble

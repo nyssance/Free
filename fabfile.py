@@ -162,14 +162,14 @@ def uninstall(c):
 def update(c, config=False, pypi_mirror=True):
     """更新"""
     hint(f'update 自己 当前版本 {getcode(VERSION)} 更新在下次执行时生效')
-    download(c, 'https://raw.githubusercontent.com/nyssance/Free/master/fabfile.py')
+    download(c, 'https://raw.githubusercontent.com/nyssance/Free/main/fabfile.py')
     if HTTP_PROXY:
         c.run(f'sed -i "" "s|HTTP_PROXY = \'\'|HTTP_PROXY = \'{HTTP_PROXY}\'|g" fabfile.py')
     if config:
         hint('configure .fabric.yaml')
-        download(c, 'https://raw.githubusercontent.com/nyssance/Free/master/fabric.yaml', '.fabric.yaml')
+        download(c, 'https://raw.githubusercontent.com/nyssance/Free/main/fabric.yaml', '.fabric.yaml')
         hint('configure .zshrc')
-        download(c, 'https://raw.githubusercontent.com/nyssance/Free/master/zshrc', '.zshrc')
+        download(c, 'https://raw.githubusercontent.com/nyssance/Free/main/zshrc', '.zshrc')
         c.run(f'echo "\n# {gettext("HTTP Proxy")}\nexport HTTPS_PROXY=http://{HTTP_PROXY}" >> .zshrc')
         c.run('zsh -lc "source .zshrc"')
     hint('update Homebrew')
