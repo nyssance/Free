@@ -1,6 +1,7 @@
 # Free
 
 [![macOS](https://img.shields.io/badge/macOS-10.15-blue)](https://www.apple.com/macos/catalina/)
+[![python](https://img.shields.io/badge/python-3.10-blue)](https://www.python.org)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://opensource.org/licenses/MIT)
 
 井井兮其有理也 [中文](https://github.com/nyssance/Free/blob/master/README-zh_CN.md)
