@@ -10,7 +10,7 @@ from InquirerPy.separator import Separator
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.6.2'
+VERSION = '0.6.3'
 
 
 @task(default=True)
@@ -108,7 +108,7 @@ def install(c, pypi_mirror=True):
         c.run('brew install node')
         if locale.getdefaultlocale()[0] in ['zh_CN']:
             hint('configure npm')
-            c.run('npm config set registry https://registry.npm.taobao.org')
+            c.run('npm config set registry https://registry.npmmirror.com')
     if 'angular' in roles:
         hint('install Angular CLI')
         c.run('npm install -g @angular/cli')
@@ -150,12 +150,16 @@ def uninstall(c):
     result = prompt([{
         'type': 'list',
         'message': gettext('uninstall'),
-        'choices': ['python', Choice('', gettext('cancel'))]
+        'choices': ['node', 'python', Choice('', gettext('cancel'))]
     }])
     if result[0] == 'python':
         hint('uninstall Python')
         c.run('brew uninstall python@3.10')
         c.sudo('rm -rf /usr/local/lib/python3.10/')
+    if result[0] == 'node':
+        hint('uninstall Node.js')
+        c.run('brew uninstall node')
+        c.sudo('rm -rf /usr/local/lib/node_modules/')
 
 
 @task(help={'config': '更新 .fabric.yaml, .zshrc 配置文件'})
