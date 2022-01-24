@@ -71,7 +71,7 @@
 
 ### 调试
 
-- [Postman](https://www.getpostman.com)
+- [Postman](https://www.postman.com)
 
 ### 部署
 
@@ -83,11 +83,12 @@
 
 ### 字体
 
+- [Cascadia Code](https://github.com/microsoft/cascadia-code)
 - [Fira Code](https://github.com/tonsky/FiraCode)
 
 ### Android
 
-- [Android Studio](https://developer.android.com/studio/)
+- [Android Studio](https://developer.android.com/studio)
 - [ktlint](https://github.com/pinterest/ktlint)
 
 ### iOS / macOS
@@ -98,8 +99,8 @@
 
 ### 前端
 
-- [Node.js](https://nodejs.org)
-- [Angular CLI](https://cli.angular.io)
+- [Node.js](https://nodejs.org/zh-cn/)
+- [Angular CLI](https://angular.cn/cli)
 - [gulp](https://gulpjs.com)
 
 ### Java
@@ -123,7 +124,7 @@
 
 Free is released under the MIT license. [See LICENSE](https://github.com/nyssance/Free/blob/main/LICENSE) for details.
 
-[HomeBrew]: https://brew.sh
+[HomeBrew]: https://brew.sh/index_zh-cn
 [Oh My Zsh]: https://ohmyz.sh
 [zsh-autosuggestions]: https://github.com/zsh-users/zsh-autosuggestions
 [zsh-syntax-highlighting]: https://github.com/zsh-users/zsh-syntax-highlighting

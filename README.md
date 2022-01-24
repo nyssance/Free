@@ -71,7 +71,7 @@
 
 ### Debug
 
-- [Postman](https://www.getpostman.com)
+- [Postman](https://www.postman.com)
 
 ### Deploy
 
@@ -83,11 +83,12 @@
 
 ### Font
 
+- [Cascadia Code](https://github.com/microsoft/cascadia-code)
 - [Fira Code](https://github.com/tonsky/FiraCode)
 
 ### Android
 
-- [Android Studio](https://developer.android.com/studio/)
+- [Android Studio](https://developer.android.com/studio)
 - [ktlint](https://github.com/pinterest/ktlint)
 
 ### iOS / macOS
@@ -98,8 +99,8 @@
 
 ### Front-end
 
-- [Node.js](https://nodejs.org)
-- [Angular CLI](https://cli.angular.io)
+- [Node.js](https://nodejs.org/en/)
+- [Angular CLI](https://angular.io/cli)
 - [gulp](https://gulpjs.com)
 
 ### Java

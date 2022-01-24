@@ -79,7 +79,7 @@ def install(c, pypi_mirror=True):
         return
     if HTTP_PROXY != proxy:
         c.run(f'sed -i "" "s|HTTP_PROXY = \'{HTTP_PROXY}\'|HTTP_PROXY = \'{proxy}\'|g" fabfile.py')
-    # if locale.getdefaultlocale()[0] in ['zh_CN']:
+    # if 'zh_CN' in locale.getdefaultlocale():
     #     hint('configure RubyGems')
     #     c.run('gem sources --add https://mirrors.aliyun.com/rubygems/ --remove https://rubygems.org/')
     if 'android' in roles:
@@ -106,7 +106,7 @@ def install(c, pypi_mirror=True):
     if 'angular' in roles or 'gulp' in roles:
         hint('install Node.js')
         c.run('brew install node')
-        if locale.getdefaultlocale()[0] in ['zh_CN']:
+        if 'zh_CN' in locale.getdefaultlocale():
             hint('configure npm')
             c.run('npm config set registry https://registry.npmmirror.com')
     if 'angular' in roles:
@@ -217,7 +217,7 @@ def getcode(message: str) -> str:
 
 
 def gettext(message: str) -> str:
-    return LANG[message] if locale.getdefaultlocale()[0] in ['zh_CN'] else message.capitalize()
+    return LANG[message] if 'zh_CN' in locale.getdefaultlocale() else message.capitalize()
 
 
 def hint(value: str):
