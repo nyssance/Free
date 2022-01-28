@@ -10,7 +10,7 @@ from InquirerPy.separator import Separator
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.6.3'
+VERSION = '0.6.5'
 
 
 @task(default=True)
@@ -66,6 +66,7 @@ def install(c, pypi_mirror=True):
             Choice('font-fira-code', 'Fira Code'),
             Separator('-- Others -----'),
             Choice('docker', 'Docker'),
+            'docsify'
             'fastlane',
             Choice('mysqlworkbench', 'MySQL Workbench'),
             Separator()
@@ -115,6 +116,9 @@ def install(c, pypi_mirror=True):
     if 'gulp' in roles:
         hint('install gulp-cli')
         c.run('npm install -g gulp-cli')
+    if 'docsify' in roles:
+        hint('install docsify-cli')
+        c.run('npm install -g docsify-cli')
     # 应用
     if 'apps' in roles:
         hint('install GitHub Desktop, Google Chrome, Postman, Visual Studio Code')
