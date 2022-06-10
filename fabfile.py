@@ -10,7 +10,7 @@ from InquirerPy.separator import Separator
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.6.5'
+VERSION = '0.6.6'
 
 
 @task(default=True)
@@ -166,7 +166,7 @@ def uninstall(c):
         c.sudo('rm -rf /usr/local/lib/node_modules/')
 
 
-@task(help={'config': '更新 .fabric.yaml, .zshrc 配置文件'})
+@task(help={'config': '更新 .fabric, .yaml, .zshrc 配置文件'})
 def update(c, config=False, pypi_mirror=True):
     """更新"""
     hint(f'update 自己 当前版本 {getcode(VERSION)} 更新在下次执行时生效')
@@ -185,7 +185,7 @@ def update(c, config=False, pypi_mirror=True):
     c.run('brew upgrade')
     if Path('/usr/local/bin/node').exists():
         hint('update npm')
-        c.run('npm update -g')
+        c.run('npm update --location=global')
     mirror = f' -i {PYPI_MIRROR}' if pypi_mirror else ''
     hint('update pip, setuptools, wheel')
     c.run(f'pip install -U pip setuptools wheel{mirror} | grep -v already')
