@@ -10,7 +10,7 @@ from InquirerPy.separator import Separator
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.6.6'
+VERSION = '0.7.0'
 
 
 @task(default=True)
@@ -66,7 +66,7 @@ def install(c, pypi_mirror=True):
             Choice('font-fira-code', 'Fira Code'),
             Separator('-- Others -----'),
             Choice('docker', 'Docker'),
-            'docsify'
+            'docsify',
             'fastlane',
             Choice('mysqlworkbench', 'MySQL Workbench'),
             Separator()
@@ -84,8 +84,7 @@ def install(c, pypi_mirror=True):
     #     hint('configure RubyGems')
     #     c.run('gem sources --add https://mirrors.aliyun.com/rubygems/ --remove https://rubygems.org/')
     if 'android' in roles:
-        hint('install Android Studio, ktlint')
-        c.run('brew install --cask android-studio')
+        hint('install ktlint')
         c.run('brew install ktlint')
     if 'ios' in roles:
         hint('install CocoaPods, SwiftFormat, SwiftLint')

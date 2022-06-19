@@ -12,5 +12,8 @@ export PATH="/usr/local/opt/python@3.10/Frameworks/Python.framework/Versions/3.1
 
 # Zsh
 source $ZSH/oh-my-zsh.sh
-source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# HTTP代理
+export HTTPS_PROXY=http://127.0.0.1:7890
