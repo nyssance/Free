@@ -1,6 +1,6 @@
 # Free
 
-[![macOS](https://img.shields.io/badge/macOS-10.15-blue)](https://www.apple.com/macos/catalina/)
+[![macOS](https://img.shields.io/badge/macOS-12-blue)](https://www.apple.com/macos/monterey/)
 [![python](https://img.shields.io/badge/python-3.10-blue)](https://www.python.org)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://opensource.org/licenses/MIT)
 
@@ -23,10 +23,10 @@
     brew link --overwrite --force python@3.10
     ```
 
-3. Install [Fabric], [InquirerPy], [twine].
+3. Install [Fabric], [Colorama], [InquirerPy], [twine].
 
     ```sh
-    pip install fabric InquirerPy twine
+    pip install fabric colorama InquirerPy twine
     ```
 
 4. Install [Oh My Zsh], [zsh-autosuggestions], [zsh-syntax-highlighting].
@@ -137,5 +137,6 @@ Free is released under the MIT license. [See LICENSE](https://github.com/nyssanc
 [zsh-syntax-highlighting]: https://github.com/zsh-users/zsh-syntax-highlighting
 [Python]: https://www.python.org
 [Fabric]: https://www.fabfile.org
+[Colorama]: https://github.com/tartley/colorama
 [InquirerPy]: https://github.com/kazhala/InquirerPy
 [twine]: https://github.com/pypa/twine
