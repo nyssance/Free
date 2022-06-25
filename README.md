@@ -23,10 +23,10 @@
     brew link --overwrite --force python@3.10
     ```
 
-3. Install [Fabric], [Colorama], [InquirerPy], [twine].
+3. Install [Fabric], [Colorama], [InquirerPy].
 
     ```sh
-    pip install fabric colorama InquirerPy twine
+    pip install fabric colorama InquirerPy
     ```
 
 4. Install [Oh My Zsh], [zsh-autosuggestions], [zsh-syntax-highlighting].
@@ -59,7 +59,6 @@
   - [Fabric]
     - [Invoke](https://www.pyinvoke.org)
   - [InquirerPy]
-  - [twine]
 
 ## Tools
 
@@ -117,6 +116,9 @@
 ### Python
 
 - [Pipenv](https://github.com/pypa/pipenv)
+- PyPI
+  - [build]: https://github.com/pypa/build
+  - [twine]: https://github.com/pypa/twine
 - Lint
   - [Black](https://github.com/psf/black)
   - [isort](https://pycqa.github.io/isort/)
@@ -139,4 +141,3 @@ Free is released under the MIT license. [See LICENSE](https://github.com/nyssanc
 [Fabric]: https://www.fabfile.org
 [Colorama]: https://github.com/tartley/colorama
 [InquirerPy]: https://github.com/kazhala/InquirerPy
-[twine]: https://github.com/pypa/twine

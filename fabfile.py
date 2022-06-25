@@ -10,7 +10,7 @@ from InquirerPy.separator import Separator
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.7.1'
+VERSION = '0.7.2'
 
 
 @task(default=True)
@@ -93,8 +93,8 @@ def install(c, pypi_mirror=True):
         hint('install OpenJDK')
         c.run('brew install openjdk')
     if 'python' in roles:
-        hint('install Pipenv, Black, isort, Pylint, YAPF')
-        c.run(f'pip install pipenv black isort pylint yapf{f" -i {PYPI_MIRROR}" if pypi_mirror else ""}')
+        hint('install Pipenv, build, twine, Black, isort, Pylint, YAPF')
+        c.run(f'pip install pipenv build twine black isort pylint yapf{f" -i {PYPI_MIRROR}" if pypi_mirror else ""}')
     # 数据库
     if 'mysql' in roles:
         hint('install MySQL')
@@ -188,10 +188,10 @@ def update(c, config=False, pypi_mirror=True):
     mirror = f' -i {PYPI_MIRROR}' if pypi_mirror else ''
     hint('update pip, setuptools, wheel')
     c.run(f'pip install -U pip setuptools wheel{mirror} | grep -v already')
-    hint('update Fabric, Colorama, InquirerPy, twine')
-    c.run(f'pip install -U fabric colorama InquirerPy twine{mirror} | grep -v already')
-    hint('update Pipenv, Black, isort, Pylint, YAPF')
-    c.run(f'pip install -U pipenv black isort pylint yapf{mirror} | grep -v already')
+    hint('update Fabric, Colorama, InquirerPy')
+    c.run(f'pip install -U fabric colorama InquirerPy{mirror} | grep -v already')
+    hint('update Pipenv, build, twine, Black, isort, Pylint, YAPF')
+    c.run(f'pip install -U pipenv build twine black isort pylint yapf{mirror} | grep -v already')
     cleanup(c)
     print(f'''
 更新完毕
