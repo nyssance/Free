@@ -10,7 +10,7 @@ from InquirerPy.separator import Separator
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.7.2'
+VERSION = '0.7.3'
 
 
 @task(default=True)
@@ -60,7 +60,7 @@ def install(c, pypi_mirror=True):
             Choice('angular', 'Angular'),
             'gulp',
             Separator('-- Apps -------'),
-            Choice('apps', 'GitHub Desktop, Google Chrome, Postman, Visual Studio Code'),
+            Choice('apps', 'GitHub Desktop, Google Chrome, Postman'),
             Separator('-- Fonts ------'),
             Choice('font-cascadia-code', 'Cascadia Code'),
             Choice('font-fira-code', 'Fira Code'),
@@ -120,8 +120,8 @@ def install(c, pypi_mirror=True):
         c.run('npm install -g docsify-cli')
     # 应用
     if 'apps' in roles:
-        hint('install GitHub Desktop, Google Chrome, Postman, Visual Studio Code')
-        c.run('brew install --cask github google-chrome postman visual-studio-code')
+        hint('install GitHub Desktop, Google Chrome, Postman')
+        c.run('brew install --cask github google-chrome postman')
     # 字体
     if 'font-cascadia-code' in roles:
         hint('install Cascadia Code')
@@ -158,11 +158,11 @@ def uninstall(c):
     if result[0] == 'python':
         hint('uninstall Python')
         c.run('brew uninstall python@3.10')
-        c.sudo('rm -rf /usr/local/lib/python3.10/')
+        c.sudo('rm -rf /opt/homebrew/lib/python3.10/')
     if result[0] == 'node':
         hint('uninstall Node.js')
         c.run('brew uninstall node')
-        c.sudo('rm -rf /usr/local/lib/node_modules/')
+        c.sudo('rm -rf /opt/homebrew/lib/node_modules/')
 
 
 @task(help={'config': '更新 .fabric, .yaml, .zshrc 配置文件'})
@@ -182,7 +182,7 @@ def update(c, config=False, pypi_mirror=True):
     hint('update Homebrew')
     c.run('brew update')
     c.run('brew upgrade')
-    if Path('/usr/local/bin/node').exists():
+    if Path('/opt/homebrew/bin/node').exists():
         hint('update npm')
         c.run('npm update --location=global')
     mirror = f' -i {PYPI_MIRROR}' if pypi_mirror else ''
