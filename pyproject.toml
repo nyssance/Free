@@ -1,7 +1,7 @@
 [tool.black]
 line-length = 128
 skip-string-normalization = true
-target-version = ['py310']
+target-version = ['py311']
 
 [tool.isort]
 profile = "black"
