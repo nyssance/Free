@@ -1,7 +1,7 @@
 # Free
 
 [![macOS](https://img.shields.io/badge/macOS-12-blue)](https://www.apple.com/macos/monterey/)
-[![python](https://img.shields.io/badge/python-3.10-blue)](https://www.python.org)
+[![python](https://img.shields.io/badge/python-3.11-blue)](https://www.python.org)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://opensource.org/licenses/MIT)
 
 井井兮其有理也 [中文](https://github.com/nyssance/Free/blob/main/README-zh_CN.md)
@@ -19,14 +19,13 @@
 2. Install [Python].
 
     ```sh
-    brew install python@3.10
-    brew link --overwrite --force python@3.10
+    brew install python@3.11
     ```
 
 3. Install [Fabric], [Colorama], [InquirerPy].
 
     ```sh
-    pip3.10 install fabric colorama InquirerPy
+    pip3.11 install fabric colorama InquirerPy
     ```
 
 4. Install [Oh My Zsh], [zsh-autosuggestions], [zsh-syntax-highlighting].

@@ -10,7 +10,7 @@ from InquirerPy.separator import Separator
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.7.5'
+VERSION = '0.8.0'
 
 
 @task(default=True)
@@ -94,7 +94,7 @@ def install(c, pypi_mirror=True):
         c.run('brew install openjdk')
     if 'python' in roles:
         hint('install Pipenv, build, twine, Black, isort, Pylint, YAPF')
-        c.run(f'pip3.10 install pipenv build twine black isort pylint yapf{f" -i {PYPI_MIRROR}" if pypi_mirror else ""}')
+        c.run(f'pip3.11 install pipenv build twine black isort pylint yapf{f" -i {PYPI_MIRROR}" if pypi_mirror else ""}')
     # 数据库
     if 'mysql' in roles:
         hint('install MySQL')
@@ -157,8 +157,8 @@ def uninstall(c):
     }])
     if result[0] == 'python':
         hint('uninstall Python')
-        c.run('brew uninstall python@3.10')
-        c.sudo('rm -rf /opt/homebrew/lib/python3.10/')
+        c.run('brew uninstall python@3.11')
+        c.sudo('rm -rf /opt/homebrew/lib/python3.11/')
     if result[0] == 'node':
         hint('uninstall Node.js')
         c.run('brew uninstall node')
@@ -187,11 +187,11 @@ def update(c, config=False, pypi_mirror=True):
         c.run('npm update --location=global')
     mirror = f' -i {PYPI_MIRROR}' if pypi_mirror else ''
     hint('update pip, setuptools, wheel')
-    c.run(f'pip3.10 install -U pip setuptools wheel{mirror} | grep -v already')
+    c.run(f'pip3.11 install -U pip setuptools wheel{mirror} | grep -v already')
     hint('update Fabric, Colorama, InquirerPy')
-    c.run(f'pip3.10 install -U fabric colorama InquirerPy{mirror} | grep -v already')
+    c.run(f'pip3.11 install -U fabric colorama InquirerPy{mirror} | grep -v already')
     hint('update Pipenv, build, twine, Black, isort, Pylint, YAPF')
-    c.run(f'pip3.10 install -U pipenv build twine black isort pylint yapf{mirror} | grep -v already')
+    c.run(f'pip3.11 install -U pipenv build twine black isort pylint yapf{mirror} | grep -v already')
     cleanup(c)
     print(f'''
 更新完毕
