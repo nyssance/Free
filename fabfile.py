@@ -10,7 +10,7 @@ from InquirerPy.separator import Separator
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.8.1'
+VERSION = '0.8.2'
 
 
 @task(default=True)
@@ -183,7 +183,7 @@ def update(c, config=False, pypi_mirror=True):
     c.run('brew update')
     c.run('brew upgrade')
     hint('update Oh My Zsh')
-    c.run('omz update')
+    c.run('$ZSH/tools/upgrade.sh')  # https://github.com/ohmyzsh/ohmyzsh/wiki/FAQ#how-do-i-manually-update-oh-my-zsh-from-a-script
     if Path('/opt/homebrew/bin/node').exists():
         hint('update npm')
         c.run('npm update --location=global')
