@@ -25,7 +25,7 @@
 3. Install [Fabric], [Colorama], [InquirerPy].
 
     ```sh
-    pip3.11 install fabric colorama InquirerPy
+    pip install fabric colorama InquirerPy
     ```
 
 4. Install [Oh My Zsh], [zsh-autosuggestions], [zsh-syntax-highlighting].
