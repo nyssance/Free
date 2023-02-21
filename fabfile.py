@@ -80,7 +80,7 @@ def install(c, pypi_mirror=True):
         return
     if HTTP_PROXY != proxy:
         c.run(f'sed -i "" "s|HTTP_PROXY = \'{HTTP_PROXY}\'|HTTP_PROXY = \'{proxy}\'|g" fabfile.py')
-    # if 'zh_CN' in locale.getdefaultlocale():
+    # if 'zh_CN' in locale.getlocale():
     #     hint('configure RubyGems')
     #     c.run('gem sources --add https://mirrors.aliyun.com/rubygems/ --remove https://rubygems.org/')
     if 'android' in roles:
