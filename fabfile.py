@@ -10,7 +10,7 @@ from InquirerPy.separator import Separator
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.8.2'
+VERSION = '0.8.3'
 
 
 @task(default=True)
@@ -106,7 +106,7 @@ def install(c, pypi_mirror=True):
     if 'angular' in roles or 'gulp' in roles:
         hint('install Node.js')
         c.run('brew install node')
-        if 'zh_CN' in locale.getdefaultlocale():
+        if 'zh_CN' in locale.getlocale():
             hint('configure npm')
             c.run('npm config set registry https://registry.npmmirror.com')
     if 'angular' in roles:
@@ -222,7 +222,7 @@ def getcode(message: str) -> str:
 
 
 def gettext(message: str) -> str:
-    return LANG[message] if 'zh_CN' in locale.getdefaultlocale() else message.capitalize()
+    return LANG[message] if 'zh_CN' in locale.getlocale() else message.capitalize()
 
 
 def hint(value: str):
