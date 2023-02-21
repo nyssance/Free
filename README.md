@@ -1,6 +1,6 @@
 # Free
 
-[![macOS](https://img.shields.io/badge/macOS-12-blue)](https://www.apple.com/macos/monterey/)
+[![macOS](https://img.shields.io/badge/macOS-13-blue)](https://www.apple.com/macos/monterey/)
 [![python](https://img.shields.io/badge/python-3.11-blue)](https://www.python.org)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://opensource.org/licenses/MIT)
 
@@ -116,8 +116,8 @@
 
 - [Pipenv](https://github.com/pypa/pipenv)
 - PyPI
-  - [build]: https://github.com/pypa/build
-  - [twine]: https://github.com/pypa/twine
+  - [build](https://github.com/pypa/build)
+  - [twine](https://github.com/pypa/twine)
 - Lint
   - [Black](https://github.com/psf/black)
   - [isort](https://pycqa.github.io/isort/)
