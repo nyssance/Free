@@ -61,23 +61,6 @@
 
 ## 安装的工具
 
-### 浏览器
-
-- [Google Chrome](https://www.google.com/chrome/)
-
-### 开发
-
-- [GitHub Desktop](https://desktop.github.com)
-- [Visual Studio Code](https://code.visualstudio.com)
-
-### 调试
-
-- [Apifox](https://www.apifox.cn)
-
-### 部署
-
-- [Docker](https://www.docker.com)
-
 ### 分发
 
 - [fastlane](https://fastlane.tools)
@@ -89,7 +72,6 @@
 ### 字体
 
 - [Cascadia Code](https://github.com/microsoft/cascadia-code)
-- [Fira Code](https://github.com/tonsky/FiraCode)
 
 ### Android
 
@@ -127,7 +109,6 @@
 ### 数据库
 
 - [MySQL](https://www.mysql.com)
-- [MySQL Workbench](https://www.mysql.com/products/workbench/)
 - [Redis](https://redis.io)
 
 Free is released under the MIT license. [See LICENSE](https://github.com/nyssance/Free/blob/main/LICENSE) for details.

@@ -10,7 +10,7 @@ from InquirerPy.separator import Separator
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.8.3'
+VERSION = '0.9.0'
 
 
 @task(default=True)
@@ -59,16 +59,12 @@ def install(c, pypi_mirror=True):
             Separator('-- Front-end --'),
             Choice('angular', 'Angular'),
             'gulp',
-            Separator('-- Apps -------'),
-            Choice('apps', 'GitHub Desktop, Google Chrome, Postman'),
             Separator('-- Fonts ------'),
             Choice('font-cascadia-code', 'Cascadia Code'),
-            Choice('font-fira-code', 'Fira Code'),
             Separator('-- Others -----'),
-            Choice('docker', 'Docker'),
             'docsify',
             'fastlane',
-            Choice('mysqlworkbench', 'MySQL Workbench'),
+            Choice('jupyterlab', 'JupyterLab'),
             Separator()
         ],
         'name': 'roles'
@@ -115,32 +111,21 @@ def install(c, pypi_mirror=True):
     if 'gulp' in roles:
         hint('install gulp-cli')
         c.run('npm install -g gulp-cli')
-    if 'docsify' in roles:
-        hint('install docsify-cli')
-        c.run('npm install -g docsify-cli')
-    # 应用
-    if 'apps' in roles:
-        hint('install GitHub Desktop, Google Chrome, Postman')
-        c.run('brew install --cask github google-chrome postman')
     # 字体
     if 'font-cascadia-code' in roles:
         hint('install Cascadia Code')
         c.run('brew tap homebrew/cask-fonts')
         c.run('brew install --cask font-cascadia-code')
-    if 'font-fira-code' in roles:
-        hint('install Fira Code')
-        c.run('brew tap homebrew/cask-fonts')
-        c.run('brew install --cask font-fira-code')
     # 其他
-    if 'docker' in roles:
-        hint('install Docker')
-        c.run('brew install --cask docker')
+    if 'docsify' in roles:
+        hint('install docsify-cli')
+        c.run('npm install -g docsify-cli')
     if 'fastlane' in roles:
         hint('install fastlane')
         c.run('brew install fastlane')
-    if 'mysqlworkbench' in roles:
-        hint('install MySQL Workbench')
-        c.run('brew install --cask mysqlworkbench')
+    if 'jupyterlab' in roles:
+        hint('install JupyterLab')
+        c.run('pip install jupyterlab')
     cleanup(c)
 
 

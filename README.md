@@ -61,23 +61,6 @@
 
 ## Tools
 
-### Browser
-
-- [Google Chrome](https://www.google.com/chrome/)
-
-### Develop
-
-- [GitHub Desktop](https://desktop.github.com)
-- [Visual Studio Code](https://code.visualstudio.com)
-
-### Debug
-
-- [Postman](https://www.postman.com)
-
-### Deploy
-
-- [Docker](https://www.docker.com)
-
 ### Distribute
 
 - [fastlane](https://fastlane.tools)
@@ -89,7 +72,6 @@
 ### Font
 
 - [Cascadia Code](https://github.com/microsoft/cascadia-code)
-- [Fira Code](https://github.com/tonsky/FiraCode)
 
 ### Android
 
@@ -127,7 +109,6 @@
 ### Database
 
 - [MySQL](https://www.mysql.com)
-- [MySQL Workbench](https://www.mysql.com/products/workbench/)
 - [Redis](https://redis.io)
 
 Free is released under the MIT license. [See LICENSE](https://github.com/nyssance/Free/blob/main/LICENSE) for details.
