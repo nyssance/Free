@@ -10,7 +10,7 @@ from InquirerPy.separator import Separator
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.9.0'
+VERSION = '0.9.1'
 
 
 @task(default=True)
@@ -88,7 +88,7 @@ def install(c, pypi_mirror=True):
     if 'java' in roles:
         hint('install OpenJDK')
         c.run('brew install openjdk')
-    if 'python' in roles:
+    if 'python' in roles or 'jupyterlab' in roles:
         hint('install Pipenv, build, twine, Black, isort, Pylint, YAPF')
         c.run(f'pip install pipenv build twine black isort pylint yapf{f" -i {PYPI_MIRROR}" if pypi_mirror else ""}')
     # 数据库
@@ -126,6 +126,8 @@ def install(c, pypi_mirror=True):
     if 'jupyterlab' in roles:
         hint('install JupyterLab')
         c.run('pip install jupyterlab')
+        if 'zh_CN' in locale.getlocale():
+            c.run('pip install jupyterlab-language-pack-zh-CN')
     cleanup(c)
 
 
