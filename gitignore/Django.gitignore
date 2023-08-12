@@ -188,15 +188,7 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-# [JetBrains](https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore)
-# User-specific stuff
-.idea/**/workspace.xml
-.idea/**/tasks.xml
-.idea/**/usage.statistics.xml
-.idea/**/dictionaries
-.idea/**/shelf
-
-# [Django]
+# [Django](https://www.djangoproject.com)
 **/migrations/**
 !**/migrations/__init__.py
 /static/
@@ -204,3 +196,11 @@ Temporary Items
 dump.rdb
 /node_modules/
 package-lock.json
+
+# [JetBrains](https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore)
+# User-specific stuff
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf

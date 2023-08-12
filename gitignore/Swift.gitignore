@@ -106,5 +106,5 @@ Temporary Items
 # [R.swift](https://github.com/mac-cain13/R.swift)
 *.generated.swift
 
-# [Fabric]
+# [Fabric](https://www.fabfile.org)
 *.py[cod]
