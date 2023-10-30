@@ -1,7 +1,7 @@
 # Free
 
 [![macOS](https://img.shields.io/badge/macOS-13-blue)](https://www.apple.com/macos/monterey/)
-[![python](https://img.shields.io/badge/python-3.11-blue)](https://www.python.org)
+[![python](https://img.shields.io/badge/python-3.12-blue)](https://www.python.org)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://opensource.org/licenses/MIT)
 
 井井兮其有理也 [中文](https://github.com/nyssance/Free/blob/main/README-zh_CN.md)
@@ -19,7 +19,7 @@
 2. Install [Python].
 
     ```sh
-    brew install python@3.11
+    brew install python@3.12
     ```
 
 3. Install [Fabric], [Colorama], [InquirerPy].

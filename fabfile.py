@@ -10,7 +10,7 @@ from InquirerPy.separator import Separator
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.9.1'
+VERSION = '0.9.2'
 
 
 @task(default=True)
@@ -144,8 +144,8 @@ def uninstall(c):
     }])
     if result[0] == 'python':
         hint('uninstall Python')
-        c.run('brew uninstall python@3.11')
-        c.sudo('rm -rf /opt/homebrew/lib/python3.11/')
+        c.run('brew uninstall python@3.12')
+        c.sudo('rm -rf /opt/homebrew/lib/python3.12/')
     if result[0] == 'node':
         hint('uninstall Node.js')
         c.run('brew uninstall node')
