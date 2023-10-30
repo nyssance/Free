@@ -19,7 +19,7 @@
 2. 安装 [Python]。
 
     ```sh
-    brew install python@3.12
+    brew install python3
     ```
 
 3. 安装 [Fabric]，[Colorama], [InquirerPy]。

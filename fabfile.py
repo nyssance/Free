@@ -144,7 +144,7 @@ def uninstall(c):
     }])
     if result[0] == 'python':
         hint('uninstall Python')
-        c.run('brew uninstall python@3.12')
+        c.run('brew uninstall python3')
         c.sudo('rm -rf /opt/homebrew/lib/python3.12/')
     if result[0] == 'node':
         hint('uninstall Node.js')
