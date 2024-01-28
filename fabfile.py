@@ -216,11 +216,11 @@ def hint(value: str):
     operation, message = value.split(' ', 1)
     match operation:
         case 'cleanup':
-            color = Back.LIGHTYELLOW_EX
+            color = Back.YELLOW
         case 'configure':
-            color = Back.LIGHTCYAN_EX
+            color = Back.CYAN
         case 'install':
-            color = Back.LIGHTGREEN_EX
+            color = Back.GREEN
         case 'uninstall':
             color = Back.LIGHTRED_EX
         case 'update':
