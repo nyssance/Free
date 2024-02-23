@@ -1,6 +1,6 @@
 # Free
 
-[![macOS](https://img.shields.io/badge/macOS-13-blue)](https://www.apple.com/macos/monterey/)
+[![macOS](https://img.shields.io/badge/macOS-14-blue)](https://www.apple.com/macos/monterey/)
 [![python](https://img.shields.io/badge/python-3.12-blue)](https://www.python.org)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://opensource.org/licenses/MIT)
 
@@ -25,7 +25,7 @@
 3. 安装 [Fabric]，[Colorama], [InquirerPy]。
 
     ```sh
-    pip install fabric colorama InquirerPy -i https://pypi.doubanio.com/simple/
+    pip3 install fabric colorama InquirerPy -i https://pypi.doubanio.com/simple/
     ```
 
 4. 安装 [Oh My Zsh]，[zsh-autosuggestions]，[zsh-syntax-highlighting]。

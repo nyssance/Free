@@ -10,7 +10,7 @@ from InquirerPy.separator import Separator
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.9.2'
+VERSION = '0.9.3'
 
 
 @task(default=True)
@@ -90,7 +90,7 @@ def install(c, pypi_mirror=True):
         c.run('brew install openjdk')
     if 'python' in roles or 'jupyterlab' in roles:
         hint('install Pipenv, build, twine, Black, isort, Pylint, YAPF')
-        c.run(f'pip install pipenv build twine black isort pylint yapf{f" -i {PYPI_MIRROR}" if pypi_mirror else ""}')
+        c.run(f'pip3 install pipenv build twine black isort pylint yapf{f" -i {PYPI_MIRROR}" if pypi_mirror else ""}')
     # 数据库
     if 'mysql' in roles:
         hint('install MySQL')
@@ -125,9 +125,9 @@ def install(c, pypi_mirror=True):
         c.run('brew install fastlane')
     if 'jupyterlab' in roles:
         hint('install JupyterLab')
-        c.run('pip install jupyterlab')
+        c.run('pip3 install jupyterlab')
         if 'zh_CN' in locale.getlocale():
-            c.run('pip install jupyterlab-language-pack-zh-CN')
+            c.run('pip3 install jupyterlab-language-pack-zh-CN')
     cleanup(c)
 
 
@@ -176,11 +176,11 @@ def update(c, config=False, pypi_mirror=True):
         c.run('npm update --location=global')
     mirror = f' -i {PYPI_MIRROR}' if pypi_mirror else ''
     hint('update pip, setuptools, wheel')
-    c.run(f'pip install -U pip setuptools wheel{mirror} | grep -v already')
+    c.run(f'pip3 install -U pip setuptools wheel{mirror} | grep -v already')
     hint('update Fabric, Colorama, InquirerPy')
-    c.run(f'pip install -U fabric colorama InquirerPy{mirror} | grep -v already')
+    c.run(f'pip3 install -U fabric colorama InquirerPy{mirror} | grep -v already')
     hint('update Pipenv, build, twine, Black, isort, Pylint, YAPF')
-    c.run(f'pip install -U pipenv build twine black isort pylint yapf{mirror} | grep -v already')
+    c.run(f'pip3 install -U pipenv build twine black isort pylint yapf{mirror} | grep -v already')
     cleanup(c)
     print(f'''
 更新完毕
