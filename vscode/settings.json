@@ -1,14 +1,18 @@
 {
     "editor.fontFamily": "'Cascadia Code', Menlo, Monaco, 'Courier New', monospace",
     "editor.fontLigatures": true,
-    "editor.fontSize": 14,
+    "editor.fontSize": 17,
     "editor.linkedEditing": true,
     "files.autoSave": "afterDelay",
+    "files.associations": {
+        "*.py-tpl": "python"
+    },
     "files.eol": "\n",
     "files.insertFinalNewline": true,
     "files.trimFinalNewlines": true,
-    "workbench.activityBar.visible": false,
-    "workbench.colorTheme": "Visual Studio Light",
+    // "git.path": "",
+    "workbench.activityBar.location": "hidden",
+    "workbench.colorTheme": "Visual Studio Dark",
     "workbench.iconTheme": "vscode-icons",
     "[css]": {
         "editor.defaultFormatter": "vscode.css-language-features"
@@ -25,14 +29,11 @@
     "[markdown]": {
         "editor.defaultFormatter": "vscode.markdown-language-features"
     },
+    "[python]": {
+        "editor.formatOnType": true
+    },
     "[typescript]": {
-        "editor.defaultFormatter": "vscode.typescript-language-features"
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
-    // Python
-    "files.associations": {
-        "*.py-tpl": "python"
-    },
-    "python.formatting.provider": "yapf",
-    "python.linting.pylintEnabled": true,
-    "python.linting.enabled": true
+    "git.ignoreMissingGitWarning": true
 }

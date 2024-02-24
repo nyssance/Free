@@ -22,10 +22,10 @@
     brew install python3
     ```
 
-3. Install [Fabric], [Colorama], [InquirerPy].
+3. Install [Fabric], [Colorama], [InquirerPy]. [PEP668](https://github.com/pypa/pip/issues/11776#issuecomment-1434892689)
 
     ```sh
-    pip3 install fabric colorama InquirerPy
+    pip3 install fabric colorama InquirerPy -break-system-packages
     ```
 
 4. Install [Oh My Zsh], [zsh-autosuggestions], [zsh-syntax-highlighting].
