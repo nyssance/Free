@@ -53,7 +53,6 @@ def install(c, pypi_mirror=True):
         Separator('-- Others -----'),
         'docsify',
         'fastlane',
-        Choice('jupyterlab', 'JupyterLab'),
         Separator()
     ],
                               transformer=lambda result: ', '.join(result) if len(result) > 0 else '',
@@ -72,7 +71,7 @@ def install(c, pypi_mirror=True):
     if 'java' in roles:
         hint('install OpenJDK')
         c.run('brew install openjdk')
-    if 'python' in roles or 'jupyterlab' in roles:
+    if 'python' in roles:
         hint('install Pipenv, build, twine, Black, isort, Pylint, YAPF')
         c.run(f'pip3 install pipenv build twine black isort pylint yapf{f' -i {PYPI_MIRROR}' if pypi_mirror else ''}')
     if 'typescript' in roles:
@@ -100,11 +99,6 @@ def install(c, pypi_mirror=True):
     if 'fastlane' in roles:
         hint('install fastlane')
         c.run('brew install fastlane')
-    if 'jupyterlab' in roles:
-        hint('install JupyterLab')
-        c.run('pip3 install jupyterlab')
-        if 'zh_CN' in locale.getlocale():
-            c.run('pip3 install jupyterlab-language-pack-zh-CN')
     cleanup(c)
 
 
