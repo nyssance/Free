@@ -25,7 +25,7 @@
 3. 安装 [Fabric]，[Colorama], [InquirerPy]。[PEP668](https://github.com/pypa/pip/issues/11776#issuecomment-1434892689)
 
     ```sh
-    pip3 install fabric colorama InquirerPy -break-system-packages -i https://pypi.doubanio.com/simple/
+    pip3 install fabric colorama InquirerPy -break-system-packages -i https://mirrors.aliyun.com/pypi/simple/
     ```
 
 4. 安装 [Oh My Zsh]，[zsh-autosuggestions]，[zsh-syntax-highlighting]。
@@ -99,7 +99,8 @@
 
 ### Python
 
-- [Pipenv](https://github.com/pypa/pipenv)
+- [pipx](https://pipx.pypa.io)
+- [Poetry](https://python-poetry.org)
 - PyPI
   - [build](https://github.com/pypa/build)
   - [twine](https://github.com/pypa/twine)

@@ -10,7 +10,7 @@ from InquirerPy.separator import Separator
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.9.5'
+VERSION = '0.10'
 
 
 @task(default=True)
@@ -72,8 +72,12 @@ def install(c, pypi_mirror=True):
         hint('install OpenJDK')
         c.run('brew install openjdk')
     if 'python' in roles:
-        hint('install Pipenv, build, twine, Black, isort, Pylint, YAPF')
-        c.run(f'pip3 install pipenv build twine black isort pylint yapf{f' -i {PYPI_MIRROR}' if pypi_mirror else ''}')
+        hint('install build')
+        c.run(f'pip3 install build{f' -i {PYPI_MIRROR}' if pypi_mirror else ''}')
+        hint('install pipx')
+        c.run('brew install pipx')
+        hint('install Poetry, build, twine, Black, isort, Pylint, YAPF')
+        c.run('pipx install poetry build twine black isort pylint yapf')
     if 'typescript' in roles:
         hint('install Node.js')
         c.run('brew install node')
@@ -138,13 +142,10 @@ def update(c, config=False, pypi_mirror=True):
     c.run('brew upgrade')
     hint('update Oh My Zsh')
     c.run('$ZSH/tools/upgrade.sh')  # https://github.com/ohmyzsh/ohmyzsh/wiki/FAQ#how-do-i-manually-update-oh-my-zsh-from-a-script
-    mirror = f' -i {PYPI_MIRROR}' if pypi_mirror else ''
-    hint('update pip, setuptools, wheel')
-    c.run(f'pip3 install -U pip setuptools wheel{mirror} | grep -v already')
-    hint('update Fabric, Colorama, InquirerPy')
-    c.run(f'pip3 install -U fabric colorama InquirerPy{mirror} | grep -v already')
-    hint('update Pipenv, build, twine, Black, isort, Pylint, YAPF')
-    c.run(f'pip3 install -U pipenv build twine black isort pylint yapf{mirror} | grep -v already')
+    hint('update Fabric, Colorama, InquirerPy, build')
+    c.run(f'pip3 install -U fabric colorama InquirerPy build{f' -i {PYPI_MIRROR}' if pypi_mirror else ''} | grep -v already')
+    hint('update Poetry, twine, Black, isort, Pylint, YAPF')
+    c.run('pipx upgrade poetry twine black isort pylint yapf')
     if Path('/opt/homebrew/bin/node').exists():
         hint('update npm')
         c.run('npm update -g')

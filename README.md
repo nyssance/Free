@@ -99,7 +99,8 @@
 
 ### Python
 
-- [Pipenv](https://github.com/pypa/pipenv)
+- [pipx](https://pipx.pypa.io)
+- [Poetry](https://python-poetry.org)
 - PyPI
   - [build](https://github.com/pypa/build)
   - [twine](https://github.com/pypa/twine)
