@@ -13,6 +13,3 @@ export PATH="$PATH:~/.local/bin"
 # Zsh
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-# HTTP代理
-export HTTPS_PROXY=http://127.0.0.1:7890
