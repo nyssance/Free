@@ -10,7 +10,7 @@ from InquirerPy.separator import Separator
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.9.3'
+VERSION = '0.9.4'
 
 
 @task(default=True)
@@ -18,7 +18,7 @@ def hello(c):
     """Hello"""
     init(autoreset=True)
     print(Fore.LIGHTMAGENTA_EX + f'Hello ~ {get_local_user()}')
-    print(Fore.LIGHTGREEN_EX + f'{gettext("HTTP Proxy")}: http://{HTTP_PROXY}')
+    print(Fore.LIGHTGREEN_EX + f'{gettext('HTTP Proxy')}: http://{HTTP_PROXY}')
     print(Fore.LIGHTYELLOW_EX + f'Version: {VERSION}')
     print('fab task -h 可以查看 task')
     c.run('fab -l', echo=False)
@@ -76,7 +76,7 @@ def install(c, pypi_mirror=True):
         c.run('brew install openjdk')
     if 'python' in roles or 'jupyterlab' in roles:
         hint('install Pipenv, build, twine, Black, isort, Pylint, YAPF')
-        c.run(f'pip3 install pipenv build twine black isort pylint yapf{f" -i {PYPI_MIRROR}" if pypi_mirror else ""}')
+        c.run(f'pip3 install pipenv build twine black isort pylint yapf{f' -i {PYPI_MIRROR}' if pypi_mirror else ''}')
     # 数据库
     if 'mysql' in roles:
         hint('install MySQL')
@@ -146,7 +146,7 @@ def update(c, config=False, pypi_mirror=True):
         download(c, 'https://raw.githubusercontent.com/nyssance/Free/main/fabric.yaml', '.fabric.yaml')
         hint('configure .zshrc')
         download(c, 'https://raw.githubusercontent.com/nyssance/Free/main/zshrc', '.zshrc')
-        c.run(f'echo "\n# {gettext("HTTP Proxy")}\nexport HTTPS_PROXY=http://{HTTP_PROXY}" >> .zshrc')
+        c.run(f'echo "\n# {gettext('HTTP Proxy')}\nexport HTTPS_PROXY=http://{HTTP_PROXY}" >> .zshrc')
         c.run('zsh -lc "source .zshrc"')
     hint('update Homebrew')
     c.run('brew update')
@@ -175,7 +175,7 @@ def update(c, config=False, pypi_mirror=True):
 def download(c, url, name=None, proxy=HTTP_PROXY):
     """下载"""
     command = f'{url} > {name}' if name else f'-O {url}'
-    c.run(f'curl -fsSL{f" -x {proxy}" if proxy else ""} {command}')
+    c.run(f'curl -fsSL{f' -x {proxy}' if proxy else ''} {command}')
 
 
 @task
