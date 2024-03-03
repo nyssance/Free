@@ -37,7 +37,7 @@ def install(c, pypi_mirror=True):
     """安装"""
     proxy = inquirer.select(gettext('HTTP Proxy'), ['127.0.0.1:7890', Choice('', 'No proxy')]).execute()
     if HTTP_PROXY != proxy:
-        c.run(f'sed -i "" "s|HTTP_PROXY = \'{HTTP_PROXY}\'|HTTP_PROXY = \'{proxy}\'|" fabfile.py')
+        c.run(f"sed -i '' 's|HTTP_PROXY = \"{HTTP_PROXY}\"|HTTP_PROXY = \"{proxy}\"|' fabfile.py")
     roles = inquirer.checkbox(gettext('install'), [
         Separator(),
         Choice('android', 'Android'),
@@ -129,13 +129,13 @@ def update(c, config=False, pypi_mirror=True):
     hint(f'update 自己 当前版本 {getcode(VERSION)} 更新在下次执行时生效')
     download(c, 'https://raw.githubusercontent.com/nyssance/Free/main/fabfile.py')
     if HTTP_PROXY:
-        c.run(f'sed -i "" "s|HTTP_PROXY = \'\'|HTTP_PROXY = \'{HTTP_PROXY}\'|" fabfile.py')
+        c.run(f"sed -i '' 's|HTTP_PROXY = \"\"|HTTP_PROXY = \"{HTTP_PROXY}\"|' fabfile.py")
     if config:
         hint('configure .fabric.yaml')
         download(c, 'https://raw.githubusercontent.com/nyssance/Free/main/fabric.yaml', '.fabric.yaml')
         hint('configure .zshrc')
         download(c, 'https://raw.githubusercontent.com/nyssance/Free/main/zshrc', '.zshrc')
-        c.run(f'echo "\n# {gettext('HTTP Proxy')}\nexport HTTPS_PROXY=http://{HTTP_PROXY}" >> .zshrc')
+        c.run(f"echo '\n# {gettext("HTTP Proxy")}\nexport HTTPS_PROXY=http://{HTTP_PROXY}' >> .zshrc")
         c.run('zsh -lc "source .zshrc"')
     hint('update Homebrew')
     c.run('brew update')
