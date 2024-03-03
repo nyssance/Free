@@ -115,11 +115,11 @@ def uninstall(c):
     #     c.run('fab uninstall --prompt-for-sudo-password', echo=False)
     #     return
     result = inquirer.select(gettext('uninstall'), ['node', 'python', Choice('', gettext('cancel'))]).execute()
-    if result[0] == 'python':
+    if result == 'python':
         hint('uninstall Python')
         c.run('brew uninstall python3')
         c.sudo('rm -rf /opt/homebrew/lib/python3.12/')
-    if result[0] == 'node':
+    if result == 'node':
         hint('uninstall Node.js')
         c.run('brew uninstall node')
         c.sudo('rm -rf /opt/homebrew/lib/node_modules/')
