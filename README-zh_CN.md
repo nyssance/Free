@@ -42,8 +42,17 @@
 
     ```sh
     cd ~
+    ```
+
+    ```sh
     curl -fsSL -O https://raw.githubusercontent.com/nyssance/Free/main/fabfile.py -o .fabric.yaml https://raw.githubusercontent.com/nyssance/Free/main/fabric.yaml -o .zshrc https://raw.githubusercontent.com/nyssance/Free/main/zshrc
+    ```
+
+    ```sh
     source .zshrc
+    ```
+
+    ```sh
     fab install
     ```
 
@@ -57,6 +66,7 @@
 - [Python]
   - [Fabric]
     - [Invoke](https://www.pyinvoke.org)
+  - [Colorama]
   - [InquirerPy]
 
 ## 安装的工具
