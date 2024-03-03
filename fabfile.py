@@ -10,7 +10,7 @@ from InquirerPy.separator import Separator
 
 HTTP_PROXY = ''
 PYPI_MIRROR = 'https://mirrors.aliyun.com/pypi/simple/'
-VERSION = '0.9.4'
+VERSION = '0.9.5'
 
 
 @task(default=True)
@@ -44,12 +44,10 @@ def install(c, pypi_mirror=True):
         Choice('ios', 'iOS / macOS'),
         Choice('java', 'Java'),
         Choice('python', 'Python'),
+        Choice('typescript', 'TypeScript'),
         Separator('-- Database ---'),
         Choice('mysql', 'MySQL'),
         Choice('redis', 'Redis'),
-        Separator('-- Front-end --'),
-        Choice('angular', 'Angular'),
-        'gulp',
         Separator('-- Fonts ------'),
         Choice('font-cascadia-code', 'Cascadia Code'),
         Separator('-- Others -----'),
@@ -77,6 +75,12 @@ def install(c, pypi_mirror=True):
     if 'python' in roles or 'jupyterlab' in roles:
         hint('install Pipenv, build, twine, Black, isort, Pylint, YAPF')
         c.run(f'pip3 install pipenv build twine black isort pylint yapf{f' -i {PYPI_MIRROR}' if pypi_mirror else ''}')
+    if 'typescript' in roles:
+        hint('install Node.js')
+        c.run('brew install node')
+        if 'zh_CN' in locale.getlocale():
+            hint('configure npm')
+            c.run('npm config set registry https://registry.npmmirror.com')
     # 数据库
     if 'mysql' in roles:
         hint('install MySQL')
@@ -84,19 +88,6 @@ def install(c, pypi_mirror=True):
     if 'redis' in roles:
         hint('install Redis')
         c.run('brew install redis')
-    # 前端
-    if 'angular' in roles or 'gulp' in roles:
-        hint('install Node.js')
-        c.run('brew install node')
-        if 'zh_CN' in locale.getlocale():
-            hint('configure npm')
-            c.run('npm config set registry https://registry.npmmirror.com')
-    if 'angular' in roles:
-        hint('install Angular CLI')
-        c.run('npm install -g @angular/cli')
-    if 'gulp' in roles:
-        hint('install gulp-cli')
-        c.run('npm install -g gulp-cli')
     # 字体
     if 'font-cascadia-code' in roles:
         hint('install Cascadia Code')
@@ -153,9 +144,6 @@ def update(c, config=False, pypi_mirror=True):
     c.run('brew upgrade')
     hint('update Oh My Zsh')
     c.run('$ZSH/tools/upgrade.sh')  # https://github.com/ohmyzsh/ohmyzsh/wiki/FAQ#how-do-i-manually-update-oh-my-zsh-from-a-script
-    if Path('/opt/homebrew/bin/node').exists():
-        hint('update npm')
-        c.run('npm update --location=global')
     mirror = f' -i {PYPI_MIRROR}' if pypi_mirror else ''
     hint('update pip, setuptools, wheel')
     c.run(f'pip3 install -U pip setuptools wheel{mirror} | grep -v already')
@@ -163,12 +151,11 @@ def update(c, config=False, pypi_mirror=True):
     c.run(f'pip3 install -U fabric colorama InquirerPy{mirror} | grep -v already')
     hint('update Pipenv, build, twine, Black, isort, Pylint, YAPF')
     c.run(f'pip3 install -U pipenv build twine black isort pylint yapf{mirror} | grep -v already')
+    if Path('/opt/homebrew/bin/node').exists():
+        hint('update npm')
+        c.run('npm update -g')
     cleanup(c)
-    print(f'''
-更新完毕
-如果更新了python, 可能需要重新创建虚拟环境.
-如果遇到yapf无法执行, 可能需要{getcode('`fab uninstall`')}然后重装python.
-''')
+    print(f'更新完毕\n如果更新了python, 可能需要重新创建虚拟环境.\n如果遇到yapf无法执行, 可能需要{getcode('`fab uninstall`')}然后重装python.')
 
 
 @task

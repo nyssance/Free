@@ -85,7 +85,6 @@
 
 ### Android
 
-- [Android Studio](https://developer.android.com/studio)
 - [ktlint](https://github.com/pinterest/ktlint)
 
 ### iOS / macOS
@@ -93,12 +92,6 @@
 - [CocoaPods](https://cocoapods.org)
 - [SwiftFormat](https://github.com/nicklockwood/SwiftFormat)
 - [SwiftLint](https://github.com/realm/SwiftLint)
-
-### 前端
-
-- [Node.js](https://nodejs.org/zh-cn/)
-- [Angular CLI](https://angular.cn/cli)
-- [gulp](https://gulpjs.com)
 
 ### Java
 
@@ -116,6 +109,10 @@
   - [Pylint](https://www.pylint.org)
   - [YAPF](https://github.com/google/yapf)
 
+### TypeScript
+
+- [Node.js](https://nodejs.org/en/)
+  
 ### 数据库
 
 - [MySQL](https://www.mysql.com)
