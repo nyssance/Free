@@ -136,7 +136,7 @@ def update(c, config=False, pypi_mirror=True):
         hint("configure .zshrc")
         download(c, "https://raw.githubusercontent.com/nyssance/Free/main/zshrc", ".zshrc")
         c.run(f"echo '\n# {gettext("HTTP Proxy")}\nexport HTTPS_PROXY=http://{HTTP_PROXY}' >> .zshrc")
-        c.run("zsh -lc "source .zshrc"")
+        c.run("zsh -lc 'source .zshrc'")
     hint("update Homebrew")
     c.run("brew update")
     c.run("brew upgrade")
