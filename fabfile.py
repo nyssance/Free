@@ -4,7 +4,7 @@ from pathlib import Path
 from colorama import Back, Fore, init
 from fabric import task
 from fabric.util import get_local_user
-from InquirerPy import prompt
+from InquirerPy import inquirer
 from InquirerPy.base.control import Choice
 from InquirerPy.separator import Separator
 
@@ -35,47 +35,33 @@ def cleanup(c):
 @task
 def install(c, pypi_mirror=True):
     """安装"""
-    questions = [{
-        'type': 'list',
-        'message': gettext('HTTP Proxy'),
-        'choices': ['127.0.0.1:7890', Choice('', 'No proxy')],
-        'name': 'proxy'
-    }, {
-        'type': 'checkbox',
-        'message': gettext('install'),
-        'instruction': '(Space for select)',
-        'transformer': lambda result: ', '.join(result) if len(result) > 0 else '',
-        'validate': lambda result: len(result) > 0,
-        'invalid_message': 'should be at least 1 selection',
-        'choices': [
-            Separator(),
-            Choice('android', 'Android'),
-            Choice('ios', 'iOS / macOS'),
-            Choice('java', 'Java'),
-            Choice('python', 'Python'),
-            Separator('-- Database ---'),
-            Choice('mysql', 'MySQL'),
-            Choice('redis', 'Redis'),
-            Separator('-- Front-end --'),
-            Choice('angular', 'Angular'),
-            'gulp',
-            Separator('-- Fonts ------'),
-            Choice('font-cascadia-code', 'Cascadia Code'),
-            Separator('-- Others -----'),
-            'docsify',
-            'fastlane',
-            Choice('jupyterlab', 'JupyterLab'),
-            Separator()
-        ],
-        'name': 'roles'
-    }]  # yapf: disable
-    result = prompt(questions)
-    proxy = result['proxy']
-    roles = result['roles']
+    proxy = inquirer.select(gettext('HTTP Proxy'), ['127.0.0.1:7890', Choice('', 'No proxy')]).execute()
+    if HTTP_PROXY != proxy:
+        c.run(f'sed -i "" "s|HTTP_PROXY = \'{HTTP_PROXY}\'|HTTP_PROXY = \'{proxy}\'|" fabfile.py')
+    roles = inquirer.checkbox(gettext('install'), [
+        Separator(),
+        Choice('android', 'Android'),
+        Choice('ios', 'iOS / macOS'),
+        Choice('java', 'Java'),
+        Choice('python', 'Python'),
+        Separator('-- Database ---'),
+        Choice('mysql', 'MySQL'),
+        Choice('redis', 'Redis'),
+        Separator('-- Front-end --'),
+        Choice('angular', 'Angular'),
+        'gulp',
+        Separator('-- Fonts ------'),
+        Choice('font-cascadia-code', 'Cascadia Code'),
+        Separator('-- Others -----'),
+        'docsify',
+        'fastlane',
+        Choice('jupyterlab', 'JupyterLab'),
+        Separator()
+    ],
+                              transformer=lambda result: ', '.join(result) if len(result) > 0 else '',
+                              instruction='(Space for select)').execute()
     if not roles:
         return
-    if HTTP_PROXY != proxy:
-        c.run(f'sed -i "" "s|HTTP_PROXY = \'{HTTP_PROXY}\'|HTTP_PROXY = \'{proxy}\'|g" fabfile.py')
     # if 'zh_CN' in locale.getlocale():
     #     hint('configure RubyGems')
     #     c.run('gem sources --add https://mirrors.aliyun.com/rubygems/ --remove https://rubygems.org/')
@@ -137,11 +123,7 @@ def uninstall(c):
     # if not c.config.sudo.password:
     #     c.run('fab uninstall --prompt-for-sudo-password', echo=False)
     #     return
-    result = prompt([{
-        'type': 'list',
-        'message': gettext('uninstall'),
-        'choices': ['node', 'python', Choice('', gettext('cancel'))]
-    }])
+    result = inquirer.select(gettext('uninstall'), ['node', 'python', Choice('', gettext('cancel'))]).execute()
     if result[0] == 'python':
         hint('uninstall Python')
         c.run('brew uninstall python3')
@@ -158,7 +140,7 @@ def update(c, config=False, pypi_mirror=True):
     hint(f'update 自己 当前版本 {getcode(VERSION)} 更新在下次执行时生效')
     download(c, 'https://raw.githubusercontent.com/nyssance/Free/main/fabfile.py')
     if HTTP_PROXY:
-        c.run(f'sed -i "" "s|HTTP_PROXY = \'\'|HTTP_PROXY = \'{HTTP_PROXY}\'|g" fabfile.py')
+        c.run(f'sed -i "" "s|HTTP_PROXY = \'\'|HTTP_PROXY = \'{HTTP_PROXY}\'|" fabfile.py')
     if config:
         hint('configure .fabric.yaml')
         download(c, 'https://raw.githubusercontent.com/nyssance/Free/main/fabric.yaml', '.fabric.yaml')
@@ -201,7 +183,7 @@ def reformat(c):
     """格式化"""
     c.run('isort fabfile.py')
     # c.run('black fabfile.py')
-    # c.run('yapf -irp fabfile.py')
+    c.run('yapf -irp fabfile.py')
 
 
 def getcode(message: str) -> str:
