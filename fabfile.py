@@ -76,8 +76,8 @@ def install(c, pypi_mirror=True):
         c.run(f'pip3 install build{f' -i {PYPI_MIRROR}' if pypi_mirror else ''}')
         hint('install pipx')
         c.run('brew install pipx')
-        hint('install Poetry, build, twine, Black, isort, Pylint, YAPF')
-        c.run('pipx install poetry build twine black isort pylint yapf')
+        hint('install Poetry, twine, Black, isort, Pylint, YAPF')
+        c.run('pipx install poetry twine black isort pylint yapf')
     if 'typescript' in roles:
         hint('install Node.js')
         c.run('brew install node')
@@ -144,8 +144,7 @@ def update(c, config=False, pypi_mirror=True):
     c.run('$ZSH/tools/upgrade.sh')  # https://github.com/ohmyzsh/ohmyzsh/wiki/FAQ#how-do-i-manually-update-oh-my-zsh-from-a-script
     hint('update Fabric, Colorama, InquirerPy, build')
     c.run(f'pip3 install -U fabric colorama InquirerPy build{f' -i {PYPI_MIRROR}' if pypi_mirror else ''} | grep -v already')
-    hint('update Poetry, twine, Black, isort, Pylint, YAPF')
-    c.run('pipx upgrade poetry twine black isort pylint yapf')
+    c.run('pipx upgrade-all')
     if Path('/opt/homebrew/bin/node').exists():
         hint('update npm')
         c.run('npm update -g')
