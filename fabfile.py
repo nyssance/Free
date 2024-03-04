@@ -33,7 +33,7 @@ def cleanup(c):
 
 
 @task
-def install(c, pypi_mirror=True):
+def install(c):
     """安装"""
     proxy = inquirer.select(gettext("HTTP Proxy"), ["127.0.0.1:7890", Choice("", "No proxy")]).execute()
     if HTTP_PROXY != proxy:
@@ -72,12 +72,10 @@ def install(c, pypi_mirror=True):
         hint("install OpenJDK")
         c.run("brew install openjdk")
     if "python" in roles:
-        hint("install build")
-        c.run(f"pip3 install build{f" -i {PYPI_MIRROR}" if pypi_mirror else ""}")
         hint("install pipx")
         c.run("brew install pipx")
-        hint("install Poetry, twine, Black, isort, Pylint, YAPF")
-        c.run("pipx install poetry twine black isort pylint yapf")
+        hint("install Poetry, build, twine, Black, isort, Pylint, YAPF")
+        c.run("pipx install poetry build twine black isort pylint yapf")
     if "typescript" in roles:
         hint("install Node.js")
         c.run("brew install node")
@@ -142,8 +140,8 @@ def update(c, config=False, pypi_mirror=True):
     c.run("brew upgrade")
     hint("update Oh My Zsh")
     c.run("$ZSH/tools/upgrade.sh")  # https://github.com/ohmyzsh/ohmyzsh/wiki/FAQ#how-do-i-manually-update-oh-my-zsh-from-a-script
-    hint("update Fabric, Colorama, InquirerPy, build")
-    c.run(f"pip3 install -U fabric colorama InquirerPy build{f" -i {PYPI_MIRROR}" if pypi_mirror else ""} | grep -v already")
+    hint("update Fabric, Colorama, InquirerPy")
+    c.run(f"pip3 install -U fabric colorama InquirerPy{f" -i {PYPI_MIRROR}" if pypi_mirror else ""} | grep -v already")
     c.run("pipx upgrade-all")
     if Path("/opt/homebrew/bin/node").exists():
         hint("update npm")
