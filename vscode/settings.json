@@ -5,12 +5,12 @@
     "editor.linkedEditing": true,
     "files.autoSave": "afterDelay",
     "files.associations": {
-        "*.py-tpl": "python"
+        "*.py-tpl": "python",
+        "*.wh": "kotlin"
     },
     "files.eol": "\n",
     "files.insertFinalNewline": true,
     "files.trimFinalNewlines": true,
-    // "git.path": "",
     "workbench.activityBar.location": "hidden",
     "workbench.colorTheme": "Visual Studio Dark",
     "workbench.iconTheme": "vscode-icons",
@@ -34,6 +34,5 @@
     },
     "[typescript]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "git.ignoreMissingGitWarning": true
+    }
 }
