@@ -147,7 +147,7 @@ def update(c, config=False, pypi_mirror=True):
         hint("update npm")
         c.run("npm update -g")
     cleanup(c)
-    print(f"更新完毕\n如果更新了python, 可能需要重新创建虚拟环境.\n如果遇到yapf无法执行, 可能需要{getcode("`fab uninstall`")}然后重装python.")
+    print(f"更新完毕\n如果更新了python, 可能需要重新创建虚拟环境。")
 
 
 @task
