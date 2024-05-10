@@ -158,8 +158,8 @@ def download(c, url, name=None, proxy=HTTP_PROXY):
 
 
 @task
-def reformat(c):
-    """格式化"""
+def format_code(c):
+    """格式化代码"""
     c.run("isort fabfile.py")
     # c.run("black fabfile.py")
     c.run("yapf -irp fabfile.py")
