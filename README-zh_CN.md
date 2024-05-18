@@ -16,16 +16,20 @@
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     ```
 
-2. 安装 [Python]。
+2. 安装 [Python]，[pipx]。
 
     ```sh
-    brew install python3
+    brew install pipx
     ```
 
-3. 安装 [Fabric]，[Colorama], [InquirerPy]。[PEP668](https://github.com/pypa/pip/issues/11776#issuecomment-1434892689)
+3. 安装 [Fabric]，[Colorama], [InquirerPy]。
 
     ```sh
-    pip3 install fabric colorama InquirerPy --break-system-packages -i https://mirrors.aliyun.com/pypi/simple/
+    pipx install fabric
+    ```
+
+    ```sh
+    pipx inject fabric colorama InquirerPy
     ```
 
 4. 安装 [Oh My Zsh]，[zsh-autosuggestions]，[zsh-syntax-highlighting]。
@@ -126,6 +130,7 @@ Free is released under the MIT license. [See LICENSE](https://github.com/nyssanc
 [zsh-autosuggestions]: https://github.com/zsh-users/zsh-autosuggestions
 [zsh-syntax-highlighting]: https://github.com/zsh-users/zsh-syntax-highlighting
 [Python]: https://www.python.org
+[pipx]: https://pipx.pypa.io
 [Fabric]: https://www.fabfile.org
 [Colorama]: https://github.com/tartley/colorama
 [InquirerPy]: https://github.com/kazhala/InquirerPy

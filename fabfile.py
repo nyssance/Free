@@ -10,7 +10,7 @@ from InquirerPy.separator import Separator
 
 HTTP_PROXY = ""
 PYPI_MIRROR = "https://mirrors.aliyun.com/pypi/simple/"
-VERSION = "0.11"
+VERSION = "0.12"
 
 
 @task(default=True)
@@ -140,9 +140,9 @@ def update(c, config=False, pypi_mirror=True):
     c.run("brew upgrade")
     hint("update Oh My Zsh")
     c.run("$ZSH/tools/upgrade.sh")  # https://github.com/ohmyzsh/ohmyzsh/wiki/FAQ#how-do-i-manually-update-oh-my-zsh-from-a-script
-    hint("update Fabric, Colorama, InquirerPy")
-    c.run(f"pip3 install -U fabric colorama InquirerPy{f" -i {PYPI_MIRROR}" if pypi_mirror else ""} | grep -v already")
     c.run("pipx upgrade-all")
+    hint("update Colorama, InquirerPy")
+    c.run("pipx inject fabric colorama InquirerPy")
     if Path("/opt/homebrew/bin/node").exists():
         hint("update npm")
         c.run("npm update -g")
