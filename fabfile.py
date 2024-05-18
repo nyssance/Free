@@ -145,7 +145,7 @@ def update(c, config=False):
         hint("update npm")
         c.run("npm update -g")
     cleanup(c)
-    print(f"更新完毕\n如果更新了python, 可能需要重新创建虚拟环境。")
+    print("更新完成。")
 
 
 @task
