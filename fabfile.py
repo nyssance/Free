@@ -106,7 +106,7 @@ def install(c):
 
 @task
 def remove(c):
-    """卸载"""
+    """删除"""
     # if not c.config.sudo.password:
     #     c.run("fab uninstall --prompt-for-sudo-password", echo=False)
     #     return
@@ -194,7 +194,7 @@ LANG = {
     "cleanup": "清理",
     "configure": "配置",
     "install": "安装",
-    "remove": "卸载",
+    "remove": "删除",
     "update": "更新",
     "cancel": "取消",
     "HTTP Proxy": "HTTP 代理"
