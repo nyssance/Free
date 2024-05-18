@@ -103,16 +103,18 @@
 
 ### Python
 
-- [pipx](https://pipx.pypa.io)
 - [Poetry](https://python-poetry.org)
-- PyPI
+- pypa
+  - [pipx]
   - [build](https://github.com/pypa/build)
   - [twine](https://github.com/pypa/twine)
-- Lint
+- lint
   - [Black](https://github.com/psf/black)
   - [isort](https://pycqa.github.io/isort/)
   - [Pylint](https://www.pylint.org)
   - [YAPF](https://github.com/google/yapf)
+- 其他
+  - [tqdm](https://github.com/tqdm/tqdm)
 
 ### TypeScript
 

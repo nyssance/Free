@@ -73,8 +73,8 @@ def install(c):
     if "python" in roles:
         hint("install pipx")
         c.run("brew install pipx")
-        hint("install Poetry, build, twine, Black, isort, Pylint, YAPF")
-        c.run("pipx install poetry build twine black isort pylint yapf")
+        hint("install Poetry, build, twine, Black, isort, Pylint, tqdm, YAPF")
+        c.run("pipx install poetry build twine black isort pylint tqdm yapf")
     if "typescript" in roles:
         hint("install Node.js")
         c.run("brew install node")
@@ -138,9 +138,8 @@ def update(c, config=False):
     c.run("brew upgrade")
     hint("update Oh My Zsh")
     c.run("$ZSH/tools/upgrade.sh")  # https://github.com/ohmyzsh/ohmyzsh/wiki/FAQ#how-do-i-manually-update-oh-my-zsh-from-a-script
-    c.run("pipx upgrade-all")
-    hint("update Colorama, InquirerPy")
-    c.run("pipx inject fabric colorama InquirerPy")
+    hint("update pipx")
+    c.run("pipx upgrade-all --include-injected")
     if Path("/opt/homebrew/bin/node").exists():
         hint("update npm")
         c.run("npm update -g")
