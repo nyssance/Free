@@ -105,18 +105,17 @@ def install(c):
 
 
 @task
-def uninstall(c):
+def remove(c):
     """卸载"""
     # if not c.config.sudo.password:
     #     c.run("fab uninstall --prompt-for-sudo-password", echo=False)
     #     return
-    result = inquirer.select(gettext("uninstall"), ["node", "python", Choice("", gettext("cancel"))]).execute()
+    result = inquirer.select(gettext("remove"), ["node", "python", Choice("", gettext("cancel"))]).execute()
     if result == "python":
-        hint("uninstall Python")
-        c.run("brew uninstall python3")
-        c.sudo("rm -rf /opt/homebrew/lib/python3.12/")
+        hint("remove Python")
+        c.run("brew uninstall pipx python3")
     if result == "node":
-        hint("uninstall Node.js")
+        hint("remove Node.js")
         c.run("brew uninstall node")
         c.sudo("rm -rf /opt/homebrew/lib/node_modules/")
 
@@ -182,7 +181,7 @@ def hint(value: str):
             color = Back.CYAN
         case "install":
             color = Back.GREEN
-        case "uninstall":
+        case "remove":
             color = Back.LIGHTRED_EX
         case "update":
             color = Back.LIGHTBLUE_EX
@@ -195,7 +194,7 @@ LANG = {
     "cleanup": "清理",
     "configure": "配置",
     "install": "安装",
-    "uninstall": "卸载",
+    "remove": "卸载",
     "update": "更新",
     "cancel": "取消",
     "HTTP Proxy": "HTTP 代理"
