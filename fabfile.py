@@ -9,7 +9,6 @@ from InquirerPy.base.control import Choice
 from InquirerPy.separator import Separator
 
 HTTP_PROXY = ""
-PYPI_MIRROR = "https://mirrors.aliyun.com/pypi/simple/"
 VERSION = "0.12"
 
 
@@ -121,7 +120,7 @@ def remove(c):
 
 
 @task(help={"config": "更新 .fabric, .yaml, .zshrc 配置文件"})
-def update(c, config=False, pypi_mirror=True):
+def update(c, config=False):
     """更新"""
     hint(f"update 自己 当前版本 {getcode(VERSION)} 更新在下次执行时生效")
     download(c, "https://raw.githubusercontent.com/nyssance/Free/main/fabfile.py")
