@@ -73,8 +73,8 @@ def install(c):
     if "python" in roles:
         hint("install pipx")
         c.run("brew install pipx")
-        hint("install Poetry, build, twine, Black, isort, Pylint, tqdm, YAPF")
-        c.run("pipx install poetry build twine black isort pylint tqdm yapf")
+        hint("install Poetry, build, twine, Black, isort, Pylint, YAPF")
+        c.run("pipx install poetry build twine black isort pylint yapf")
     if "typescript" in roles:
         hint("install Node.js")
         c.run("brew install node")
