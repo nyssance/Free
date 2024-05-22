@@ -91,7 +91,6 @@ def install(c):
     # 字体
     if "font-cascadia-code" in roles:
         hint("install Cascadia Code")
-        c.run("brew tap homebrew/cask-fonts")
         c.run("brew install --cask font-cascadia-code")
     # 其他
     if "docsify" in roles:
