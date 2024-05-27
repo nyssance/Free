@@ -12,51 +12,51 @@
 
 1. Install [Homebrew].
 
-    ```sh
+    ```shell
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     ```
 
 2. Install [Python], [pipx].
 
-    ```sh
+    ```shell
     brew install pipx
     ```
 
 3. Install [Fabric], [Colorama], [InquirerPy].
 
-    ```sh
+    ```shell
     pipx install fabric
     ```
 
-    ```sh
+    ```shell
     pipx inject fabric colorama InquirerPy
     ```
 
 4. Install [Oh My Zsh], [zsh-autosuggestions], [zsh-syntax-highlighting].
 
-    ```sh
+    ```shell
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
     ```
 
-    ```sh
+    ```shell
     brew install zsh-autosuggestions zsh-syntax-highlighting
     ```
 
 5. Download `fabfile.py`, `.fabric.yaml`, `.zshrc` and run install.
 
-    ```sh
+    ```shell
     cd ~
     ```
 
-    ```sh
+    ```shell
     curl -fsSL -O https://raw.githubusercontent.com/nyssance/Free/main/fabfile.py -o .fabric.yaml https://raw.githubusercontent.com/nyssance/Free/main/fabric.yaml -o .zshrc https://raw.githubusercontent.com/nyssance/Free/main/zshrc
     ```
 
-    ```sh
+    ```shell
     source .zshrc
     ```
 
-    ```sh
+    ```shell
     fab install
     ```
 

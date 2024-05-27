@@ -50,7 +50,6 @@ def install(c):
         Separator("-- Fonts ------"),
         Choice("font-cascadia-code", "Cascadia Code"),
         Separator("-- Others -----"),
-        "docsify",
         "fastlane",
         Separator()
     ],
@@ -93,9 +92,6 @@ def install(c):
         hint("install Cascadia Code")
         c.run("brew install --cask font-cascadia-code")
     # 其他
-    if "docsify" in roles:
-        hint("install docsify-cli")
-        c.run("npm install -g docsify-cli")
     if "fastlane" in roles:
         hint("install fastlane")
         c.run("brew install fastlane")
