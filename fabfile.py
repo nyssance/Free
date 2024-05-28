@@ -42,8 +42,8 @@ def install(c):
         Choice("android", "Android"),
         Choice("ios", "iOS / macOS"),
         Choice("java", "Java"),
+        Choice("js", "JavaScript"),
         Choice("python", "Python"),
-        Choice("typescript", "TypeScript"),
         Separator("-- Database ---"),
         Choice("mysql", "MySQL"),
         Choice("redis", "Redis"),
@@ -69,17 +69,15 @@ def install(c):
     if "java" in roles:
         hint("install OpenJDK")
         c.run("brew install openjdk")
+    if "js" in roles:
+        hint("install Corepack")
+        c.run("brew install corepack")
+        c.run("corepack enable pnpm")
     if "python" in roles:
         hint("install pipx")
         c.run("brew install pipx")
         hint("install Poetry, build, twine, Black, isort, Pylint, YAPF")
         c.run("pipx install poetry build twine black isort pylint yapf")
-    if "typescript" in roles:
-        hint("install Node.js")
-        c.run("brew install node")
-        if "zh_CN" in locale.getlocale():
-            hint("configure npm")
-            c.run("npm config set registry https://registry.npmmirror.com")
     # 数据库
     if "mysql" in roles:
         hint("install MySQL")
@@ -135,9 +133,6 @@ def update(c, config=False):
     c.run("$ZSH/tools/upgrade.sh")  # https://github.com/ohmyzsh/ohmyzsh/wiki/FAQ#how-do-i-manually-update-oh-my-zsh-from-a-script
     hint("update pipx")
     c.run("pipx upgrade-all --include-injected")
-    if Path("/opt/homebrew/bin/node").exists():
-        hint("update npm")
-        c.run("npm update -g")
     cleanup(c)
     print("更新完成。")
 

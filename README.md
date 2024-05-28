@@ -101,6 +101,10 @@
 
 - [OpenJDK](https://openjdk.java.net)
 
+### JavaScript / TypeScript
+
+- [Node.js](https://nodejs.org/en/)
+
 ### Python
 
 - [Poetry](https://python-poetry.org)
@@ -115,10 +119,6 @@
   - [YAPF](https://github.com/google/yapf)
 - others
   - [tqdm](https://github.com/tqdm/tqdm)
-
-### TypeScript
-
-- [Node.js](https://nodejs.org/en/)
 
 ### Database
 

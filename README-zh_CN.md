@@ -101,6 +101,10 @@
 
 - [OpenJDK](https://openjdk.java.net)
 
+### JavaScript / TypeScript
+
+- [Node.js](https://nodejs.org/en/)
+
 ### Python
 
 - [Poetry](https://python-poetry.org)
@@ -116,10 +120,6 @@
 - 其他
   - [tqdm](https://github.com/tqdm/tqdm)
 
-### TypeScript
-
-- [Node.js](https://nodejs.org/en/)
-  
 ### 数据库
 
 - [MySQL](https://www.mysql.com)
