@@ -1,19 +1,49 @@
 {
-    "editor.fontFamily": "'Cascadia Code', Menlo, Monaco, 'Courier New', monospace",
+    "editor.fontFamily": "'Cascadia Code', Consolas, 'Courier New', monospace",
     "editor.fontLigatures": true,
     "editor.fontSize": 17,
+    "editor.formatOnSave": true,
     "editor.linkedEditing": true,
-    "files.autoSave": "afterDelay",
+    "editor.rulers": [120],
+    "editor.wordWrap": "on",
     "files.associations": {
         "*.py-tpl": "python",
         "*.wh": "kotlin"
     },
+    "files.autoSave": "afterDelay",
     "files.eol": "\n",
+    "files.exclude": {
+        ".svelte-kit": true,
+        "node_modules": true,
+        ".eslintignore": true,
+        ".eslintrc.cjs": true,
+        ".gitignore": true,
+        ".npmrc": true,
+        ".prettierignore": true,
+        ".prettierrc": true,
+        "components.json": true,
+        "pnpm-lock.yaml": true,
+        "postcss.config.js": true,
+        "svelte.config.js": true,
+        "tsconfig.json": true,
+        "tailwind.config.ts": true,
+        "vite.config.ts": true
+    },
     "files.insertFinalNewline": true,
     "files.trimFinalNewlines": true,
-    "workbench.activityBar.location": "hidden",
+    "git.autofetch": true,
+    "git.confirmSync": false,
+    "git.enableSmartCommit": true,
+    // "git.openRepositoryInParentFolders": "always",
+    "workbench.activityBar.location": "bottom",
     "workbench.colorTheme": "Visual Studio Dark",
     "workbench.iconTheme": "vscode-icons",
+    "markdown.preview.typographer": true,
+    // "diffEditor.hideUnchangedRegions.enabled": true,
+    "prettier.requireConfig": true,
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.typeCheckingMode": "basic",
+    "svelte.enable-ts-plugin": true,
     "[css]": {
         "editor.defaultFormatter": "vscode.css-language-features"
     },
@@ -24,15 +54,23 @@
         "editor.defaultFormatter": "vscode.typescript-language-features"
     },
     "[json]": {
-        "editor.defaultFormatter": "vscode.json-language-features"
+        "editor.defaultFormatter": "vscode.json-language-features",
+        "editor.formatOnSave": false
     },
+    // "[jsonc]": {
+    //     "editor.defaultFormatter": "esbenp.prettier-vscode"
+    // },
     "[markdown]": {
-        "editor.defaultFormatter": "vscode.markdown-language-features"
+        "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
     },
     "[python]": {
         "editor.formatOnType": true
     },
+    "[svelte]": {
+        "editor.defaultFormatter": "svelte.svelte-vscode"
+    },
     "[typescript]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    }
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    "vscode-edge-devtools.webhintInstallNotification": true
 }
