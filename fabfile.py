@@ -70,8 +70,9 @@ def install(c):
         hint("install OpenJDK")
         c.run("brew install openjdk")
     if "js" in roles:
-        hint("install Corepack")
-        c.run("brew install corepack")
+        hint("install Node.js, corepack")
+        c.run("brew install node")
+        c.run("npm install corepack -g")
         c.run("corepack enable pnpm")
     if "python" in roles:
         hint("install pipx")

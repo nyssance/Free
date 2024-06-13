@@ -103,7 +103,9 @@
 
 ### JavaScript / TypeScript
 
-- [Node.js](https://nodejs.org/en/)
+- [Node.js](https://nodejs.org)
+  - [corepack](https://github.com/nodejs/corepack)
+  - [Yarn](https://yarnpkg.com)
 
 ### Python
 
