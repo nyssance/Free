@@ -18,6 +18,8 @@ def hello(c):
     print(Fore.LIGHTMAGENTA_EX + f"Hello ~ {get_local_user()}")
     print(Fore.LIGHTGREEN_EX + f"{gettext("HTTP Proxy")}: http://{HTTP_PROXY}")
     print(Fore.LIGHTYELLOW_EX + f"Version: {VERSION}")
+    print("Interpreter: ~/.local/pipx/venvs/fabric/bin/python3.12")
+    # "~/pipx/venvs/fabric/Scripts/python.exe")
     print("fab task -h 可以查看 task")
     c.run("fab -l", echo=False)
 
@@ -28,13 +30,6 @@ def cleanup(c):
     hint("cleanup Homebrew")
     c.run("brew cleanup")
     c.run("brew doctor", warn=True)
-
-
-@task
-def interpreter(c):
-    """解释器"""
-    print("~/.local/pipx/venvs/fabric/bin/python3.12")
-    # "~/pipx/venvs/fabric/Scripts/python.exe"
 
 
 @task
