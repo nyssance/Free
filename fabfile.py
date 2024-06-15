@@ -1,5 +1,4 @@
 import locale
-from pathlib import Path
 
 from colorama import Back, Fore, init
 from fabric import task
@@ -29,6 +28,13 @@ def cleanup(c):
     hint("cleanup Homebrew")
     c.run("brew cleanup")
     c.run("brew doctor", warn=True)
+
+
+@task
+def interpreter(c):
+    """解释器"""
+    print("~/.local/pipx/venvs/fabric/bin/python3.12")
+    # "~/pipx/venvs/fabric/Scripts/python.exe"
 
 
 @task
@@ -98,10 +104,17 @@ def install(c):
 
 
 @task
+def reinstall(c):
+    """重装"""
+    hint("pipx reinstall")
+    c.run("pipx reinstall-all")
+
+
+@task
 def remove(c):
     """删除"""
     # if not c.config.sudo.password:
-    #     c.run("fab uninstall --prompt-for-sudo-password", echo=False)
+    #     c.run("fab remove --prompt-for-sudo-password", echo=False)
     #     return
     result = inquirer.select(gettext("remove"), ["node", "python", Choice("", gettext("cancel"))]).execute()
     if result == "python":
@@ -183,6 +196,7 @@ LANG = {
     "cleanup": "清理",
     "configure": "配置",
     "install": "安装",
+    "reinstall": "重装",
     "remove": "删除",
     "update": "更新",
     "cancel": "取消",
