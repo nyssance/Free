@@ -106,7 +106,7 @@ def install(c):
 @task
 def reinstall(c):
     """重装"""
-    hint("pipx reinstall")
+    hint("reinstall pipx")
     c.run("pipx reinstall-all")
 
 
