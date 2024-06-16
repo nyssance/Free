@@ -13,21 +13,29 @@
     "files.autoSave": "afterDelay",
     "files.eol": "\n",
     "files.exclude": {
+        ".idea": true,
         ".svelte-kit": true,
+        ".yarn": true,
+        "build": true,
         "node_modules": true,
+        // "out": true,
         ".eslintignore": true,
         ".eslintrc.cjs": true,
+        ".gitattributes": true,
         ".gitignore": true,
         ".npmrc": true,
         ".prettierignore": true,
         ".prettierrc": true,
+        ".yarnrc.yml": true,
         "components.json": true,
-        "pnpm-lock.yaml": true,
+        "eslint.config.js": true,
+        "forge.config.mjs": true,
         "postcss.config.js": true,
-        "svelte.config.js": true,
+        // "svelte.config.js": true,
         "tsconfig.json": true,
         "tailwind.config.ts": true,
-        "vite.config.ts": true
+        "vite.config.ts": true,
+        "yarn.lock": true
     },
     "files.insertFinalNewline": true,
     "files.trimFinalNewlines": true,
@@ -72,5 +80,6 @@
     "[typescript]": {
         "editor.defaultFormatter": "vscode.typescript-language-features"
     },
-    "vscode-edge-devtools.webhintInstallNotification": true
+    "vscode-edge-devtools.webhintInstallNotification": true,
+    "javascript.validate.enable": false
 }
