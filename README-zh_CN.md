@@ -25,11 +25,7 @@
 3. 安装 [Fabric]，[Colorama], [InquirerPy]。
 
     ```shell
-    pipx install fabric
-    ```
-
-    ```shell
-    pipx inject fabric colorama InquirerPy
+    pipx install fabric & pipx inject fabric colorama InquirerPy
     ```
 
 4. 安装 [Oh My Zsh]，[zsh-autosuggestions]，[zsh-syntax-highlighting]。
