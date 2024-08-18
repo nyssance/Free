@@ -110,12 +110,8 @@
   - [pipx]
   - [build](https://github.com/pypa/build)
   - [twine](https://github.com/pypa/twine)
-- lint
-  - [Black](https://github.com/psf/black)
-  - [isort](https://pycqa.github.io/isort/)
-  - [Pylint](https://www.pylint.org)
-  - [YAPF](https://github.com/google/yapf)
 - others
+  - [Ruff](https://github.com/astral-sh/ruff)
   - [tqdm](https://github.com/tqdm/tqdm)
 
 ### Database

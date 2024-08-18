@@ -78,8 +78,8 @@ def install(c):
     if "python" in roles:
         hint("install pipx")
         c.run("brew install pipx")
-        hint("install Poetry, build, twine, Black, isort, Pylint, YAPF")
-        c.run("pipx install poetry build twine black isort pylint yapf")
+        hint("install Poetry, build, twine, Ruff")
+        c.run("pipx install poetry build twine ruff")
     # 数据库
     if "mysql" in roles:
         hint("install MySQL")
