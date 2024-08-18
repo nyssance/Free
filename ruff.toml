@@ -9,4 +9,4 @@ preview = true
 
 [format]
 skip-magic-trailing-comma = true
-line-ending = "auto"
+line-ending = "lf"
