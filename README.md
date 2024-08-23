@@ -1,8 +1,9 @@
 # Free
 
-[![macOS](https://img.shields.io/badge/macOS-14-blue)](https://www.apple.com/macos/monterey/)
-[![python](https://img.shields.io/badge/python-3.12-blue)](https://www.python.org)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://opensource.org/licenses/MIT)
+[![python](https://img.shields.io/badge/python-3.12-blue)](https://www.python.org)
+[![macOS](https://img.shields.io/badge/macOS-14-blue)](https://www.apple.com/macos/monterey/)
 
 井井兮其有理也 [中文](https://github.com/nyssance/Free/blob/main/README-zh_CN.md)
 

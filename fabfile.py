@@ -38,24 +38,27 @@ def install(c):
     proxy = inquirer.select(gettext("HTTP Proxy"), ["127.0.0.1:7890", Choice("", "No proxy")]).execute()
     if HTTP_PROXY != proxy:
         c.run(f"sed -i '' 's|HTTP_PROXY = \"{HTTP_PROXY}\"|HTTP_PROXY = \"{proxy}\"|' fabfile.py")
-    roles = inquirer.checkbox(gettext("install"), [
-        Separator(),
-        Choice("android", "Android"),
-        Choice("ios", "iOS / macOS"),
-        Choice("java", "Java"),
-        Choice("js", "JavaScript"),
-        Choice("python", "Python"),
-        Separator("-- Database ---"),
-        Choice("mysql", "MySQL"),
-        Choice("redis", "Redis"),
-        Separator("-- Fonts ------"),
-        Choice("font-cascadia-code", "Cascadia Code"),
-        Separator("-- Others -----"),
-        "fastlane",
-        Separator()
-    ],
-                              transformer=lambda result: ", ".join(result) if len(result) > 0 else "",
-                              instruction="(Space for select)").execute()
+    roles = inquirer.checkbox(
+        gettext("install"),
+        [
+            Separator(),
+            Choice("android", "Android"),
+            Choice("ios", "iOS / macOS"),
+            Choice("java", "Java"),
+            Choice("js", "JavaScript"),
+            Choice("python", "Python"),
+            Separator("-- Database ---"),
+            Choice("mysql", "MySQL"),
+            Choice("redis", "Redis"),
+            Separator("-- Fonts ------"),
+            Choice("font-cascadia-code", "Cascadia Code"),
+            Separator("-- Others -----"),
+            "fastlane",
+            Separator()
+        ],
+        transformer=lambda result: ", ".join(result) if len(result) > 0 else "",
+        instruction="(Space for select)"
+    ).execute()
     if not roles:
         return
     # if "zh_CN" in locale.getlocale():
@@ -122,9 +125,9 @@ def remove(c):
 
 
 @task(help={"config": "更新 .fabric, .yaml, .zshrc 配置文件"})
-def update(c, config=False):
-    """更新"""
-    hint(f"update 自己 当前版本 {getcode(VERSION)} 更新在下次执行时生效")
+def upgrade(c, config=False):
+    """升级"""
+    hint(f"upgrade 自己 当前版本 {getcode(VERSION)} 更新在下次执行时生效")
     download(c, "https://raw.githubusercontent.com/nyssance/Free/main/fabfile.py")
     if HTTP_PROXY:
         c.run(f"sed -i '' 's|HTTP_PROXY = \"\"|HTTP_PROXY = \"{HTTP_PROXY}\"|' fabfile.py")
@@ -135,12 +138,12 @@ def update(c, config=False):
         download(c, "https://raw.githubusercontent.com/nyssance/Free/main/zshrc", ".zshrc")
         c.run(f"echo '\n# {gettext("HTTP Proxy")}\nexport HTTPS_PROXY=http://{HTTP_PROXY}' >> .zshrc")
         c.run("zsh -lc 'source .zshrc'")
-    hint("update Homebrew")
+    hint("upgrade Homebrew")
     c.run("brew update")
     c.run("brew upgrade")
-    hint("update Oh My Zsh")
+    hint("upgrade Oh My Zsh")
     c.run("$ZSH/tools/upgrade.sh")  # https://github.com/ohmyzsh/ohmyzsh/wiki/FAQ#how-do-i-manually-update-oh-my-zsh-from-a-script
-    hint("update pipx")
+    hint("upgrade pipx")
     c.run("pipx upgrade-all --include-injected")
     cleanup(c)
     print("更新完成。")
@@ -180,7 +183,7 @@ def hint(value: str):
             color = Back.GREEN
         case "remove":
             color = Back.LIGHTRED_EX
-        case "update":
+        case "upgrade":
             color = Back.LIGHTBLUE_EX
         case _:
             color = Back.LIGHTWHITE_EX
@@ -193,7 +196,7 @@ LANG = {
     "install": "安装",
     "reinstall": "重装",
     "remove": "删除",
-    "update": "更新",
+    "upgrade": "升级",
     "cancel": "取消",
     "HTTP Proxy": "HTTP 代理"
 }
