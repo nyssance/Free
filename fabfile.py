@@ -161,7 +161,6 @@ def download(c, url, name=None, proxy=HTTP_PROXY):
 def format_code(c):
     """格式化代码"""
     c.run("isort fabfile.py")
-    c.run("yapf -irp fabfile.py")
 
 
 def gettext(message: str) -> str:

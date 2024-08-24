@@ -60,7 +60,11 @@
 ## 升级
 
 ```shell
-cd ~ & fab upgrade
+cd ~ 
+```
+
+```shell
+fab upgrade
 ```
 
 ## Vendor
