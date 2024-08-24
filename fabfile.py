@@ -1,23 +1,24 @@
 import locale
 
-from colorama import Back, Fore, init
 from fabric import task
 from fabric.util import get_local_user
 from InquirerPy import inquirer
 from InquirerPy.base.control import Choice
 from InquirerPy.separator import Separator
+from rich.console import Console
 
 HTTP_PROXY = ""
-VERSION = "0.12"
+VERSION = "0.13"
 
 
 @task(default=True)
 def hello(c):
     """Hello"""
-    init(autoreset=True)
-    print(Fore.LIGHTMAGENTA_EX + f"Hello ~ {get_local_user()}")
-    print(Fore.LIGHTGREEN_EX + f"{gettext("HTTP Proxy")}: http://{HTTP_PROXY}")
-    print(Fore.LIGHTYELLOW_EX + f"Version: {VERSION}")
+    console = Console()
+    console.print(f"Hello ~ {get_local_user()}")
+    console.print(f"{gettext("HTTP Proxy")}: http://{HTTP_PROXY}")
+    console.print(f"Version: {VERSION}")
+    # print(Fore.LIGHTYELLOW_EX + f"Version: {VERSION}")
     print("Interpreter: ~/.local/pipx/venvs/fabric/bin/python3.12")
     # "~/pipx/venvs/fabric/Scripts/python.exe")
     print("fab task -h 可以查看 task")
@@ -127,7 +128,7 @@ def remove(c):
 @task(help={"config": "更新 .fabric, .yaml, .zshrc 配置文件"})
 def upgrade(c, config=False):
     """升级"""
-    hint(f"upgrade 自己 当前版本 {getcode(VERSION)} 更新在下次执行时生效")
+    hint(f"upgrade 自己 当前版本 {VERSION} 更新在下次执行时生效")
     download(c, "https://raw.githubusercontent.com/nyssance/Free/main/fabfile.py")
     if HTTP_PROXY:
         c.run(f"sed -i '' 's|HTTP_PROXY = \"\"|HTTP_PROXY = \"{HTTP_PROXY}\"|' fabfile.py")
@@ -160,12 +161,7 @@ def download(c, url, name=None, proxy=HTTP_PROXY):
 def format_code(c):
     """格式化代码"""
     c.run("isort fabfile.py")
-    # c.run("black fabfile.py")
     c.run("yapf -irp fabfile.py")
-
-
-def getcode(message: str) -> str:
-    return Fore.LIGHTGREEN_EX + message + Fore.RESET
 
 
 def gettext(message: str) -> str:
@@ -176,18 +172,19 @@ def hint(value: str):
     operation, message = value.split(" ", 1)
     match operation:
         case "cleanup":
-            color = Back.YELLOW
+            color = "yellow"
         case "configure":
-            color = Back.CYAN
+            color = "cyan"
         case "install":
-            color = Back.GREEN
+            color = "green"
         case "remove":
-            color = Back.LIGHTRED_EX
+            color = "red"
         case "upgrade":
-            color = Back.LIGHTBLUE_EX
+            color = "blue"
         case _:
-            color = Back.LIGHTWHITE_EX
-    print(color + gettext(operation) + Back.RESET, message)
+            color = "white"
+    console = Console()
+    console.print(f"[on {color}]{gettext(operation)}", message)
 
 
 LANG = {

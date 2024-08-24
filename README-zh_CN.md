@@ -23,10 +23,10 @@
     brew install pipx
     ```
 
-3. 安装 [Fabric]，[Colorama], [InquirerPy]。
+3. 安装 [Fabric]，[InquirerPy]，[Rich]。
 
     ```shell
-    pipx install fabric & pipx inject fabric colorama InquirerPy
+    pipx install fabric & pipx inject fabric InquirerPy rich
     ```
 
 4. 安装 [Oh My Zsh]，[zsh-autosuggestions]，[zsh-syntax-highlighting]。
@@ -57,6 +57,12 @@
     fab install
     ```
 
+## 升级
+
+```shell
+cd ~ & fab upgrade
+```
+
 ## Vendor
 
 - [Homebrew]
@@ -67,8 +73,8 @@
 - [Python]
   - [Fabric]
     - [Invoke](https://www.pyinvoke.org)
-  - [Colorama]
   - [InquirerPy]
+  - [Rich]
 
 ## 安装的工具
 
@@ -129,5 +135,5 @@ Free is released under the MIT license. [See LICENSE](https://github.com/nyssanc
 [Python]: https://www.python.org
 [pipx]: https://pipx.pypa.io
 [Fabric]: https://www.fabfile.org
-[Colorama]: https://github.com/tartley/colorama
 [InquirerPy]: https://github.com/kazhala/InquirerPy
+[Rich](https://github.com/Textualize/rich)
