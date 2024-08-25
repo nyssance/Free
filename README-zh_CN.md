@@ -140,4 +140,4 @@ Free is released under the MIT license. [See LICENSE](https://github.com/nyssanc
 [pipx]: https://pipx.pypa.io
 [Fabric]: https://www.fabfile.org
 [InquirerPy]: https://github.com/kazhala/InquirerPy
-[Rich](https://github.com/Textualize/rich)
+[Rich]: https://github.com/Textualize/rich

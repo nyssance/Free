@@ -5,7 +5,7 @@
 [![python](https://img.shields.io/badge/python-3.12-blue)](https://www.python.org)
 [![macOS](https://img.shields.io/badge/macOS-14-blue)](https://www.apple.com/macos/monterey/)
 
-井井兮其有理也 [中文](https://github.com/nyssance/Free/blob/main/README-zh_CN.md)
+井井兮其有理也 [简体中文](https://github.com/nyssance/Free/blob/main/README-zh_CN.md)
 
 ---
 
@@ -140,4 +140,4 @@ Free is released under the MIT license. [See LICENSE](https://github.com/nyssanc
 [pipx]: https://pipx.pypa.io
 [Fabric]: https://www.fabfile.org
 [InquirerPy]: https://github.com/kazhala/InquirerPy
-[Rich]: (https://github.com/Textualize/rich)
+[Rich]: https://github.com/Textualize/rich

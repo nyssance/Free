@@ -17,7 +17,6 @@ def hello(c):
     print(f"Hello ~ {get_local_user()}")
     print(f"{gettext("HTTP Proxy")}: http://{HTTP_PROXY}")
     print(f"Version: {VERSION}")
-    # print(Fore.LIGHTYELLOW_EX + f"Version: {VERSION}")
     print("Interpreter: ~/.local/pipx/venvs/fabric/bin/python3.12")
     # "~/pipx/venvs/fabric/Scripts/python.exe")
     print("fab task -h 可以查看 task")
