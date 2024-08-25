@@ -39,7 +39,7 @@
     brew install zsh-autosuggestions zsh-syntax-highlighting
     ```
 
-5. 下载 `fabfile.py`，`.fabric.yaml`，`.zshrc` 并运行安装。
+5. 下载 `fabfile.py`，`.fabric.yaml`，`.zshrc` 到用户主目录并运行安装。
 
     ```shell
     cd ~
