@@ -26,7 +26,7 @@
 3. 安装 [Fabric]，[InquirerPy]，[Rich]。
 
     ```shell
-    pipx install fabric & pipx inject fabric InquirerPy rich
+    pipx install fabric && pipx inject fabric InquirerPy rich
     ```
 
 4. 安装 [Oh My Zsh]，[zsh-autosuggestions]，[zsh-syntax-highlighting]。
@@ -60,11 +60,7 @@
 ## 升级
 
 ```shell
-cd ~ 
-```
-
-```shell
-fab upgrade
+cd ~ && fab upgrade
 ```
 
 ## Vendor
