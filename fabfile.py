@@ -5,7 +5,7 @@ from fabric.util import get_local_user
 from InquirerPy import inquirer
 from InquirerPy.base.control import Choice
 from InquirerPy.separator import Separator
-from rich.console import Console
+from rich import print
 
 HTTP_PROXY = ""
 VERSION = "0.13"
@@ -14,10 +14,9 @@ VERSION = "0.13"
 @task(default=True)
 def hello(c):
     """Hello"""
-    console = Console()
-    console.print(f"Hello ~ {get_local_user()}")
-    console.print(f"{gettext("HTTP Proxy")}: http://{HTTP_PROXY}")
-    console.print(f"Version: {VERSION}")
+    print(f"Hello ~ {get_local_user()}")
+    print(f"{gettext("HTTP Proxy")}: http://{HTTP_PROXY}")
+    print(f"Version: {VERSION}")
     # print(Fore.LIGHTYELLOW_EX + f"Version: {VERSION}")
     print("Interpreter: ~/.local/pipx/venvs/fabric/bin/python3.12")
     # "~/pipx/venvs/fabric/Scripts/python.exe")
@@ -128,7 +127,7 @@ def remove(c):
 @task(help={"config": "更新 .fabric, .yaml, .zshrc 配置文件"})
 def upgrade(c, config=False):
     """升级"""
-    hint(f"upgrade 自己 当前版本 {VERSION} 更新在下次执行时生效")
+    hint(f"upgrade 自己 当前版本 {VERSION} 变化在下次执行时生效")
     download(c, "https://raw.githubusercontent.com/nyssance/Free/main/fabfile.py")
     if HTTP_PROXY:
         c.run(f"sed -i '' 's|HTTP_PROXY = \"\"|HTTP_PROXY = \"{HTTP_PROXY}\"|' fabfile.py")
@@ -143,11 +142,13 @@ def upgrade(c, config=False):
     c.run("brew update")
     c.run("brew upgrade")
     hint("upgrade Oh My Zsh")
-    c.run("$ZSH/tools/upgrade.sh")  # https://github.com/ohmyzsh/ohmyzsh/wiki/FAQ#how-do-i-manually-update-oh-my-zsh-from-a-script
+    c.run(
+        "$ZSH/tools/upgrade.sh"
+    )  # https://github.com/ohmyzsh/ohmyzsh/wiki/FAQ#how-do-i-manually-update-oh-my-zsh-from-a-script
     hint("upgrade pipx")
     c.run("pipx upgrade-all --include-injected")
     cleanup(c)
-    print("更新完成。")
+    hint("upgrade 完成。")
 
 
 @task
@@ -182,8 +183,7 @@ def hint(value: str):
             color = "blue"
         case _:
             color = "white"
-    console = Console()
-    console.print(f"[on {color}]{gettext(operation)}", message)
+    print(f"[on {color}]{gettext(operation)}", message)
 
 
 LANG = {
