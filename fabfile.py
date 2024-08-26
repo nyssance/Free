@@ -20,7 +20,11 @@ def hello(c):
     print(f"Hello ~ {get_local_user()}")
     print(f"{gettext("HTTP Proxy")}: http://{HTTP_PROXY}")
     print(f"Version: {VERSION}")
-    interpreter: str = ("~\\pipx\\venvs\\fabric\\Scripts\\python.exe" if platform.system() == "Windows" else "~/.local/pipx/venvs/fabric/bin/python3.12")
+    interpreter: str = (
+        "~\\pipx\\venvs\\fabric\\Scripts\\python.exe"
+        if platform.system() == "Windows"
+        else "~/.local/pipx/venvs/fabric/bin/python3.12"
+    )
     print(f"Interpreter: {interpreter}")
     print("fab task -h 可以查看 task")
     c.run("fab -l", echo=False)
@@ -88,11 +92,7 @@ def install(c):
         c.run(f"{PM} install openjdk")
     if "js" in roles:
         hint("install Node.js, corepack")
-        match PM:
-            case "brew":
-                c.run("brew install node")
-            case "scoop":
-                c.run("scoop install nodejs")
+        c.run(f"{PM} install nodejs")
         c.run("npm install corepack -g")
         c.run("corepack enable")
     if "python" in roles:
@@ -138,8 +138,10 @@ def remove(c):
         c.run(f"{PM} uninstall pipx python3")
     if result == "node":
         hint("remove Node.js")
-        c.run("brew uninstall node")
-        c.sudo("rm -rf /opt/homebrew/lib/node_modules/")
+        c.run(f"{PM} uninstall node")
+        match PM:
+            case "brew":
+                c.sudo("rm -rf /opt/homebrew/lib/node_modules/")
 
 
 @task(help={"config": "更新 .fabric, .yaml, .zshrc 配置文件"})
@@ -170,7 +172,7 @@ def upgrade(c, config=False):
     hint("upgrade pipx")
     c.run("pipx upgrade-all --include-injected")
     cleanup(c)
-    hint("upgrade 完成。")
+    hint(f"upgrade {gettext("complete")}")
 
 
 @task
@@ -187,7 +189,8 @@ def format_code(c):
 
 
 def gettext(message: str) -> str:
-    return LANG[message] if "zh_CN" in locale.getlocale() or "Chinese (Simplified)_China" in locale.getlocale() else message.capitalize()
+    chinese = "zh_CN" in locale.getlocale() or "Chinese (Simplified)_China" in locale.getlocale()
+    return ZH_CN[message] if chinese else message.capitalize()
 
 
 def hint(value: str):
@@ -208,7 +211,7 @@ def hint(value: str):
     print(f"[on {color}]{gettext(operation)}", message)
 
 
-LANG = {
+ZH_CN = {
     "cleanup": "清理",
     "configure": "配置",
     "install": "安装",
@@ -216,5 +219,6 @@ LANG = {
     "remove": "删除",
     "upgrade": "升级",
     "cancel": "取消",
+    "complete": "完成",
     "HTTP Proxy": "HTTP 代理",
 }
