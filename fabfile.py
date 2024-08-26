@@ -164,7 +164,7 @@ def upgrade(c, config=False):
             c.run("$ZSH/tools/upgrade.sh")
             # https://github.com/ohmyzsh/ohmyzsh/wiki/FAQ#how-do-i-manually-update-oh-my-zsh-from-a-script
         case "scoop":
-            hint("upgrde Scoop")
+            hint("upgrade Scoop")
             c.run("scoop update --all")
     hint("upgrade pipx")
     c.run("pipx upgrade-all --include-injected")
@@ -186,7 +186,7 @@ def format_code(c):
 
 
 def gettext(message: str) -> str:
-    return LANG[message] if "zh_CN" in locale.getlocale() else message.capitalize()
+    return LANG[message] if ("zh_CN" or "Chinese (Simplified)_China") in locale.getlocale() else message.capitalize()
 
 
 def hint(value: str):
