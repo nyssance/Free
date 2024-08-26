@@ -11,25 +11,15 @@
 
 ## 安装
 
+### macOS
+
 1. 安装 [Homebrew]。
 
     ```shell
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     ```
 
-2. 安装 [Python]，[pipx]。
-
-    ```shell
-    brew install pipx
-    ```
-
-3. 安装 [Fabric]，[InquirerPy]，[Rich]。
-
-    ```shell
-    pipx install fabric && pipx inject fabric InquirerPy rich
-    ```
-
-4. 安装 [Oh My Zsh]，[zsh-autosuggestions]，[zsh-syntax-highlighting]。
+2. 安装 [Oh My Zsh]，[zsh-autosuggestions]，[zsh-syntax-highlighting]。
 
     ```shell
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -39,7 +29,33 @@
     brew install zsh-autosuggestions zsh-syntax-highlighting
     ```
 
-5. 下载 `fabfile.py`，`.fabric.yaml`，`.zshrc` 到用户主目录并运行安装。
+### Windows
+
+1. 安装 [Scoop]
+
+    ```shell
+    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+    ```
+
+    ```shell
+    irm get.scoop.sh -Proxy 'http://<ip:port>' | iex
+    ```
+
+### Python
+
+1. 安装 [Python]，[pipx]。
+
+    ```shell
+    brew install pipx
+    ```
+
+2. 安装 [Fabric]，[InquirerPy]，[Rich]。
+
+    ```shell
+    pipx install fabric && pipx inject fabric InquirerPy rich
+    ```
+
+3. 下载 `fabfile.py`，`.fabric.yaml`，`.zshrc` 到用户主目录并运行安装。
 
     ```shell
     cd ~
@@ -129,6 +145,7 @@ cd ~ && fab upgrade
 Free is released under the MIT license. [See LICENSE](https://github.com/nyssance/Free/blob/main/LICENSE) for details.
 
 [HomeBrew]: https://brew.sh/index_zh-cn
+[Scoop]: https://scoop.sh
 [Oh My Zsh]: https://ohmyz.sh
 [zsh-autosuggestions]: https://github.com/zsh-users/zsh-autosuggestions
 [zsh-syntax-highlighting]: https://github.com/zsh-users/zsh-syntax-highlighting

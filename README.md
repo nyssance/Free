@@ -11,25 +11,15 @@
 
 ## Installation
 
+### macOS
+
 1. Install [Homebrew].
 
     ```shell
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     ```
 
-2. Install [Python], [pipx].
-
-    ```shell
-    brew install pipx
-    ```
-
-3. Install [Fabric], [InquirerPy], [Rich].
-
-    ```shell
-    pipx install fabric && pipx inject fabric InquirerPy rich
-    ```
-
-4. Install [Oh My Zsh], [zsh-autosuggestions], [zsh-syntax-highlighting].
+2. Install [Oh My Zsh], [zsh-autosuggestions], [zsh-syntax-highlighting].
 
     ```shell
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -39,7 +29,33 @@
     brew install zsh-autosuggestions zsh-syntax-highlighting
     ```
 
-5. Download `fabfile.py`, `.fabric.yaml`, `.zshrc` to home directory and run install.
+### Windows
+
+1. Install [Scoop]
+
+    ```shell
+    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+    ```
+
+    ```shell
+    irm get.scoop.sh | iex
+    ```
+
+### Python
+
+1. Install [Python], [pipx].
+
+    ```shell
+    brew install pipx
+    ```
+
+2. Install [Fabric], [InquirerPy], [Rich].
+
+    ```shell
+    pipx install fabric && pipx inject fabric InquirerPy rich
+    ```
+
+3. Download `fabfile.py`, `.fabric.yaml`, `.zshrc` to home directory and run install.
 
     ```shell
     cd ~
@@ -129,6 +145,7 @@ cd ~ && fab upgrade
 Free is released under the MIT license. [See LICENSE](https://github.com/nyssance/Free/blob/main/LICENSE) for details.
 
 [HomeBrew]: https://brew.sh
+[Scoop]: https://scoop.sh
 [Oh My Zsh]: https://ohmyz.sh
 [zsh-autosuggestions]: https://github.com/zsh-users/zsh-autosuggestions
 [zsh-syntax-highlighting]: https://github.com/zsh-users/zsh-syntax-highlighting

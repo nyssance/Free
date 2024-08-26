@@ -1,4 +1,6 @@
 import locale
+import platform
+from typing import Literal
 
 from fabric import task
 from fabric.util import get_local_user
@@ -8,7 +10,8 @@ from InquirerPy.separator import Separator
 from rich import print
 
 HTTP_PROXY = ""
-VERSION = "0.13"
+VERSION = "0.14"
+PM: Literal["brew", "scoop"] = "scoop" if platform.system() == "Windows" else "brew"
 
 
 @task(default=True)
@@ -17,8 +20,8 @@ def hello(c):
     print(f"Hello ~ {get_local_user()}")
     print(f"{gettext("HTTP Proxy")}: http://{HTTP_PROXY}")
     print(f"Version: {VERSION}")
-    print("Interpreter: ~/.local/pipx/venvs/fabric/bin/python3.12")
-    # "~/pipx/venvs/fabric/Scripts/python.exe")
+    interpreter: str = ("~\pipx\venvs\fabric\Scripts\python.exe" if platform.system() == "Windows" else "~/.local/pipx/venvs/fabric/bin/python3.12")
+    print(f"Interpreter: {interpreter}")
     print("fab task -h 可以查看 task")
     c.run("fab -l", echo=False)
 
@@ -27,8 +30,13 @@ def hello(c):
 def cleanup(c):
     """清理"""
     hint("cleanup Homebrew")
-    c.run("brew cleanup")
-    c.run("brew doctor", warn=True)
+    match platform.system():
+        case "Darwin":
+            c.run(f"{PM} cleanup")
+            c.run(f"{PM} doctor", warn=True)
+        case "Windows":
+            c.run(f"{PM} cleanup --all")
+            c.run(f"{PM} checkup")
 
 
 @task
@@ -53,42 +61,52 @@ def install(c):
             Choice("font-cascadia-code", "Cascadia Code"),
             Separator("-- Others -----"),
             "fastlane",
-            Separator()
+            Separator(),
         ],
         transformer=lambda result: ", ".join(result) if len(result) > 0 else "",
-        instruction="(Space for select)"
+        instruction="(Space for select)",
     ).execute()
     if not roles:
         return
     # if "zh_CN" in locale.getlocale():
     #     hint("configure RubyGems")
     #     c.run("gem sources --add https://mirrors.aliyun.com/rubygems/ --remove https://rubygems.org/")
+    if "zoxide":
+        hint("install zoxide")
+        c.run(f"{PM} install zoxide fzf")
     if "android" in roles:
         hint("install ktlint")
-        c.run("brew install ktlint")
+        c.run(f"{PM} install ktlint")
     if "ios" in roles:
         hint("install CocoaPods, SwiftFormat, SwiftLint")
-        c.run("brew install cocoapods swiftformat swiftlint")
+        c.run(f"{PM} install cocoapods swiftformat swiftlint")
     if "java" in roles:
         hint("install OpenJDK")
-        c.run("brew install openjdk")
+        if PM == "scoop":
+            c.run("scoop add bucket java")
+        c.run(f"{PM} install openjdk")
     if "js" in roles:
         hint("install Node.js, corepack")
-        c.run("brew install node")
+        match platform.system():
+            case "Darwin":
+                c.run("brew install node")
+            case "Windows":
+                c.run("scoop install nodejs")
         c.run("npm install corepack -g")
         c.run("corepack enable pnpm")
     if "python" in roles:
         hint("install pipx")
-        c.run("brew install pipx")
+        c.run(f"{PM} install pipx")
+        c.run("scoop install pipx")
         hint("install Poetry, build, twine, Ruff")
         c.run("pipx install poetry build twine ruff")
     # 数据库
     if "mysql" in roles:
         hint("install MySQL")
-        c.run("brew install mysql")
+        c.run(f"{PM} install mysql")
     if "redis" in roles:
         hint("install Redis")
-        c.run("brew install redis")
+        c.run(f"{PM} install redis")
     # 字体
     if "font-cascadia-code" in roles:
         hint("install Cascadia Code")
@@ -96,7 +114,7 @@ def install(c):
     # 其他
     if "fastlane" in roles:
         hint("install fastlane")
-        c.run("brew install fastlane")
+        c.run(f"{PM} install fastlane")
     cleanup(c)
 
 
@@ -116,7 +134,7 @@ def remove(c):
     result = inquirer.select(gettext("remove"), ["node", "python", Choice("", gettext("cancel"))]).execute()
     if result == "python":
         hint("remove Python")
-        c.run("brew uninstall pipx python3")
+        c.run(f"{PM} uninstall pipx python3")
     if result == "node":
         hint("remove Node.js")
         c.run("brew uninstall node")
@@ -137,13 +155,17 @@ def upgrade(c, config=False):
         download(c, "https://raw.githubusercontent.com/nyssance/Free/main/zshrc", ".zshrc")
         c.run(f"echo '\n# {gettext("HTTP Proxy")}\nexport HTTPS_PROXY=http://{HTTP_PROXY}' >> .zshrc")
         c.run("zsh -lc 'source .zshrc'")
-    hint("upgrade Homebrew")
-    c.run("brew update")
-    c.run("brew upgrade")
-    hint("upgrade Oh My Zsh")
-    c.run(
-        "$ZSH/tools/upgrade.sh"
-    )  # https://github.com/ohmyzsh/ohmyzsh/wiki/FAQ#how-do-i-manually-update-oh-my-zsh-from-a-script
+    match PM:
+        case "brew":
+            hint("upgrade Homebrew")
+            c.run("brew update")
+            c.run("brew upgrade")
+            hint("upgrade Oh My Zsh")
+            c.run("$ZSH/tools/upgrade.sh")
+            # https://github.com/ohmyzsh/ohmyzsh/wiki/FAQ#how-do-i-manually-update-oh-my-zsh-from-a-script
+        case "scoop":
+            hint("upgrde Scoop")
+            c.run("scoop update --all")
     hint("upgrade pipx")
     c.run("pipx upgrade-all --include-injected")
     cleanup(c)
@@ -193,5 +215,5 @@ LANG = {
     "remove": "删除",
     "upgrade": "升级",
     "cancel": "取消",
-    "HTTP Proxy": "HTTP 代理"
+    "HTTP Proxy": "HTTP 代理",
 }
