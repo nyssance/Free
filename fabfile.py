@@ -65,19 +65,20 @@ def install(c):
             Separator("-- Fonts ------"),
             Choice("font-cascadia-code", "Cascadia Code"),
             Separator("-- Others -----"),
+            "zoxide",
             "fastlane",
-            Separator(),
+            Separator()
         ],
         transformer=lambda result: ", ".join(result) if len(result) > 0 else "",
-        instruction="(Space for select)",
+        instruction="(Space for select)"
     ).execute()
     if not roles:
         return
     # if "zh_CN" in locale.getlocale():
     #     hint("configure RubyGems")
     #     c.run("gem sources --add https://mirrors.aliyun.com/rubygems/ --remove https://rubygems.org/")
-    if "zoxide":
-        hint("install zoxide")
+    if "zoxide" in roles:
+        hint("install zoxide fzf")
         c.run(f"{PM} install zoxide fzf")
     if "android" in roles:
         hint("install ktlint")
@@ -220,5 +221,5 @@ ZH_CN = {
     "upgrade": "升级",
     "cancel": "取消",
     "complete": "完成",
-    "HTTP Proxy": "HTTP 代理",
+    "HTTP Proxy": "HTTP 代理"
 }
