@@ -20,7 +20,7 @@ def hello(c):
     print(f"Hello ~ {get_local_user()}")
     print(f"{gettext("HTTP Proxy")}: http://{HTTP_PROXY}")
     print(f"Version: {VERSION}")
-    interpreter: str = ("~\pipx\venvs\fabric\Scripts\python.exe" if platform.system() == "Windows" else "~/.local/pipx/venvs/fabric/bin/python3.12")
+    interpreter: str = ("~\\pipx\\venvs\\fabric\\Scripts\\python.exe" if platform.system() == "Windows" else "~/.local/pipx/venvs/fabric/bin/python3.12")
     print(f"Interpreter: {interpreter}")
     print("fab task -h 可以查看 task")
     c.run("fab -l", echo=False)
