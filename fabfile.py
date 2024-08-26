@@ -29,12 +29,13 @@ def hello(c):
 @task
 def cleanup(c):
     """清理"""
-    hint("cleanup Homebrew")
-    match platform.system():
-        case "Darwin":
+    match PM:
+        case "brew":
+            hint("cleanup Homebrew")
             c.run(f"{PM} cleanup")
             c.run(f"{PM} doctor", warn=True)
-        case "Windows":
+        case "scoop":
+            hint("cleanup Scoop")
             c.run(f"{PM} cleanup --all")
             c.run(f"{PM} checkup")
 
@@ -87,13 +88,13 @@ def install(c):
         c.run(f"{PM} install openjdk")
     if "js" in roles:
         hint("install Node.js, corepack")
-        match platform.system():
-            case "Darwin":
+        match PM:
+            case "brew":
                 c.run("brew install node")
-            case "Windows":
+            case "scoop":
                 c.run("scoop install nodejs")
         c.run("npm install corepack -g")
-        c.run("corepack enable pnpm")
+        c.run("corepack enable")
     if "python" in roles:
         hint("install pipx")
         c.run(f"{PM} install pipx")
