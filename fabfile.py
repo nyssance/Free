@@ -98,8 +98,6 @@ def install(c):
         c.run("corepack enable")
     if "python" in roles:
         hint("install pipx")
-        c.run(f"{PM} install pipx")
-        c.run("scoop install pipx")
         hint("install Poetry, build, twine, Ruff")
         c.run("pipx install poetry build twine ruff")
     # 数据库
@@ -137,6 +135,7 @@ def remove(c):
     if result == "python":
         hint("remove Python")
         c.run(f"{PM} uninstall pipx python3")
+        c.run("rm -rfv ~/.local/pipx/shared")
     if result == "node":
         hint("remove Node.js")
         c.run(f"{PM} uninstall node")
