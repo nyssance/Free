@@ -63,7 +63,7 @@ def install(c):
             Choice("mysql", "MySQL"),
             Choice("redis", "Redis"),
             Separator("-- Fonts ------"),
-            Choice("font-cascadia-code", "Cascadia Code"),
+            Choice("font-cascadia-code-nf", "Cascadia Code NF"),
             Separator("-- Others -----"),
             "zoxide",
             "fastlane",
@@ -108,9 +108,9 @@ def install(c):
         hint("install Redis")
         c.run(f"{PM} install redis")
     # 字体
-    if "font-cascadia-code" in roles:
+    if "font-cascadia-code-nf" in roles:
         hint("install Cascadia Code")
-        c.run("brew install --cask font-cascadia-code")
+        c.run("brew install --cask font-cascadia-code-nf")
     # 其他
     if "fastlane" in roles:
         hint("install fastlane")

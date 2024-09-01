@@ -1,9 +1,10 @@
 {
-    "editor.fontFamily": "'Cascadia Code', Consolas, 'Courier New', monospace",
+    "editor.fontFamily": "'Cascadia Code NF', Consolas, 'Courier New', monospace",
     "editor.fontLigatures": true,
     "editor.fontSize": 17,
     "editor.formatOnSave": true,
     "editor.linkedEditing": true,
+    "editor.minimap.enabled": false,
     "editor.rulers": [120],
     "editor.wordWrap": "on",
     "files.associations": {
@@ -14,6 +15,7 @@
     "files.eol": "\n",
     "files.exclude": {
         ".idea": true,
+        ".ruff_cache": true,
         ".svelte-kit": true,
         ".yarn": true,
         "build": true,
@@ -50,7 +52,11 @@
     // "diffEditor.hideUnchangedRegions.enabled": true,
     "prettier.requireConfig": true,
     "python.analysis.autoImportCompletions": true,
+    "python.analysis.inlayHints.functionReturnTypes": true,
+    "python.analysis.inlayHints.pytestParameters": true,
+    "python.analysis.inlayHints.variableTypes": true,
     "python.analysis.typeCheckingMode": "basic",
+    "notebook.formatOnSave.enabled": true,
     "svelte.enable-ts-plugin": true,
     "[css]": {
         "editor.defaultFormatter": "vscode.css-language-features"
@@ -72,6 +78,8 @@
         "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
     },
     "[python]": {
+        "editor.defaultFormatter": "charliermarsh.ruff",
+        "editor.formatOnSave": false,
         "editor.formatOnType": true
     },
     "[svelte]": {

@@ -98,10 +98,6 @@ cd ~ && fab upgrade
 
 - [fastlane](https://fastlane.tools)
 
-### Document
-
-- [docsify](https://docsify.js.org)
-
 ### Font
 
 - [Cascadia Code](https://github.com/microsoft/cascadia-code)

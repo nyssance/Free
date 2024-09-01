@@ -98,10 +98,6 @@ cd ~ && fab upgrade
 
 - [fastlane](https://fastlane.tools)
 
-### 文档
-
-- [docsify](https://docsify.js.org/#/zh-cn/)
-
 ### 字体
 
 - [Cascadia Code](https://github.com/microsoft/cascadia-code)
