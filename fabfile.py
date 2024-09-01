@@ -64,7 +64,7 @@ def install(c):
             Choice("redis", "Redis"),
             Separator("-- Others -----"),
             "fastlane",
-            Choice("fonts", " Cascadia Code NF, JetBrainsMono Nerd Font"),
+            Choice("fonts", f"{gettext("fonts")}: Cascadia Code NF, JetBrainsMono Nerd Font"),
             "zoxide",
             Separator()
         ],
@@ -111,7 +111,7 @@ def install(c):
         hint("install fastlane")
         c.run(f"{PM} install fastlane")
     if "fonts" in roles:
-        hint("install Cascadia Code NF, JetBrainsMono Nerd Font")
+        hint(f"install {gettext("fonts")}: Cascadia Code NF, JetBrainsMono Nerd Font")
         match PM:
             case "brew":
                 c.run(f"{PM} install font-cascadia-code-nf font-jetbrains-mono-nerd-font")
@@ -223,5 +223,6 @@ ZH_CN = {
     "upgrade": "升级",
     "cancel": "取消",
     "complete": "完成",
+    "fonts": "字体",
     "HTTP Proxy": "HTTP 代理"
 }
