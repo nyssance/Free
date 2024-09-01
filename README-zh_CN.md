@@ -19,7 +19,7 @@
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     ```
 
-2. 安装 [Oh My Zsh]，[zsh-autosuggestions]，[zsh-syntax-highlighting]。
+2. 安装 [Oh My Zsh]，[zsh-autosuggestions]，[zsh-syntax-highlighting]，[Powerlevel10k] 可选。
 
     ```shell
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -28,6 +28,8 @@
     ```shell
     brew install zsh-autosuggestions zsh-syntax-highlighting
     ```
+
+    [Powerlevel10k 安装](https://github.com/romkatv/powerlevel10k?tab=readme-ov-file#installation)
 
 ### Windows
 
@@ -146,6 +148,7 @@ Free is released under the MIT license. [See LICENSE](https://github.com/nyssanc
 [Oh My Zsh]: https://ohmyz.sh
 [zsh-autosuggestions]: https://github.com/zsh-users/zsh-autosuggestions
 [zsh-syntax-highlighting]: https://github.com/zsh-users/zsh-syntax-highlighting
+[Powerlevel10k]: https://github.com/romkatv/powerlevel10k
 [Python]: https://www.python.org
 [pipx]: https://pipx.pypa.io
 [Fabric]: https://www.fabfile.org
