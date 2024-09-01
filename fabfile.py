@@ -49,7 +49,10 @@ def install(c):
     """安装"""
     proxy = inquirer.select(gettext("HTTP Proxy"), ["127.0.0.1:7890", Choice("", "No proxy")]).execute()
     if HTTP_PROXY != proxy:
-        c.run(f"sed -i '' 's|HTTP_PROXY = \"{HTTP_PROXY}\"|HTTP_PROXY = \"{proxy}\"|' fabfile.py")
+        if platform.system() == "Windows":
+            print("请手动配置代理")
+        else: 
+            c.run(f"sed -i '' 's|HTTP_PROXY = \"{HTTP_PROXY}\"|HTTP_PROXY = \"{proxy}\"|' fabfile.py")
     roles = inquirer.checkbox(
         gettext("install"),
         [

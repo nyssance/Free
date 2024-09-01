@@ -33,7 +33,7 @@
 
 ### Windows
 
-1. Install [Scoop]
+1. Install [Scoop].
 
     ```shell
     Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
@@ -42,12 +42,10 @@
     ```shell
     irm get.scoop.sh | iex
 
-2. Install [Oh My Posh]
+2. Install [Oh My Posh] Optional.
 
     ```shell
-    scoop install https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/oh-my-posh.json
-    ```
-
+    winget upgrade JanDeDobbeleer.OhMyPosh -s winget
     ```
 
 ### Python
