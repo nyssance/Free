@@ -10,7 +10,7 @@ from InquirerPy.separator import Separator
 from rich import print
 
 HTTP_PROXY = ""
-VERSION = "0.14"
+VERSION = "0.15"
 PM: Literal["brew", "scoop"] = "scoop" if platform.system() == "Windows" else "brew"
 
 
@@ -62,11 +62,10 @@ def install(c):
             Separator("-- Database ---"),
             Choice("mysql", "MySQL"),
             Choice("redis", "Redis"),
-            Separator("-- Fonts ------"),
-            Choice("font-cascadia-code-nf", "Cascadia Code NF"),
             Separator("-- Others -----"),
-            "zoxide",
             "fastlane",
+            Choice("fonts", " Cascadia Code NF, JetBrainsMono Nerd Font"),
+            "zoxide",
             Separator()
         ],
         transformer=lambda result: ", ".join(result) if len(result) > 0 else "",
@@ -89,7 +88,7 @@ def install(c):
     if "java" in roles:
         hint("install OpenJDK")
         if PM == "scoop":
-            c.run("scoop add bucket java")
+            c.run(f"{PM} add bucket java")
         c.run(f"{PM} install openjdk")
     if "js" in roles:
         hint("install Node.js, corepack")
@@ -107,14 +106,18 @@ def install(c):
     if "redis" in roles:
         hint("install Redis")
         c.run(f"{PM} install redis")
-    # 字体
-    if "font-cascadia-code-nf" in roles:
-        hint("install Cascadia Code")
-        c.run("brew install --cask font-cascadia-code-nf")
     # 其他
     if "fastlane" in roles:
         hint("install fastlane")
         c.run(f"{PM} install fastlane")
+    if "fonts" in roles:
+        hint("install Cascadia Code NF, JetBrainsMono Nerd Font")
+        match PM:
+            case "brew":
+                c.run(f"{PM} install font-cascadia-code-nf font-jetbrains-mono-nerd-font")
+            case "scoop":
+                c.run(f"{PM} bucket add nerd-fonts")
+                c.run(f"{PM} install JetBrainsMono-NF CascadiaCode-NF")
     cleanup(c)
 
 
@@ -161,14 +164,14 @@ def upgrade(c, config=False):
     match PM:
         case "brew":
             hint("upgrade Homebrew")
-            c.run("brew update")
-            c.run("brew upgrade")
+            c.run(f"{PM} update")
+            c.run(f"{PM} upgrade")
             hint("upgrade Oh My Zsh")
             c.run("$ZSH/tools/upgrade.sh")
             # https://github.com/ohmyzsh/ohmyzsh/wiki/FAQ#how-do-i-manually-update-oh-my-zsh-from-a-script
         case "scoop":
             hint("upgrade Scoop")
-            c.run("scoop update --all")
+            c.run(f"{PM} update --all")
     hint("upgrade pipx")
     c.run("pipx upgrade-all --include-injected")
     cleanup(c)

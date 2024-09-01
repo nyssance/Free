@@ -101,6 +101,7 @@ cd ~ && fab upgrade
 ### Font
 
 - [Cascadia Code](https://github.com/microsoft/cascadia-code)
+- [Nerd Fonts](https://www.nerdfonts.com)
 
 ### Android
 
