@@ -43,6 +43,12 @@
     irm get.scoop.sh -Proxy 'http://<ip:port>' | iex
     ```
 
+2. 安装 [Oh My Posh]
+
+    ```shell
+    scoop install https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/oh-my-posh.json
+    ```
+
 ### Python
 
 1. 安装 [Python]，[pipx]。
@@ -144,11 +150,14 @@ cd ~ && fab upgrade
 Free is released under the MIT license. [See LICENSE](https://github.com/nyssance/Free/blob/main/LICENSE) for details.
 
 [HomeBrew]: https://brew.sh/index_zh-cn
-[Scoop]: https://scoop.sh
 [Oh My Zsh]: https://ohmyz.sh
 [zsh-autosuggestions]: https://github.com/zsh-users/zsh-autosuggestions
 [zsh-syntax-highlighting]: https://github.com/zsh-users/zsh-syntax-highlighting
 [Powerlevel10k]: https://github.com/romkatv/powerlevel10k
+
+[Scoop]: https://scoop.sh
+[Oh My Posh]: https://ohmyposh.dev
+
 [Python]: https://www.python.org
 [pipx]: https://pipx.pypa.io
 [Fabric]: https://www.fabfile.org

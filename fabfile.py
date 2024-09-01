@@ -76,6 +76,9 @@ def install(c):
     # if "zh_CN" in locale.getlocale():
     #     hint("configure RubyGems")
     #     c.run("gem sources --add https://mirrors.aliyun.com/rubygems/ --remove https://rubygems.org/")
+    if "oh-my-posh" in roles:
+        c.run("scoop install https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/oh-my-posh.json")
+        c.run("oh-my-posh font install meslo")
     if "zoxide" in roles:
         hint("install zoxide fzf")
         c.run(f"{PM} install zoxide fzf")
@@ -117,7 +120,7 @@ def install(c):
                 c.run(f"{PM} install font-cascadia-code-nf font-jetbrains-mono-nerd-font")
             case "scoop":
                 c.run(f"{PM} bucket add nerd-fonts")
-                c.run(f"{PM} install JetBrainsMono-NF CascadiaCode-NF")
+                c.run(f"{PM} install CascadiaCode-NF JetBrainsMono-NF")
     cleanup(c)
 
 

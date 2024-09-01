@@ -41,6 +41,13 @@
 
     ```shell
     irm get.scoop.sh | iex
+
+2. Install [Oh My Posh]
+
+    ```shell
+    scoop install https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/oh-my-posh.json
+    ```
+
     ```
 
 ### Python
@@ -143,14 +150,17 @@ cd ~ && fab upgrade
 
 Free is released under the MIT license. [See LICENSE](https://github.com/nyssance/Free/blob/main/LICENSE) for details.
 
-[HomeBrew]: https://brew.sh
-[Scoop]: https://scoop.sh
+[HomeBrew]: https://brew.sh/index_zh-cn
 [Oh My Zsh]: https://ohmyz.sh
 [zsh-autosuggestions]: https://github.com/zsh-users/zsh-autosuggestions
 [zsh-syntax-highlighting]: https://github.com/zsh-users/zsh-syntax-highlighting
 [Powerlevel10k]: https://github.com/romkatv/powerlevel10k
-[Python]: <https://www.python.org>
-[pipx]: <https://pipx.pypa.io>
-[Fabric]: <https://www.fabfile.org>
-[InquirerPy]: <https://github.com/kazhala/InquirerPy>
-[Rich]: <https://github.com/Textualize/rich>
+
+[Scoop]: https://scoop.sh
+[Oh My Posh]: https://ohmyposh.dev
+
+[Python]: https://www.python.org
+[pipx]: https://pipx.pypa.io
+[Fabric]: https://www.fabfile.org
+[InquirerPy]: https://github.com/kazhala/InquirerPy
+[Rich]: https://github.com/Textualize/rich
