@@ -49,6 +49,16 @@
     winget upgrade JanDeDobbeleer.OhMyPosh -s winget
     ```
 
+3. 安装 [Terminal-Icons] 可选。
+
+    ```shell
+    Install-Module -Name Terminal-Icons -Repository PSGallery
+    ```
+
+    ```shell
+    Import-Module -Name Terminal-Icons
+    ```
+
 ### Python
 
 1. 安装 [Python]，[pipx]。
@@ -157,6 +167,7 @@ Free is released under the MIT license. [See LICENSE](https://github.com/nyssanc
 
 [Scoop]: https://scoop.sh
 [Oh My Posh]: https://ohmyposh.dev
+[Terminal-Icons]: https://github.com/devblackops/Terminal-Icons
 
 [Python]: https://www.python.org
 [pipx]: https://pipx.pypa.io
