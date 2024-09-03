@@ -10,8 +10,8 @@ from InquirerPy.base.control import Choice
 from InquirerPy.separator import Separator
 from rich import print
 
-HTTP_PROXY = ""
-VERSION = "0.16"
+HTTP_PROXY: str = ""
+VERSION = "0.17"
 PM: Literal["brew", "scoop"] = "scoop" if platform.system() == "Windows" else "brew"
 
 if Path.cwd() != Path.home():
@@ -160,14 +160,15 @@ def remove(c):
 def upgrade(c, config=False):
     """升级"""
     hint(f"upgrade 自己 当前版本 {VERSION} 变化在下次执行时生效")
-    download(c, "https://raw.githubusercontent.com/nyssance/Free/main/fabfile.py")
+    remote = "https://raw.githubusercontent.com/nyssance/Free/main/"
+    download(c, f"{remote}fabfile.py")
     if HTTP_PROXY:
         c.run(f"sed -i '' 's|HTTP_PROXY = \"\"|HTTP_PROXY = \"{HTTP_PROXY}\"|' fabfile.py")
     if config:
         hint("configure .fabric.yaml")
-        download(c, "https://raw.githubusercontent.com/nyssance/Free/main/fabric.yaml", ".fabric.yaml")
+        download(c, f"{remote}fabric.yaml", ".fabric.yaml")
         hint("configure .zshrc")
-        download(c, "https://raw.githubusercontent.com/nyssance/Free/main/zshrc", ".zshrc")
+        download(c, f"{remote}zshrc", ".zshrc")
         c.run(f"echo '\n# {gettext("HTTP Proxy")}\nexport HTTPS_PROXY=http://{HTTP_PROXY}' >> .zshrc")
         c.run("zsh -lc 'source .zshrc'")
     match PM:
