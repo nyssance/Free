@@ -1,5 +1,6 @@
 import locale
 import platform
+from pathlib import Path
 from typing import Literal
 
 from fabric import task
@@ -10,9 +11,11 @@ from InquirerPy.separator import Separator
 from rich import print
 
 HTTP_PROXY = ""
-VERSION = "0.15"
+VERSION = "0.16"
 PM: Literal["brew", "scoop"] = "scoop" if platform.system() == "Windows" else "brew"
 
+if Path.cwd() != Path.home():
+    raise Exception(f"Please `cd ~`.")
 
 @task(default=True)
 def hello(c):
@@ -178,6 +181,7 @@ def upgrade(c, config=False):
         case "scoop":
             hint("upgrade Scoop")
             c.run(f"{PM} update --all")
+            c.run("winget upgrade")
     hint("upgrade pipx")
     c.run("pipx upgrade-all --include-injected")
     cleanup(c)

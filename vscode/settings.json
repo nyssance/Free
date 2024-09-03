@@ -46,7 +46,7 @@
     "git.enableSmartCommit": true,
     // "git.openRepositoryInParentFolders": "always",
     "terminal.integrated.enablePersistentSessions": false,
-    "terminal.integrated.fontFamily": "MesloLGM Nerd Font",
+    "terminal.integrated.fontFamily": "MesloLGS NF, MesloLGM Nerd Font",
     "workbench.activityBar.location": "bottom",
     "workbench.colorTheme": "Visual Studio Dark",
     "workbench.iconTheme": "vscode-icons",
