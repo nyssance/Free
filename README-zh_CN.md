@@ -150,7 +150,6 @@ cd ~ && fab upgrade
   - [twine](https://github.com/pypa/twine)
 - 其他
   - [Ruff](https://github.com/astral-sh/ruff)
-  - [tqdm](https://github.com/tqdm/tqdm)
 
 ### 数据库
 

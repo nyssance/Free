@@ -149,7 +149,6 @@ cd ~ && fab upgrade
   - [twine](https://github.com/pypa/twine)
 - others
   - [Ruff](https://github.com/astral-sh/ruff)
-  - [tqdm](https://github.com/tqdm/tqdm)
 
 ### Database
 
