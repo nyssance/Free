@@ -101,10 +101,11 @@ def install(c):
         c.run(f"{PM} install openjdk")
     if "js" in roles:
         hint("install Bun")
-        if platform.system() == "Windows":
-            c.run('powershell -c "irm bun.sh/install.ps1 | iex"')
-        else:
-            c.run("curl -fsSL https://bun.sh/install | bash")
+        match PM:
+            case "brew":
+                c.run(f"{PM} install oven-sh/bun/bun")
+            case "scoop":
+                c.run(f"{PM} install bun")
     if "python" in roles:
         hint("install pipx")
         hint("install Poetry, build, twine, Ruff")
