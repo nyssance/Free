@@ -1,5 +1,6 @@
 debug: true
 run:
   echo: true
+  encoding: utf-8
   pty: true
   replace_env: false
