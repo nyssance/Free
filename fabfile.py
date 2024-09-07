@@ -176,9 +176,6 @@ def upgrade(c, config=False):
             hint("upgrade Homebrew")
             c.run(f"{PM} update")
             c.run(f"{PM} upgrade")
-            hint("upgrade Oh My Zsh")
-            c.run("$ZSH/tools/upgrade.sh")
-            # https://github.com/ohmyzsh/ohmyzsh/wiki/FAQ#how-do-i-manually-update-oh-my-zsh-from-a-script
         case "scoop":
             hint("upgrade Scoop")
             c.run(f"{PM} update --all")

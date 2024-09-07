@@ -8,8 +8,8 @@ source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # zoxide
 eval "$(zoxide init zsh)"
 
-# Oh My Zsh
+# Oh My Zsh <https://github.com/ohmyzsh/ohmyzsh/wiki/Settings#main-settings>
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME=steeef
-plugins=(fabric git history macos poetry)
+plugins=(fabric git history macos poetry vscode)
 source $ZSH/oh-my-zsh.sh
