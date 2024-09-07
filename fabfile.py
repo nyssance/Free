@@ -11,7 +11,7 @@ from InquirerPy.separator import Separator
 from rich import print
 
 HTTP_PROXY: str = ""
-VERSION = "0.17"
+VERSION = "0.18"
 PM: Literal["brew", "scoop"] = "scoop" if platform.system() == "Windows" else "brew"
 
 if Path.cwd() != Path.home():
@@ -63,7 +63,7 @@ def install(c):
             Choice("android", "Android"),
             Choice("ios", "iOS / macOS"),
             Choice("java", "Java"),
-            Choice("js", "JavaScript"),
+            Choice("js", "JavaScript & TypeScript"),
             Choice("python", "Python"),
             Separator("-- Database ---"),
             Choice("mysql", "MySQL"),
@@ -100,10 +100,11 @@ def install(c):
             c.run(f"{PM} add bucket java")
         c.run(f"{PM} install openjdk")
     if "js" in roles:
-        hint("install Node.js, corepack")
-        c.run(f"{PM} install nodejs")
-        c.run("npm install corepack -g")
-        c.run("corepack enable")
+        hint("install Bun")
+        if platform.system() == "Windows":
+            c.run('powershell -c "irm bun.sh/install.ps1 | iex"')
+        else:
+            c.run("curl -fsSL https://bun.sh/install | bash")
     if "python" in roles:
         hint("install pipx")
         hint("install Poetry, build, twine, Ruff")
@@ -143,17 +144,11 @@ def remove(c):
     # if not c.config.sudo.password:
     #     c.run("fab remove --prompt-for-sudo-password", echo=False)
     #     return
-    result = inquirer.select(gettext("remove"), ["node", "python", Choice("", gettext("cancel"))]).execute()
+    result = inquirer.select(gettext("remove"), ["python", Choice("", gettext("cancel"))]).execute()
     if result == "python":
         hint("remove Python")
         c.run(f"{PM} uninstall pipx python3")
         c.run("rm -rfv ~/.local/pipx/shared")
-    if result == "node":
-        hint("remove Node.js")
-        c.run(f"{PM} uninstall node")
-        match PM:
-            case "brew":
-                c.sudo("rm -rf /opt/homebrew/lib/node_modules/")
 
 
 @task(help={"config": "更新 .fabric, .yaml, .zshrc 配置文件"})

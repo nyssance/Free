@@ -134,11 +134,9 @@ cd ~ && fab upgrade
 
 - [OpenJDK](https://openjdk.java.net)
 
-### JavaScript / TypeScript
+### JavaScript & TypeScript
 
-- [Node.js](https://nodejs.org)
-  - [corepack](https://github.com/nodejs/corepack)
-  - [Yarn](https://yarnpkg.com)
+- [Bun](https://bun.sh)
 
 ### Python
 
