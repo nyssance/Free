@@ -174,7 +174,7 @@ def upgrade(c, config=False):
         case "scoop":
             hint("upgrade Scoop")
             c.run(f"{PM} update --all")
-            c.run("winget upgrade")
+            c.run("winget upgrade", encoding="utf-8")
     hint("upgrade pipx")
     c.run("pipx upgrade-all --include-injected")
     cleanup(c)
