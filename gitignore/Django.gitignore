@@ -195,7 +195,6 @@ Temporary Items
 /tmp/
 dump.rdb
 /node_modules/
-package-lock.json
 
 # [JetBrains](https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore)
 # User-specific stuff
