@@ -2,7 +2,6 @@
     "editor.fontFamily": "'Cascadia Code NF', Consolas, 'Courier New', monospace",
     "editor.fontLigatures": true,
     "editor.fontSize": 17,
-    "editor.formatOnSave": true,
     "editor.linkedEditing": true,
     "editor.minimap.enabled": false,
     "editor.rulers": [
@@ -13,8 +12,13 @@
     "explorer.decorations.colors": false,
     "explorer.excludeGitIgnore": true,
     "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.expand": false,
+    "explorer.fileNesting.patterns": {
+        ".gitIgnore": ".gitattributes"
+    },
+    "diffEditor.hideUnchangedRegions.enabled": true,
     "files.autoSave": "afterDelay",
-    "files.autoSaveWhenNoErrors": true,
+    "files.eol": "\n",
     "files.insertFinalNewline": true,
     "files.readonlyFromPermissions": true,
     "files.trimFinalNewlines": true,
@@ -30,24 +34,25 @@
     "workbench.activityBar.location": "bottom",
     "workbench.colorTheme": "Visual Studio Dark",
     "workbench.iconTheme": "vscode-icons",
+    "workbench.startupEditor": "none",
+    // "[css]": {
+    //     "editor.defaultFormatter": "vscode.css-language-features"
+    // },
+    "[html]": {
+        "editor.defaultFormatter": "vscode.html-language-features"
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
     "[markdown]": {
         "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
-    },
-    "[python]": {
-        "editor.defaultFormatter": "charliermarsh.ruff",
-        "editor.formatOnSave": false,
-        "editor.formatOnType": true
     },
     "[toml]": {
         "editor.defaultFormatter": "tamasfe.even-better-toml"
     },
+    "evenBetterToml.formatter.columnWidth": 120,
     "markdown.preview.typographer": true,
-    // "diffEditor.hideUnchangedRegions.enabled": true,
-    "python.analysis.autoImportCompletions": true,
-    "python.analysis.inlayHints.functionReturnTypes": true,
-    "python.analysis.inlayHints.pytestParameters": true,
-    "python.analysis.inlayHints.variableTypes": true,
-    "python.analysis.typeCheckingMode": "basic",
-    "notebook.formatOnSave.enabled": true,
-    "vscode-edge-devtools.webhintInstallNotification": true
+    "vscode-edge-devtools.webhintInstallNotification": true,
+    "vsicons.presets.tsOfficial": true,
+    "vsicons.presets.jsOfficial": true
 }
