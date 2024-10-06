@@ -15,7 +15,8 @@ VERSION = "0.18"
 PM: Literal["brew", "scoop"] = "scoop" if platform.system() == "Windows" else "brew"
 
 if Path.cwd() != Path.home():
-    raise Exception(f"Please `cd ~`.")
+    raise Exception("Please `cd ~`.")
+
 
 @task(default=True)
 def hello(c):
@@ -54,7 +55,7 @@ def install(c):
     if HTTP_PROXY != proxy:
         if platform.system() == "Windows":
             print("请手动配置代理")
-        else: 
+        else:
             c.run(f"sed -i '' 's|HTTP_PROXY = \"{HTTP_PROXY}\"|HTTP_PROXY = \"{proxy}\"|' fabfile.py")
     roles = inquirer.checkbox(
         gettext("install"),
@@ -186,7 +187,7 @@ def upgrade(c, config=False):
 def download(c, url, name=None, proxy=HTTP_PROXY):
     """下载"""
     command = f"{url} > {name}" if name else f"-O {url}"
-    c.run(f"curl -fsSL{f" -x {proxy}" if proxy else ""} {command}")
+    c.run(f"curl -fsSL {f"-x {proxy} " if proxy else ""}{command}")
 
 
 @task
