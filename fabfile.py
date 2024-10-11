@@ -35,7 +35,7 @@ def hello(c):
     c.run("fab -l", echo=False)
 
 
-@task(alias="clean")
+@task(aliases=["clean"])
 def cleanup(c):
     """清理"""
     match PM:
@@ -191,7 +191,7 @@ def download(c, url, name=None, proxy=HTTP_PROXY):
     c.run(f"curl -fsSL {f"-x {proxy} " if proxy else ""}{command}")
 
 
-@task(alias="format")
+@task(aliases=["format"])
 def format_code(c):
     """格式化代码"""
     c.run("isort fabfile.py")
