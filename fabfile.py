@@ -154,7 +154,7 @@ def remove(c):
         c.run("rm -rfv ~/.local/pipx/shared")
 
 
-@task(help={"config": "更新 .fabric, .yaml, .zshrc 配置文件"})
+@task(help={"config": "更新 .fabric.yaml, .zshrc 配置文件"})
 def upgrade(c, config=False):
     """升级"""
     hint(f"upgrade 自己 当前版本 {VERSION} 变化在下次执行时生效")
