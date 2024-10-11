@@ -11,7 +11,7 @@ from InquirerPy.separator import Separator
 from rich import print
 
 HTTP_PROXY: str = ""
-VERSION = "0.18"
+VERSION = "0.19"
 PM: Literal["brew", "scoop"] = "scoop" if platform.system() == "Windows" else "brew"
 
 if Path.cwd() != Path.home():
@@ -24,17 +24,18 @@ def hello(c):
     print(f"Hello ~ {get_local_user()}")
     print(f"{gettext("HTTP Proxy")}: http://{HTTP_PROXY}")
     print(f"Version: {VERSION}")
-    interpreter: str = (
+    interpreter = (
         "~\\pipx\\venvs\\fabric\\Scripts\\python.exe"
         if platform.system() == "Windows"
         else "~/.local/pipx/venvs/fabric/bin/python3.13"
     )
     print(f"Interpreter: {interpreter}")
+    print("Venv: ~/Library/Caches/pypoetry/virtualenvs")
     print("fab task -h 可以查看 task")
     c.run("fab -l", echo=False)
 
 
-@task
+@task(alias="clean")
 def cleanup(c):
     """清理"""
     match PM:
@@ -190,7 +191,7 @@ def download(c, url, name=None, proxy=HTTP_PROXY):
     c.run(f"curl -fsSL {f"-x {proxy} " if proxy else ""}{command}")
 
 
-@task
+@task(alias="format")
 def format_code(c):
     """格式化代码"""
     c.run("isort fabfile.py")
