@@ -27,7 +27,7 @@ def hello(c):
     interpreter: str = (
         "~\\pipx\\venvs\\fabric\\Scripts\\python.exe"
         if platform.system() == "Windows"
-        else "~/.local/pipx/venvs/fabric/bin/python3.12"
+        else "~/.local/pipx/venvs/fabric/bin/python3.13"
     )
     print(f"Interpreter: {interpreter}")
     print("fab task -h 可以查看 task")
