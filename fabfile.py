@@ -10,7 +10,7 @@ from InquirerPy.base.control import Choice
 from InquirerPy.separator import Separator
 from rich import print
 
-HTTP_PROXY: str = ""
+HTTP_PROXY = ""
 VERSION = "0.19"
 PM: Literal["brew", "scoop"] = "scoop" if platform.system() == "Windows" else "brew"
 
