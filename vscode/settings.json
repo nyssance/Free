@@ -51,6 +51,9 @@
         "editor.defaultFormatter": "tamasfe.even-better-toml"
     },
     "evenBetterToml.formatter.columnWidth": 120,
+    // "livePreview.autoRefreshPreview": "On Changes to Saved Files",
+    // "livePreview.debugOnExternalPreview": true,
+    "livePreview.openPreviewTarget": "External Browser",
     "markdown.preview.typographer": true,
     "vscode-edge-devtools.webhintInstallNotification": true,
     "vsicons.presets.tsOfficial": true,
