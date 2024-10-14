@@ -11,7 +11,7 @@ from InquirerPy.separator import Separator
 from rich import print
 
 HTTP_PROXY = ""
-VERSION = "0.19"
+VERSION = "0.20"
 PM: Literal["brew", "scoop"] = "scoop" if platform.system() == "Windows" else "brew"
 
 if Path.cwd() != Path.home():
@@ -109,9 +109,14 @@ def install(c):
             case "scoop":
                 c.run(f"{PM} install bun")
     if "python" in roles:
-        hint("install pipx")
-        hint("install Poetry, build, twine, Ruff")
-        c.run("pipx install poetry build twine ruff")
+        hint("install uv")
+        match PM:
+            case "brew":
+                c.run("curl -LsSf https://astral.sh/uv/install.sh | sh")
+            case "scoop":
+                c.run('powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"')
+        hint("install Ruff")
+        c.run("uv tool install ruff")
     # 数据库
     if "mysql" in roles:
         hint("install MySQL")
@@ -180,6 +185,9 @@ def upgrade(c, config=False):
             c.run("winget upgrade")
     hint("upgrade pipx")
     c.run("pipx upgrade-all --include-injected")
+    hint("upgrade uv")
+    c.run("uv self update")
+    c.run("uv tool upgrade --all")
     cleanup(c)
     hint(f"upgrade {gettext("complete")}")
 

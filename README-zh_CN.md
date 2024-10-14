@@ -141,13 +141,11 @@ cd ~ && fab upgrade
 
 ### Python
 
-- [Poetry](https://python-poetry.org)
 - pypa
   - [pipx]
-  - [build](https://github.com/pypa/build)
-  - [twine](https://github.com/pypa/twine)
-- 其他
-  - [Ruff](https://github.com/astral-sh/ruff)
+- [Astral](https://astral.sh)
+  - [uv](https://astral.sh/uv)
+  - [Ruff](https://astral.sh/ruff)
 
 ### 数据库
 
