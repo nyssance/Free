@@ -11,7 +11,7 @@ from InquirerPy.separator import Separator
 from rich import print
 
 HTTP_PROXY = ""
-VERSION = "0.20"
+VERSION = "0.21"
 PM: Literal["brew", "scoop"] = "scoop" if platform.system() == "Windows" else "brew"
 
 if Path.cwd() != Path.home():
@@ -24,7 +24,8 @@ def hello(c):
     print(f"Hello ~ {get_local_user()}")
     print(f"{gettext("HTTP Proxy")}: http://{HTTP_PROXY}")
     print(f"Version: {VERSION}")
-    print("Interpreter: ~/.local/share/uv/tools/fabric")
+    uv_tools = "~\\AppData\\Roaming\\uv\\tools\\" if platform.system() == "Windows" else "~/.local/share/uv/tools/"
+    print(f"Interpreter: {uv_tools}fabric")
     print("fab task -h 可以查看 task")
     c.run("fab -l", echo=False)
 
