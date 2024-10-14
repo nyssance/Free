@@ -29,6 +29,12 @@
     brew install zsh-autosuggestions zsh-syntax-highlighting
     ```
 
+3. 安装 [uv]。
+
+    ```shell
+    c.run("curl -LsSf https://astral.sh/uv/install.sh | sh")
+    ```
+
     [Powerlevel10k 安装](https://github.com/romkatv/powerlevel10k?tab=readme-ov-file#installation)
 
 ### Windows
@@ -43,13 +49,19 @@
     irm get.scoop.sh -Proxy 'http://<ip:port>' | iex
     ```
 
-2. 安装 [Oh My Posh] 可选。
+2. 安装 [uv]。
+
+    ```shell
+    c.run("curl -LsSf https://astral.sh/uv/install.sh | sh")
+    ```
+
+3. 安装 [Oh My Posh] 可选。
 
     ```shell
     winget upgrade JanDeDobbeleer.OhMyPosh -s winget
     ```
 
-3. 安装 [Terminal-Icons] 可选。
+4. 安装 [Terminal-Icons] 可选。
 
     ```shell
     Install-Module -Name Terminal-Icons -Repository PSGallery
@@ -61,16 +73,16 @@
 
 ### Python
 
-1. 安装 [Python]，[pipx]。
+1. 安装 [Python]。
 
     ```shell
-    brew install pipx
+    brew install python
     ```
 
 2. 安装 [Fabric]，[InquirerPy]，[Rich]。
 
     ```shell
-    pipx install fabric && pipx inject fabric InquirerPy rich
+    uv tool install --with InquirerPy --with rich fabric
     ```
 
 3. 下载 `fabfile.py`，`.fabric.yaml`，`.zshrc` 到用户主目录并运行安装。
@@ -141,10 +153,8 @@ cd ~ && fab upgrade
 
 ### Python
 
-- pypa
-  - [pipx]
 - [Astral](https://astral.sh)
-  - [uv](https://astral.sh/uv)
+  - [uv]
   - [Ruff](https://astral.sh/ruff)
 
 ### 数据库
@@ -165,7 +175,7 @@ Free is released under the MIT license. [See LICENSE](https://github.com/nyssanc
 [Terminal-Icons]: https://github.com/devblackops/Terminal-Icons
 
 [Python]: https://www.python.org
-[pipx]: https://pipx.pypa.io
+[uv]: https://astral.sh/uv
 [Fabric]: https://www.fabfile.org
 [InquirerPy]: https://github.com/kazhala/InquirerPy
 [Rich]: https://github.com/Textualize/rich

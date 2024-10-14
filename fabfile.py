@@ -24,13 +24,7 @@ def hello(c):
     print(f"Hello ~ {get_local_user()}")
     print(f"{gettext("HTTP Proxy")}: http://{HTTP_PROXY}")
     print(f"Version: {VERSION}")
-    interpreter = (
-        "~\\pipx\\venvs\\fabric\\Scripts\\python.exe"
-        if platform.system() == "Windows"
-        else "~/.local/pipx/venvs/fabric/bin/python3.13"
-    )
-    print(f"Interpreter: {interpreter}")
-    print("Venv: ~/Library/Caches/pypoetry/virtualenvs")
+    print("Interpreter: ~/.local/share/uv/tools/fabric")
     print("fab task -h 可以查看 task")
     c.run("fab -l", echo=False)
 
@@ -109,12 +103,6 @@ def install(c):
             case "scoop":
                 c.run(f"{PM} install bun")
     if "python" in roles:
-        hint("install uv")
-        match PM:
-            case "brew":
-                c.run("curl -LsSf https://astral.sh/uv/install.sh | sh")
-            case "scoop":
-                c.run('powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"')
         hint("install Ruff")
         c.run("uv tool install ruff")
     # 数据库
@@ -140,13 +128,6 @@ def install(c):
 
 
 @task
-def reinstall(c):
-    """重装"""
-    hint("reinstall pipx")
-    c.run("pipx reinstall-all")
-
-
-@task
 def remove(c):
     """删除"""
     # if not c.config.sudo.password:
@@ -155,8 +136,7 @@ def remove(c):
     result = inquirer.select(gettext("remove"), ["python", Choice("", gettext("cancel"))]).execute()
     if result == "python":
         hint("remove Python")
-        c.run(f"{PM} uninstall pipx python3")
-        c.run("rm -rfv ~/.local/pipx/shared")
+        c.run(f"{PM} uninstall python")
 
 
 @task(help={"config": "更新 .fabric.yaml, .zshrc 配置文件"})
@@ -183,8 +163,6 @@ def upgrade(c, config=False):
             hint("upgrade Scoop")
             c.run(f"{PM} update --all")
             c.run("winget upgrade")
-    hint("upgrade pipx")
-    c.run("pipx upgrade-all --include-injected")
     hint("upgrade uv")
     c.run("uv self update")
     c.run("uv tool upgrade --all")

@@ -29,6 +29,12 @@
     brew install zsh-autosuggestions zsh-syntax-highlighting
     ```
 
+3. Install [uv].
+
+    ```shell
+    c.run("curl -LsSf https://astral.sh/uv/install.sh | sh")
+    ```
+
     [Powerlevel10k installation](https://github.com/romkatv/powerlevel10k?tab=readme-ov-file#installation)
 
 ### Windows
@@ -42,13 +48,19 @@
     ```shell
     irm get.scoop.sh | iex
 
-2. Install [Oh My Posh] Optional.
+2. Install [uv].
+
+    ```shell
+    c.run("curl -LsSf https://astral.sh/uv/install.sh | sh")
+    ```
+
+3. Install [Oh My Posh] Optional.
 
     ```shell
     winget upgrade JanDeDobbeleer.OhMyPosh -s winget
     ```
 
-3. Install [Terminal-Icons] Optional.
+4. Install [Terminal-Icons] Optional.
 
     ```shell
     Install-Module -Name Terminal-Icons -Repository PSGallery
@@ -60,16 +72,16 @@
 
 ### Python
 
-1. Install [Python], [pipx].
+1. Install [Python].
 
     ```shell
-    brew install pipx
+    brew install python
     ```
 
 2. Install [Fabric], [InquirerPy], [Rich].
 
     ```shell
-    pipx install fabric && pipx inject fabric InquirerPy rich
+    uv tool install --with InquirerPy --with rich fabric
     ```
 
 3. Download `fabfile.py`, `.fabric.yaml`, `.zshrc` to home directory and run install.
@@ -140,10 +152,8 @@ cd ~ && fab upgrade
 
 ### Python
 
-- pypa
-  - [pipx]
 - [Astral](https://astral.sh)
-  - [uv](https://astral.sh/uv)
+  - [uv]
   - [Ruff](https://astral.sh/ruff)
 
 ### Database
@@ -164,7 +174,7 @@ Free is released under the MIT license. [See LICENSE](https://github.com/nyssanc
 [Terminal-Icons]: https://github.com/devblackops/Terminal-Icons
 
 [Python]: https://www.python.org
-[pipx]: https://pipx.pypa.io
+[uv]: https://astral.sh/uv
 [Fabric]: https://www.fabfile.org
 [InquirerPy]: https://github.com/kazhala/InquirerPy
 [Rich]: https://github.com/Textualize/rich
