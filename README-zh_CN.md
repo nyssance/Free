@@ -6,11 +6,14 @@
 ---
 
 [![macOS](https://img.shields.io/badge/macOS%2015-4f4f4f?style=for-the-badge&logo=apple)](https://www.apple.com.cn/macos/macos-sequoia/)
-[![Windows](https://img.shields.io/badge/Windows%2011-0078d4?style=for-the-badge&logo=windows11)](https://www.microsoft.com/zh-cn/windows/)
+[![Homebrew](https://img.shields.io/badge/Homebrew-2d2a25?style=for-the-badge&logo=homebrew)](https://brew.sh)
+
+[![Windows](https://img.shields.io/badge/Windows%2011-0078d4?style=for-the-badge&logo=windows11)](https://www.microsoft.com/windows/)
+[![Scoop](https://img.shields.io/badge/Scoop-white?style=for-the-badge)](https://scoop.sh)
 
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://opensource.org/licenses/MIT)
-[![python](https://img.shields.io/badge/python-3.13-blue)](https://www.python.org)
+[![python](https://img.shields.io/badge/python-3.13-3776AB)](https://www.python.org)
 
 Free [English](https://github.com/nyssance/Free/blob/main/README.md)
 
@@ -169,7 +172,7 @@ cd ~ && fab upgrade
 
 Free is released under the MIT license. [See LICENSE](https://github.com/nyssance/Free/blob/main/LICENSE) for details.
 
-[HomeBrew]: https://brew.sh/index_zh-cn
+[HomeBrew]: https://brew.sh/zh-cn/
 [Oh My Zsh]: https://ohmyz.sh
 [zsh-autosuggestions]: https://github.com/zsh-users/zsh-autosuggestions
 [zsh-syntax-highlighting]: https://github.com/zsh-users/zsh-syntax-highlighting
