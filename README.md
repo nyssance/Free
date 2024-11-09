@@ -5,10 +5,10 @@
 
 ---
 
-[![macOS](https://img.shields.io/badge/macOS%2015-4f4f4f?style=for-the-badge&logo=apple)](https://www.apple.com/macos/macos-sequoia/)
+[![macOS](https://img.shields.io/badge/macOS_15-4f4f4f?style=for-the-badge&logo=apple)](https://www.apple.com/macos/macos-sequoia/)
 [![Homebrew](https://img.shields.io/badge/Homebrew-2d2a25?style=for-the-badge&logo=homebrew)](https://brew.sh)
 
-[![Windows](https://img.shields.io/badge/Windows%2011-0078d4?style=for-the-badge&logo=windows11)](https://www.microsoft.com/windows)
+[![Windows](https://img.shields.io/badge/Windows_11-0078d4?style=for-the-badge&logo=windows11)](https://www.microsoft.com/windows)
 [![Scoop](https://img.shields.io/badge/Scoop-white?style=for-the-badge)](https://scoop.sh)
 
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
