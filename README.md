@@ -1,13 +1,18 @@
-# Free
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://readme-typing-svg.demolab.com?Line+all+my+ducks+up+in+a+row~;%E4%BA%95%E4%BA%95%E5%85%AE%E5%85%B6%E6%9C%89%E7%90%86%E4%B9%9F~&font=Noto+Sans&size=24&color=FFFFFF" />
+  <img src="https://readme-typing-svg.demolab.com?lines=Line+all+my+ducks+up+in+a+row~;%E4%BA%95%E4%BA%95%E5%85%AE%E5%85%B6%E6%9C%89%E7%90%86%E4%B9%9F~&font=Noto+Sans&size=24&color=000000" />
+</picture>
+
+---
+
+[![macOS](https://img.shields.io/badge/macOS%2015-4f4f4f?style=for-the-badge&logo=apple)](https://www.apple.com/macos/macos-sequoia/)
+[![Windows](https://img.shields.io/badge/Windows%2011-0078d4?style=for-the-badge&logo=windows11)](https://www.microsoft.com/windows)
 
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://opensource.org/licenses/MIT)
 [![python](https://img.shields.io/badge/python-3.13-blue)](https://www.python.org)
-[![macOS](https://img.shields.io/badge/macOS-15-blue)](https://www.apple.com/macos/macos-sequoia/)
 
-井井兮其有理也 [简体中文](https://github.com/nyssance/Free/blob/main/README-zh_CN.md)
-
----
+Free [简体中文](https://github.com/nyssance/Free/blob/main/README-zh_CN.md)
 
 ## Installation
 
