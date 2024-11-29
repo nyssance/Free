@@ -1,4 +1,5 @@
 import locale
+import os
 import platform
 from pathlib import Path
 from typing import Literal
@@ -36,8 +37,8 @@ def profile(c):
     match platform.system():
         case "Darwin":
             c.run("open ~/.zshrc")
-        case "Windows":
-            c.run("notepad $PROFILE")
+        case "Windows":  # notepad $PROFILE
+            c.run(f"notepad {os.environ.get("PROFILE")}")
 
 
 @task(aliases=["clean"])
