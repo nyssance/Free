@@ -11,7 +11,7 @@ from InquirerPy.separator import Separator
 from rich import print
 
 HTTP_PROXY = ""
-VERSION = "0.21"
+VERSION = "0.22"
 PM: Literal["brew", "scoop"] = "scoop" if platform.system() == "Windows" else "brew"
 
 if Path.cwd() != Path.home():
@@ -163,11 +163,12 @@ def upgrade(c, config=False):
         case "scoop":
             hint("upgrade Scoop")
             c.run(f"{PM} update --all")
-            c.run("winget upgrade")
     hint("upgrade uv")
     c.run("uv self update")
     c.run("uv tool upgrade --all")
     cleanup(c)
+    if platform.system() == "Windows":
+        c.run("winget upgrade")
     hint(f"upgrade {gettext("complete")}")
 
 
