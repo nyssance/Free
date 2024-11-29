@@ -37,8 +37,8 @@ def profile(c):
     match platform.system():
         case "Darwin":
             c.run("open ~/.zshrc")
-        case "Windows":  # notepad $PROFILE
-            c.run(f"notepad {os.environ.get("PROFILE")}")
+        case "Windows":
+            c.run('powershell -Command "notepad $PROFILE"')
 
 
 @task(aliases=["clean"])
