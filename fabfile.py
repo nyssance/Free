@@ -11,7 +11,7 @@ from InquirerPy.separator import Separator
 from rich import print
 
 HTTP_PROXY = ""
-VERSION = "0.22"
+VERSION = "0.24"
 PM: Literal["brew", "scoop"] = "scoop" if platform.system() == "Windows" else "brew"
 
 if Path.cwd() != Path.home():
@@ -28,6 +28,16 @@ def hello(c):
     print(f"Interpreter: {uv_tools}fabric")
     print("fab task -h 可以查看 task")
     c.run("fab -l", echo=False)
+
+
+@task
+def profile(c):
+    """配置"""
+    match platform.system():
+        case "Darwin":
+            c.run("open ~/.zshrc")
+        case "Windows":
+            c.run("notepad $PROFILE")
 
 
 @task(aliases=["clean"])

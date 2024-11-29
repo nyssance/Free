@@ -1,6 +1,8 @@
-$proxyUrl = "http://127.0.0.1:7897"
+# 
+$OutputEncoding = [System.Text.Encoding]::UTF8
 
-[System.Environment]::SetEnvironmentVariable("http_proxy", $proxyUrl, [System.EnvironmentVariableTarget]::Process)
+$proxyUrl = "http://127.0.0.1:7897"
+# [System.Environment]::SetEnvironmentVariable("http_proxy", $proxyUrl, [System.EnvironmentVariableTarget]::Process)
 [System.Environment]::SetEnvironmentVariable("https_proxy", $proxyUrl, [System.EnvironmentVariableTarget]::Process)
 
 oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH/jandedobbeleer.omp.json" | Invoke-Expression
