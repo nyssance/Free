@@ -38,7 +38,7 @@ def profile(c):
         case "Darwin":
             c.run("open ~/.zshrc")
         case "Windows":
-            c.run('powershell -Command "notepad $PROFILE"')
+            c.run("notepad $PROFILE")
 
 
 @task(aliases=["clean"])
