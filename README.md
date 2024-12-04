@@ -65,7 +65,7 @@ Free [简体中文](https://github.com/nyssance/Free/blob/main/README-zh_CN.md)
 3. Install [Oh My Posh] Optional.
 
     ```shell
-    winget upgrade JanDeDobbeleer.OhMyPosh -s winget
+    winget install JanDeDobbeleer.OhMyPosh -s winget
     ```
 
 4. Install [Terminal-Icons] Optional.

@@ -66,7 +66,7 @@ Free [English](https://github.com/nyssance/Free/blob/main/README.md)
 3. 安装 [Oh My Posh] 可选。
 
     ```shell
-    winget upgrade JanDeDobbeleer.OhMyPosh -s winget
+    winget install JanDeDobbeleer.OhMyPosh -s winget
     ```
 
 4. 安装 [Terminal-Icons] 可选。
