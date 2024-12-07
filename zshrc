@@ -17,3 +17,4 @@ source $ZSH/oh-my-zsh.sh
 # uv
 eval "$(uv generate-shell-completion zsh)"
 eval "$(uvx --generate-shell-completion zsh)"
+export UV_PUBLISH_TOKEN=pypi-xxx
