@@ -11,8 +11,7 @@ from InquirerPy.base.control import Choice
 from InquirerPy.separator import Separator
 from rich import print
 
-HTTP_PROXY = ""
-VERSION = "0.24"
+VERSION = "0.25"
 PM: Literal["brew", "scoop"] = "scoop" if platform.system() == "Windows" else "brew"
 
 if Path.cwd() != Path.home():
@@ -23,7 +22,6 @@ if Path.cwd() != Path.home():
 def hello(c):
     """Hello"""
     print(f"Hello ~ {get_local_user()}")
-    print(f"{gettext("HTTP Proxy")}: http://{HTTP_PROXY}")
     print(f"Version: {VERSION}")
     uv_tools = "~\\AppData\\Roaming\\uv\\tools\\" if platform.system() == "Windows" else "~/.local/share/uv/tools/"
     print(f"Interpreter: {uv_tools}fabric")
@@ -58,12 +56,6 @@ def cleanup(c):
 @task
 def install(c):
     """安装"""
-    proxy = inquirer.select(gettext("HTTP Proxy"), ["127.0.0.1:7890", Choice("", "No proxy")]).execute()
-    if HTTP_PROXY != proxy:
-        if platform.system() == "Windows":
-            print("请手动配置代理")
-        else:
-            c.run(f"sed -i '' 's|HTTP_PROXY = \"{HTTP_PROXY}\"|HTTP_PROXY = \"{proxy}\"|' fabfile.py")
     roles = inquirer.checkbox(
         gettext("install"),
         [
@@ -157,15 +149,13 @@ def upgrade(c, config=False):
     hint(f"upgrade 自己 当前版本 {VERSION} 变化在下次执行时生效")
     remote = "https://raw.githubusercontent.com/nyssance/Free/main/"
     download(c, f"{remote}fabfile.py")
-    if HTTP_PROXY:
-        c.run(f"sed -i '' 's|HTTP_PROXY = \"\"|HTTP_PROXY = \"{HTTP_PROXY}\"|' fabfile.py")
     if config:
         hint("configure .fabric.yaml")
         download(c, f"{remote}fabric.yaml", ".fabric.yaml")
-        hint("configure .zshrc")
-        download(c, f"{remote}zshrc", ".zshrc")
-        c.run(f"echo '\n# {gettext("HTTP Proxy")}\nexport HTTPS_PROXY=http://{HTTP_PROXY}' >> .zshrc")
-        c.run("zsh -lc 'source .zshrc'")
+        if platform.system() != "Windows":
+            hint("configure .zshrc")
+            download(c, f"{remote}zshrc", ".zshrc")
+            c.run("zsh -lc 'source .zshrc'")
     match PM:
         case "brew":
             hint("upgrade Homebrew")
@@ -184,10 +174,10 @@ def upgrade(c, config=False):
 
 
 @task
-def download(c, url, name=None, proxy=HTTP_PROXY):
+def download(c, url, name=None):
     """下载"""
     command = f"{url} > {name}" if name else f"-O {url}"
-    c.run(f"curl -fsSL {f"-x {proxy} " if proxy else ""}{command}")
+    c.run(f"curl -fsSL {command}")
 
 
 @task(aliases=["format"])
@@ -228,6 +218,5 @@ ZH_CN = {
     "upgrade": "升级",
     "cancel": "取消",
     "complete": "完成",
-    "fonts": "字体",
-    "HTTP Proxy": "HTTP 代理"
+    "fonts": "字体"
 }
