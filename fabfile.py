@@ -43,13 +43,15 @@ def cleanup(c):
     """清理"""
     match PM:
         case "brew":
-            hint("cleanup Homebrew")
+            hint("clean Homebrew")
             c.run(f"{PM} cleanup")
             c.run(f"{PM} doctor", warn=True)
         case "scoop":
-            hint("cleanup Scoop")
+            hint("clean Scoop")
             c.run(f"{PM} cleanup --all")
             c.run(f"{PM} checkup")
+    # hint("clean uv")
+    # c.run("uv cache clean")
 
 
 @task
@@ -165,17 +167,15 @@ def upgrade(c, config=False):
     hint(f"upgrade {gettext("completed")}")
 
 
-@task
-def download(c, url, name=None):
-    """下载"""
-    command = f"{url} > {name}" if name else f"-O {url}"
-    c.run(f"curl -fsSL {command}")
-
-
 @task(aliases=["format"])
 def format_code(c):
     """格式化代码"""
     c.run("isort fabfile.py")
+
+
+def download(c, url: str, name: str | None = None):
+    command = f"{url} > {name}" if name else f"-O {url}"
+    c.run(f"curl -fsSL {command}")
 
 
 def gettext(message: str) -> str:
@@ -186,7 +186,7 @@ def gettext(message: str) -> str:
 def hint(value: str):
     operation, message = value.split(" ", 1)
     match operation:
-        case "cleanup":
+        case "clean":
             color = "yellow"
         case "configure":
             color = "cyan"
@@ -202,7 +202,7 @@ def hint(value: str):
 
 
 ZH_CN = {
-    "cleanup": "清理",
+    "clean": "清理",
     "configure": "配置",
     "install": "安装",
     "remove": "删除",
