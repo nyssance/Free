@@ -60,7 +60,7 @@ Free [English](https://github.com/nyssance/Free/blob/main/README.md)
 2. 安装 [uv]。
 
     ```shell
-    c.run("curl -LsSf https://astral.sh/uv/install.sh | sh")
+    c.run('powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"')
     ```
 
 3. 安装 [Oh My Posh] 可选。
@@ -90,7 +90,7 @@ Free [English](https://github.com/nyssance/Free/blob/main/README.md)
 2. 安装 [Fabric]，[InquirerPy]，[Rich]。
 
     ```shell
-    uv tool install --with InquirerPy --with rich fabric
+    uv tool install fabric --with InquirerPy --with rich
     ```
 
 3. 下载 `fabfile.py`，`.fabric.yaml`，`.zshrc` 到用户主目录并运行安装。
