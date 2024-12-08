@@ -1,5 +1,4 @@
 import locale
-import os
 import platform
 from pathlib import Path
 from typing import Literal
@@ -11,7 +10,7 @@ from InquirerPy.base.control import Choice
 from InquirerPy.separator import Separator
 from rich import print
 
-VERSION = "0.25"
+VERSION = "0.26"
 PM: Literal["brew", "scoop"] = "scoop" if platform.system() == "Windows" else "brew"
 
 if Path.cwd() != Path.home():
@@ -25,7 +24,7 @@ def hello(c):
     print(f"Version: {VERSION}")
     uv_tools = "~\\AppData\\Roaming\\uv\\tools\\" if platform.system() == "Windows" else "~/.local/share/uv/tools/"
     print(f"Interpreter: {uv_tools}fabric")
-    print("fab task -h 可以查看 task")
+    print("fab task -h 可以查看 task\n")
     c.run("fab -l", echo=False)
 
 
@@ -82,9 +81,6 @@ def install(c):
     # if "zh_CN" in locale.getlocale():
     #     hint("configure RubyGems")
     #     c.run("gem sources --add https://mirrors.aliyun.com/rubygems/ --remove https://rubygems.org/")
-    if "oh-my-posh" in roles:
-        c.run("scoop install https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/oh-my-posh.json")
-        c.run("oh-my-posh font install meslo")
     if "zoxide" in roles:
         hint("install zoxide fzf")
         c.run(f"{PM} install zoxide fzf")
@@ -101,11 +97,7 @@ def install(c):
         c.run(f"{PM} install openjdk")
     if "js" in roles:
         hint("install Bun")
-        match PM:
-            case "brew":
-                c.run(f"{PM} install oven-sh/bun/bun")
-            case "scoop":
-                c.run(f"{PM} install bun")
+        c.run(f"{PM} install bun")
     if "python" in roles:
         hint("install Ruff")
         c.run("uv tool install ruff")
@@ -170,7 +162,7 @@ def upgrade(c, config=False):
     cleanup(c)
     if platform.system() == "Windows":
         c.run("winget upgrade")
-    hint(f"upgrade {gettext("complete")}")
+    hint(f"upgrade {gettext("completed")}")
 
 
 @task
@@ -213,10 +205,9 @@ ZH_CN = {
     "cleanup": "清理",
     "configure": "配置",
     "install": "安装",
-    "reinstall": "重装",
     "remove": "删除",
     "upgrade": "升级",
     "cancel": "取消",
-    "complete": "完成",
+    "completed": "完成",
     "fonts": "字体"
 }
