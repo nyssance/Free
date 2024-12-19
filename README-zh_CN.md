@@ -54,7 +54,7 @@ Free [English](https://github.com/nyssance/Free/blob/main/README.md)
     ```
 
     ```shell
-    irm get.scoop.sh -Proxy 'http://<ip:port>' | iex
+    irm get.scoop.sh | iex
     ```
 
 2. 安装 [uv]。
