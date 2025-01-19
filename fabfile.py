@@ -205,7 +205,7 @@ ZH_CN = {
     "clean": "清理",
     "configure": "配置",
     "install": "安装",
-    "remove": "删除",
+    "remove": "移除",
     "upgrade": "升级",
     "cancel": "取消",
     "completed": "完成",
