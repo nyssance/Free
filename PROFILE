@@ -1,5 +1,5 @@
-#
-$OutputEncoding = [System.Text.Encoding]::UTF8
+# https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_character_encoding
+$PSDefaultParameterValues['*:Encoding'] = 'utf8'
 
 oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH/jandedobbeleer.omp.json" | Invoke-Expression
 Import-Module -Name Terminal-Icons
