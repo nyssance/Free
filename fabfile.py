@@ -10,7 +10,7 @@ from InquirerPy.base.control import Choice
 from InquirerPy.separator import Separator
 from rich import print
 
-VERSION = "0.26"
+VERSION = "0.27"
 PM: Literal["brew", "scoop"] = "scoop" if platform.system() == "Windows" else "brew"
 
 if Path.cwd() != Path.home():
@@ -80,12 +80,6 @@ def install(c):
     ).execute()
     if not roles:
         return
-    # if "zh_CN" in locale.getlocale():
-    #     hint("configure RubyGems")
-    #     c.run("gem sources --add https://mirrors.aliyun.com/rubygems/ --remove https://rubygems.org/")
-    if "zoxide" in roles:
-        hint("install zoxide fzf")
-        c.run(f"{PM} install zoxide fzf")
     if "android" in roles:
         hint("install ktlint")
         c.run(f"{PM} install ktlint")
@@ -122,6 +116,9 @@ def install(c):
             case "scoop":
                 c.run(f"{PM} bucket add nerd-fonts")
                 c.run(f"{PM} install CascadiaCode-NF JetBrainsMono-NF")
+    if "zoxide" in roles:
+        hint("install zoxide fzf")
+        c.run(f"{PM} install zoxide fzf")
     cleanup(c)
 
 
@@ -167,12 +164,6 @@ def upgrade(c, config=False):
     hint(f"upgrade {gettext("completed")}")
 
 
-@task(aliases=["format"])
-def format_code(c):
-    """格式化代码"""
-    c.run("isort fabfile.py")
-
-
 def download(c, url: str, name: str | None = None):
     command = f"{url} > {name}" if name else f"-O {url}"
     c.run(f"curl -fsSL {command}")
@@ -184,21 +175,9 @@ def gettext(message: str) -> str:
 
 
 def hint(value: str):
+    color_map = {"clean": "yellow", "configure": "cyan", "install": "green", "remove": "red", "upgrade": "blue"}
     operation, message = value.split(" ", 1)
-    match operation:
-        case "clean":
-            color = "yellow"
-        case "configure":
-            color = "cyan"
-        case "install":
-            color = "green"
-        case "remove":
-            color = "red"
-        case "upgrade":
-            color = "blue"
-        case _:
-            color = "white"
-    print(f"[on {color}]{gettext(operation)}", message)
+    print(f"[on {color_map.get(operation, "white")}]{gettext(operation)}", message)
 
 
 ZH_CN = {
