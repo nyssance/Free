@@ -10,7 +10,7 @@ from InquirerPy.base.control import Choice
 from InquirerPy.separator import Separator
 from rich import print
 
-VERSION = "0.27"
+VERSION = "0.28"
 PM: Literal["brew", "scoop"] = "scoop" if platform.system() == "Windows" else "brew"
 
 if Path.cwd() != Path.home():
@@ -93,7 +93,7 @@ def install(c):
         c.run(f"{PM} install openjdk")
     if "js" in roles:
         hint("install Bun")
-        c.run(f"{PM} install bun")
+        c.run("curl -fsSL https://bun.sh/install | bash")
     if "python" in roles:
         hint("install Ruff")
         c.run("uv tool install ruff")

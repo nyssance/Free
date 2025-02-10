@@ -40,7 +40,7 @@ Free [English](https://github.com/nyssance/Free/blob/main/README.md)
 3. 安装 [uv]。
 
     ```shell
-    c.run("curl -LsSf https://astral.sh/uv/install.sh | sh")
+    curl -LsSf https://astral.sh/uv/install.sh | sh
     ```
 
     [Powerlevel10k 安装](https://github.com/romkatv/powerlevel10k?tab=readme-ov-file#installation)
@@ -60,7 +60,7 @@ Free [English](https://github.com/nyssance/Free/blob/main/README.md)
 2. 安装 [uv]。
 
     ```shell
-    c.run('powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"')
+    'powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"'
     ```
 
 3. 安装 [Oh My Posh] 可选。
