@@ -110,6 +110,8 @@ Free [简体中文](https://github.com/nyssance/Free/blob/main/README-zh_CN.md)
     fab install
     ```
 
+  > macOS - Config [plugins:vscode](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/vscode)
+
 ## Upgrade
 
 ```shell

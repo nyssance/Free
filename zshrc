@@ -15,6 +15,7 @@ plugins=(fabric git history macos vscode)
 source $ZSH/oh-my-zsh.sh
 
 # uv
-eval "$(uv generate-shell-completion zsh)"
-eval "$(uvx --generate-shell-completion zsh)"
+. "$HOME/.local/bin/env"
+# eval "$(uv generate-shell-completion zsh)"
+# eval "$(uvx --generate-shell-completion zsh)"
 export UV_PUBLISH_TOKEN=pypi-xxx
