@@ -10,7 +10,7 @@ from InquirerPy.base.control import Choice
 from InquirerPy.separator import Separator
 from rich import print
 
-VERSION = "0.28"
+VERSION = "0.29"
 PM: Literal["brew", "scoop"] = "scoop" if platform.system() == "Windows" else "brew"
 
 if Path.cwd() != Path.home():
@@ -66,6 +66,7 @@ def install(c):
             Choice("java", "Java"),
             Choice("js", "JavaScript & TypeScript"),
             Choice("python", "Python"),
+            Choice("rust", "Rust"),
             Separator("-- Database ---"),
             Choice("mysql", "MySQL"),
             Choice("redis", "Redis"),
@@ -93,10 +94,16 @@ def install(c):
         c.run(f"{PM} install openjdk")
     if "js" in roles:
         hint("install Bun")
-        c.run("curl -fsSL https://bun.sh/install | bash")
+        c.run(f"{PM} install {"oven-sh/bun/" if PM == "brew" else ""}bun")
     if "python" in roles:
         hint("install Ruff")
         c.run("uv tool install ruff")
+    if "rust" in roles:
+        hint("install Rust")
+        if platform.system() == "Windows":
+            c.run("start https://www.rust-lang.org/learn/get-started")
+        else:
+            c.run("curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh")
     # 数据库
     if "mysql" in roles:
         hint("install MySQL")
