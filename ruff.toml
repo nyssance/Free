@@ -4,6 +4,7 @@ target-version = "py313"
 [lint]
 select = ["ALL"]
 ignore = [
+    "F401", # unused-import
     "I001", # isort
     "D", # "D100", "D103", "D104", "D400", "D415",
     "COM812", "CPY", "Q003", "ARG002", "TD", "FIX", # flake8
