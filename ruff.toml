@@ -13,7 +13,6 @@ ignore = [
 ]
 unfixable = ["T20"]
 
-
 [format]
 skip-magic-trailing-comma = true
 line-ending = "lf"
