@@ -43,7 +43,10 @@ Free [English](https://github.com/nyssance/Free/blob/main/README.md)
     curl -LsSf https://astral.sh/uv/install.sh | sh
     ```
 
-    [Powerlevel10k 安装](https://github.com/romkatv/powerlevel10k?tab=readme-ov-file#installation)
+> Powerlevel10k
+>
+> - [安装](https://github.com/romkatv/powerlevel10k?tab=readme-ov-file#installation)
+> - [字体](https://github.com/romkatv/powerlevel10k/tree/master?tab=readme-ov-file#fonts)
 
 ### Windows
 

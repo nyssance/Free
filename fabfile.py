@@ -73,7 +73,7 @@ def install(c: Connection) -> None:
             Choice("redis", "Redis"),
             Separator("-- Others -----"),
             "fastlane",
-            Choice("fonts", f"{gettext("fonts")}: Cascadia Code NF, JetBrainsMono Nerd Font"),
+            Choice("fonts", f"{gettext("fonts")}: Cascadia Code NF"),
             "zoxide",
             Separator()
         ],
@@ -117,13 +117,13 @@ def install(c: Connection) -> None:
         hint("install fastlane")
         c.run(f"{PM} install fastlane")
     if "fonts" in roles:
-        hint(f"install {gettext("fonts")}: Cascadia Code NF, JetBrainsMono Nerd Font")
+        hint(f"install {gettext("fonts")}: Cascadia Code NF")
         match PM:
             case "brew":
-                c.run(f"{PM} install font-cascadia-code-nf font-jetbrains-mono-nerd-font")
+                c.run(f"{PM} install font-cascadia-code-nf")
             case "scoop":
                 c.run(f"{PM} bucket add nerd-fonts")
-                c.run(f"{PM} install CascadiaCode-NF JetBrainsMono-NF")
+                c.run(f"{PM} install CascadiaCode-NF")
     if "zoxide" in roles:
         hint("install zoxide fzf")
         c.run(f"{PM} install zoxide fzf")
