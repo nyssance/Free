@@ -4,16 +4,14 @@ target-version = "py313"
 [lint]
 select = ["ALL"]
 ignore = [
-    "F401", "F841",
-    "E115", "E741",
+    "E741", # ambiguous-variable-name
     "I001", # isort
     "D", # "D100", "D103", "D104", "D400", "D415",
-    "A004", "COM812", "CPY", "T20", "Q003", "TD", "FIX", # flake8
+    "A004", "COM812", "CPY", "T20", "Q003", "ARG002", "TD", "FIX", # flake8
     "ERA",
     "PD901",
     "PLR0912", "PLR0913", "PLR2004",
-    "PLR2044", "PLR6301", "ARG002",
-    "TID252", "ARG",
+    "TID252",
     "RUF001", "RUF003"
 ]
 preview = true
