@@ -12,9 +12,8 @@ ignore = [
     "PLR0912", "PLR0913", "PLR2004"
 ]
 unfixable = ["T20"]
-preview = true
+
 
 [format]
 skip-magic-trailing-comma = true
 line-ending = "lf"
-preview = true
