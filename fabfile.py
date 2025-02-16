@@ -3,22 +3,23 @@ import platform
 from pathlib import Path
 from typing import Literal
 
-from fabric import task
+from fabric import Connection, task
 from fabric.util import get_local_user
 from InquirerPy import inquirer
 from InquirerPy.base.control import Choice
 from InquirerPy.separator import Separator
 from rich import print
 
-VERSION = "0.29"
+VERSION = "0.30"
 PM: Literal["brew", "scoop"] = "scoop" if platform.system() == "Windows" else "brew"
 
 if Path.cwd() != Path.home():
-    raise Exception("Please `cd ~`.")
+    msg = "Please `cd ~`."
+    raise OSError(msg)
 
 
 @task(default=True)
-def hello(c):
+def hello(c: Connection) -> None:
     """Hello"""
     print(f"Hello ~ {get_local_user()}")
     print(f"Version: {VERSION}")
@@ -29,7 +30,7 @@ def hello(c):
 
 
 @task
-def profile(c):
+def profile(c: Connection) -> None:
     """配置"""
     match platform.system():
         case "Darwin":
@@ -39,7 +40,7 @@ def profile(c):
 
 
 @task(aliases=["clean"])
-def cleanup(c):
+def cleanup(c: Connection) -> None:
     """清理"""
     match PM:
         case "brew":
@@ -55,7 +56,7 @@ def cleanup(c):
 
 
 @task
-def install(c):
+def install(c: Connection) -> None:
     """安装"""
     roles = inquirer.checkbox(
         gettext("install"),
@@ -130,7 +131,7 @@ def install(c):
 
 
 @task
-def remove(c):
+def remove(c: Connection) -> None:
     """删除"""
     # if not c.config.sudo.password:
     #     c.run("fab remove --prompt-for-sudo-password", echo=False)
@@ -142,7 +143,7 @@ def remove(c):
 
 
 @task(aliases=["up"], help={"config": "更新 .fabric.yaml, .zshrc 配置文件"})
-def upgrade(c, config=False):
+def upgrade(c: Connection, *, config: bool = False) -> None:
     """升级"""
     hint(f"upgrade 自己 当前版本 {VERSION} 变化在下次执行时生效")
     remote = "https://raw.githubusercontent.com/nyssance/Free/main/"
@@ -171,7 +172,7 @@ def upgrade(c, config=False):
     hint(f"upgrade {gettext("completed")}")
 
 
-def download(c, url: str, name: str | None = None):
+def download(c: Connection, url: str, name: str | None = None) -> None:
     command = f"{url} > {name}" if name else f"-O {url}"
     c.run(f"curl -fsSL {command}")
 
@@ -181,7 +182,7 @@ def gettext(message: str) -> str:
     return ZH_CN[message] if chinese else message.capitalize()
 
 
-def hint(value: str):
+def hint(value: str) -> None:
     color_map = {"clean": "yellow", "configure": "cyan", "install": "green", "remove": "red", "upgrade": "blue"}
     operation, message = value.split(" ", 1)
     print(f"[on {color_map.get(operation, "white")}]{gettext(operation)}", message)
