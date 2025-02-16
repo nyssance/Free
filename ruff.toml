@@ -14,8 +14,7 @@ ignore = [
     "PLR0912", "PLR0913", "PLR2004",
     "PLR2044", "PLR6301", "ARG002",
     "TID252", "ARG",
-    "RUF001", "RUF003",
-    "RUF005",
+    "RUF001", "RUF003"
 ]
 preview = true
 
