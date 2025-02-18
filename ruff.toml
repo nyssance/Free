@@ -11,7 +11,7 @@ ignore = [
     "ERA", # commented-out-code
     "PLR0912", "PLR0913", "PLR2004"
 ]
-unfixable = ["T20"]
+unfixable = ["F841", "T20"]
 
 [format]
 skip-magic-trailing-comma = true
