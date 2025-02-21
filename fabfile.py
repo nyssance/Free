@@ -1,7 +1,7 @@
 import locale
 import platform
 from pathlib import Path
-from typing import Literal
+from typing import Literal, NoReturn
 
 from fabric import Connection, task
 from fabric.util import get_local_user
@@ -13,9 +13,14 @@ from rich import print as rich_print
 VERSION = "0.30"
 PM: Literal["brew", "scoop"] = "scoop" if platform.system() == "Windows" else "brew"
 
-if Path.cwd() != Path.home():
-    msg = "Please `cd ~`."
-    raise OSError(msg)
+
+def check() -> NoReturn:
+    if Path.cwd() != Path.home():
+        msg = "Please `cd ~`."
+        raise OSError(msg)
+
+
+check()
 
 
 @task(default=True)
