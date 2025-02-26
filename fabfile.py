@@ -11,6 +11,7 @@ from InquirerPy.separator import Separator
 from invoke import Context
 from rich import print as rich_print
 
+
 VERSION = "0.31"
 PM: Literal["brew", "scoop"] = "scoop" if platform.system() == "Windows" else "brew"
 
