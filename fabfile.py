@@ -3,14 +3,13 @@ import platform
 from pathlib import Path
 from typing import Literal, NoReturn
 
+import rich
 from fabric import task
 from fabric.util import get_local_user
 from InquirerPy import inquirer
 from InquirerPy.base.control import Choice
 from InquirerPy.separator import Separator
 from invoke import Context
-from rich import print as rich_print
-
 
 VERSION = "0.31"
 PM: Literal["brew", "scoop"] = "scoop" if platform.system() == "Windows" else "brew"
@@ -28,11 +27,11 @@ check()
 @task(default=True)
 def hello(c: Context) -> None:
     """Hello"""
-    rich_print(f"Hello ~ {get_local_user()}")
-    rich_print(f"Version: {VERSION}")
+    rich.print(f"Hello ~ {get_local_user()}")
+    rich.print(f"Version: {VERSION}")
     uv_tools = "~\\AppData\\Roaming\\uv\\tools\\" if platform.system() == "Windows" else "~/.local/share/uv/tools/"
-    rich_print(f"Interpreter: {uv_tools}fabric")
-    rich_print("fab task -h 可以查看 task\n")
+    rich.print(f"Interpreter: {uv_tools}fabric")
+    rich.print("fab task -h 可以查看 task\n")
     c.run("fab -l", echo=False)
 
 
@@ -192,7 +191,7 @@ def gettext(message: str) -> str:
 def hint(value: str) -> None:
     color_map = {"clean": "yellow", "configure": "cyan", "install": "green", "remove": "red", "upgrade": "blue"}
     operation, message = value.split(" ", 1)
-    rich_print(f"[on {color_map.get(operation, "white")}]{gettext(operation)}", message)
+    rich.print(f"[on {color_map.get(operation, "white")}]{gettext(operation)}", message)
 
 
 ZH_CN = {
