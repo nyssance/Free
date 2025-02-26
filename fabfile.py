@@ -3,14 +3,15 @@ import platform
 from pathlib import Path
 from typing import Literal, NoReturn
 
-from fabric import Connection, task
+from fabric import task
 from fabric.util import get_local_user
 from InquirerPy import inquirer
 from InquirerPy.base.control import Choice
 from InquirerPy.separator import Separator
+from invoke import Context
 from rich import print as rich_print
 
-VERSION = "0.30"
+VERSION = "0.31"
 PM: Literal["brew", "scoop"] = "scoop" if platform.system() == "Windows" else "brew"
 
 
@@ -24,7 +25,7 @@ check()
 
 
 @task(default=True)
-def hello(c: Connection) -> None:
+def hello(c: Context) -> None:
     """Hello"""
     rich_print(f"Hello ~ {get_local_user()}")
     rich_print(f"Version: {VERSION}")
@@ -35,7 +36,7 @@ def hello(c: Connection) -> None:
 
 
 @task
-def profile(c: Connection) -> None:
+def profile(c: Context) -> None:
     """配置"""
     match platform.system():
         case "Darwin":
@@ -45,7 +46,7 @@ def profile(c: Connection) -> None:
 
 
 @task(aliases=["clean"])
-def cleanup(c: Connection) -> None:
+def cleanup(c: Context) -> None:
     """清理"""
     match PM:
         case "brew":
@@ -61,7 +62,7 @@ def cleanup(c: Connection) -> None:
 
 
 @task
-def install(c: Connection) -> None:
+def install(c: Context) -> None:
     """安装"""
     roles = inquirer.checkbox(
         gettext("install"),
@@ -136,7 +137,7 @@ def install(c: Connection) -> None:
 
 
 @task
-def remove(c: Connection) -> None:
+def remove(c: Context) -> None:
     """删除"""
     # if not c.config.sudo.password:
     #     c.run("fab remove --prompt-for-sudo-password", echo=False)
@@ -148,7 +149,7 @@ def remove(c: Connection) -> None:
 
 
 @task(aliases=["up"], help={"config": "更新 .fabric.yaml, .zshrc 配置文件"})
-def upgrade(c: Connection, *, config: bool = False) -> None:
+def upgrade(c: Context, *, config: bool = False) -> None:
     """升级"""
     hint(f"upgrade 自己 当前版本 {VERSION} 变化在下次执行时生效")
     remote = "https://raw.githubusercontent.com/nyssance/Free/main/"
@@ -177,7 +178,7 @@ def upgrade(c: Connection, *, config: bool = False) -> None:
     hint(f"upgrade {gettext("completed")}")
 
 
-def download(c: Connection, url: str, name: str | None = None) -> None:
+def download(c: Context, url: str, name: str | None = None) -> None:
     command = f"{url} > {name}" if name else f"-O {url}"
     c.run(f"curl -fsSL {command}")
 
