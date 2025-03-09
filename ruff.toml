@@ -7,9 +7,9 @@ ignore = [
     "F401", # unused-import
     "I001", # isort
     "D", # "D100", "D103", "D104", "D400", "D415",
-    "COM812", "CPY", "Q003", "ARG002", "TD", "FIX", # flake8
+    "COM812", "CPY", "TD", "FIX", # flake8
     "ERA", # commented-out-code
-    "PLR0912", "PLR0913", "PLR2004"
+    "PLR0913", "PLR2004" # too-many-arguments, magic-value-comparison
 ]
 unfixable = ["F841", "T20"]
 
