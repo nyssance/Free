@@ -62,7 +62,7 @@ def cleanup(c: Context) -> None:
 
 
 @task
-def install(c: Context) -> None:
+def install(c: Context) -> None:  # noqa: C901, PLR0912
     """安装"""
     roles = inquirer.checkbox(
         gettext("install"),
