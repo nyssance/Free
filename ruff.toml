@@ -11,7 +11,7 @@ ignore = [
     "ERA", # commented-out-code
     "PLR0913", "PLR2004" # too-many-arguments, magic-value-comparison
 ]
-unfixable = ["F841", "T20"]
+unfixable = ["T20", "F841"]
 
 [format]
 skip-magic-trailing-comma = true
