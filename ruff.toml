@@ -14,5 +14,7 @@ ignore = [
 unfixable = ["T20", "F841"]
 
 [format]
-skip-magic-trailing-comma = true
 line-ending = "lf"
+preview = true
+quote-style = "preserve"
+skip-magic-trailing-comma = true
