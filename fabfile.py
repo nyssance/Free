@@ -172,6 +172,8 @@ def upgrade(c: Context, *, config: bool = False) -> None:
     hint("upgrade uv")
     c.run("uv self update")
     c.run("uv tool upgrade --all")
+    hint("upgrade rust")
+    c.run("rustup update")
     cleanup(c)
     if platform.system() == "Windows":
         c.run("winget upgrade")
