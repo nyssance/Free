@@ -148,7 +148,7 @@ def remove(c: Context) -> None:
         c.run(f"{PM} uninstall python")
 
 
-@task(aliases=["up"], help={"config": "更新 .fabric.yaml, .zshrc 配置文件"})
+@task(aliases=["u"], help={"config": "更新 .fabric.yaml, .zshrc 配置文件"})
 def upgrade(c: Context, *, config: bool = False) -> None:
     """升级"""
     hint(f"upgrade 自己 当前版本 {VERSION} 变化在下次执行时生效")
