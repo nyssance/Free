@@ -52,32 +52,33 @@ Free [简体中文](https://github.com/nyssance/Free/blob/main/README-zh_CN.md)
 
 1. Install [Scoop].
 
-    ```shell
+    ```powershell
     Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
     ```
 
-    ```shell
+    ```powershell
     irm get.scoop.sh | iex
+    ```
 
 2. Install [uv].
 
-    ```shell
+    ```powershell
     'powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"'
     ```
 
 3. Install [Oh My Posh] Optional.
 
-    ```shell
+    ```powershell
     winget install JanDeDobbeleer.OhMyPosh -s winget
     ```
 
 4. Install [Terminal-Icons] Optional.
 
-    ```shell
+    ```powershell
     Install-Module -Name Terminal-Icons -Repository PSGallery
     ```
 
-    ```shell
+    ```powershell
     Import-Module -Name Terminal-Icons
     ```
 
@@ -87,6 +88,10 @@ Free [简体中文](https://github.com/nyssance/Free/blob/main/README-zh_CN.md)
 
     ```shell
     brew install python
+    ```
+
+    ```powershell
+    scoop install python
     ```
 
 2. Install [Fabric], [InquirerPy], [Rich].
