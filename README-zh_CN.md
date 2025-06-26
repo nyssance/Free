@@ -173,6 +173,7 @@ cd ~ && fab upgrade
 - [Astral](https://astral.sh)
   - [uv]
   - [Ruff](https://astral.sh/ruff)
+  - [ty](https://github.com/astral-sh/ty)
 
 ### 数据库
 

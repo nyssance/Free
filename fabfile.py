@@ -1,7 +1,7 @@
 import locale
 import platform
 from pathlib import Path
-from typing import Literal, NoReturn
+from typing import Literal
 
 import rich
 from fabric import task
@@ -11,11 +11,11 @@ from InquirerPy.base.control import Choice
 from InquirerPy.separator import Separator
 from invoke import Context
 
-VERSION = "0.31"
+VERSION = "0.32"
 PM: Literal["brew", "scoop"] = "scoop" if platform.system() == "Windows" else "brew"
 
 
-def check() -> NoReturn:
+def check() -> None:
     if Path.cwd() != Path.home():
         msg = "Please `cd ~`."
         raise OSError(msg)
@@ -103,8 +103,9 @@ def install(c: Context) -> None:  # noqa: C901, PLR0912
         hint("install Bun")
         c.run(f"{PM} install {"oven-sh/bun/" if PM == "brew" else ""}bun")
     if "python" in roles:
-        hint("install Ruff")
+        hint("install Ruff, ty")
         c.run("uv tool install ruff")
+        c.run("uv tool install ty")
     if "rust" in roles:
         hint("install Rust")
         if platform.system() == "Windows":
