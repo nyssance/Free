@@ -11,7 +11,7 @@ from InquirerPy.base.control import Choice
 from InquirerPy.separator import Separator
 from invoke import Context
 
-VERSION = "0.33"
+VERSION = "0.34"
 PM: Literal["brew", "scoop"] = "scoop" if platform.system() == "Windows" else "brew"
 
 
@@ -185,7 +185,7 @@ def upgrade(c: Context, *, config: bool = False) -> None:
 
 def download(c: Context, url: str, name: str | None = None) -> None:
     if platform.system() == "Windows":
-        c.run(f'powershell -Command "Invoke-WebRequest -Uri {url} -OutFile {name if name else url.split("/")[-1]}"')
+        c.run(f"Invoke-WebRequest -Uri {url} -OutFile {name if name else url.split("/")[-1]}")
     else:
         command = f"{url} > {name}" if name else f"-O {url}"
         c.run(f"curl -fsSL {command}")
