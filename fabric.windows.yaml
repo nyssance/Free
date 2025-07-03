@@ -1,0 +1,6 @@
+debug: true
+run:
+  echo: true
+  encoding: utf-8
+  # replace_env: false
+  shell: C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe

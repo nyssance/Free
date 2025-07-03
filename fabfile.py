@@ -157,8 +157,10 @@ def upgrade(c: Context, *, config: bool = False) -> None:
     download(c, f"{remote}fabfile.py")
     if config:
         hint("configure .fabric.yaml")
-        download(c, f"{remote}fabric.yaml", ".fabric.yaml")
-        if platform.system() != "Windows":
+        if platform.system() == "Windows":
+            download(c, f"{remote}fabric.windows.yaml", ".fabric.yaml")
+        else:
+            download(c, f"{remote}fabric.yaml", ".fabric.yaml")
             hint("configure .zshrc")
             download(c, f"{remote}zshrc", ".zshrc")
             c.run("zsh -lc 'source .zshrc'")
