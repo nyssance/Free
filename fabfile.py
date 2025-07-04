@@ -186,11 +186,6 @@ def upgrade(c: Context, *, config: bool = False) -> None:
 def download(c: Context, url: str, name: str | None = None) -> None:
     command = f"{url} > {name}" if name else f"-O {url}"
     c.run(f"curl -fsSL {command}")
-    # if platform.system() == "Windows":
-    #     c.run(f"Invoke-WebRequest -Uri {url} -OutFile {name if name else url.split("/")[-1]}")
-    # else:
-    #     command = f"{url} > {name}" if name else f"-O {url}"
-    #     c.run(f"curl -fsSL {command}")
 
 
 def gettext(message: str) -> str:
