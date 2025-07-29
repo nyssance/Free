@@ -87,11 +87,7 @@ Free [English](https://github.com/nyssance/Free/blob/main/README.md)
 1. 安装 [Python]。
 
     ```shell
-    brew install python
-    ```
-
-    ```powershell
-    scoop install python
+    uv install python
     ```
 
 2. 安装 [Fabric]，[InquirerPy]，[Rich]。

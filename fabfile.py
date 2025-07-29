@@ -11,7 +11,7 @@ from InquirerPy.base.control import Choice
 from InquirerPy.separator import Separator
 from invoke import Context
 
-VERSION = "0.35"
+VERSION = "0.40"
 PM: Literal["brew", "scoop"] = "scoop" if platform.system() == "Windows" else "brew"
 
 
@@ -57,8 +57,8 @@ def cleanup(c: Context) -> None:
             hint("clean Scoop")
             c.run(f"{PM} cleanup --all")
             c.run(f"{PM} checkup")
-    # hint("clean uv")
-    # c.run("uv cache clean")
+    hint("clean uv")
+    c.run("uv cache prune")
 
 
 @task
@@ -143,10 +143,6 @@ def remove(c: Context) -> None:
     # if not c.config.sudo.password:
     #     c.run("fab remove --prompt-for-sudo-password", echo=False)
     #     return
-    result = inquirer.select(gettext("remove"), ["python", Choice("", gettext("cancel"))]).execute()
-    if result == "python":
-        hint("remove Python")
-        c.run(f"{PM} uninstall python")
 
 
 @task(aliases=["u"], help={"config": "更新 .fabric.yaml, .zshrc 配置文件"})
@@ -175,6 +171,8 @@ def upgrade(c: Context, *, config: bool = False) -> None:
     hint("upgrade uv")
     c.run("uv self update")
     c.run("uv tool upgrade --all")
+    hint("upgrade python")
+    c.run("uv python upgrade")
     hint("upgrade rust")
     c.run("rustup update")
     cleanup(c)
