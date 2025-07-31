@@ -11,7 +11,7 @@ from InquirerPy.base.control import Choice
 from InquirerPy.separator import Separator
 from invoke import Context
 
-VERSION = "0.40"
+VERSION = "0.41"
 PM: Literal["brew", "scoop"] = "scoop" if platform.system() == "Windows" else "brew"
 
 
@@ -29,8 +29,12 @@ def hello(c: Context) -> None:
     """Hello"""
     rich.print(f"Hello ~ {get_local_user()}")
     rich.print(f"Version: {VERSION}")
-    uv_tools = "~\\AppData\\Roaming\\uv\\tools\\" if platform.system() == "Windows" else "~/.local/share/uv/tools/"
-    rich.print(f"Interpreter: {uv_tools}fabric")
+    fabric_python = Path(
+        "~/AppData/Roaming/uv/tools/fabric/Scripts/python.exe"
+        if platform.system() == "Windows"
+        else "~/.local/share/uv/tools/fabric"
+    ).expanduser()
+    rich.print(f"Interpreter: {fabric_python}")
     rich.print("fab task -h 可以查看 task\n")
     c.run("fab -l", echo=False)
 
