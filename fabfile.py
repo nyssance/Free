@@ -11,7 +11,7 @@ from InquirerPy.base.control import Choice
 from InquirerPy.separator import Separator
 from invoke import Context
 
-VERSION = "0.41"
+VERSION = "0.42"
 PM: Literal["brew", "scoop"] = "scoop" if platform.system() == "Windows" else "brew"
 
 
@@ -36,7 +36,7 @@ def hello(c: Context) -> None:
     ).expanduser()
     rich.print(f"Interpreter: {fabric_python}")
     rich.print("fab task -h 可以查看 task\n")
-    c.run("fab -l", echo=False)
+    uv_run(c, "fab -l", echo=False)
 
 
 @task
@@ -145,7 +145,7 @@ def install(c: Context) -> None:  # noqa: C901, PLR0912
 def remove(c: Context) -> None:
     """删除"""
     # if not c.config.sudo.password:
-    #     c.run("fab remove --prompt-for-sudo-password", echo=False)
+    #     uv_run("fab remove --prompt-for-sudo-password", echo=False)
     #     return
 
 
@@ -199,6 +199,10 @@ def hint(value: str) -> None:
     color_map = {"clean": "yellow", "configure": "cyan", "install": "green", "remove": "red", "upgrade": "blue"}
     operation, message = value.split(" ", 1)
     rich.print(f"[on {color_map.get(operation, "white")}]{gettext(operation)}", message)
+
+
+def uv_run(c: Context, command: str, *, echo: bool = False) -> None:
+    c.run(f"uv run {command}", encoding=locale.getdefaultlocale()[1], echo=echo, pty=False)
 
 
 ZH_CN = {
