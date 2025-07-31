@@ -11,7 +11,7 @@ from InquirerPy.base.control import Choice
 from InquirerPy.separator import Separator
 from invoke import Context
 
-VERSION = "0.42"
+VERSION = "0.43"
 PM: Literal["brew", "scoop"] = "scoop" if platform.system() == "Windows" else "brew"
 
 
@@ -202,7 +202,7 @@ def hint(value: str) -> None:
 
 
 def uv_run(c: Context, command: str, *, echo: bool = False) -> None:
-    c.run(f"uv run {command}", encoding=locale.getdefaultlocale()[1], echo=echo, pty=False)
+    c.run(f"uv run {command}", encoding=locale.getdefaultlocale()[1], echo=echo)
 
 
 ZH_CN = {
