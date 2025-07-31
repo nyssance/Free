@@ -32,11 +32,11 @@ def hello(c: Context) -> None:
     fabric_python = Path(
         "~/AppData/Roaming/uv/tools/fabric/Scripts/python.exe"
         if platform.system() == "Windows"
-        else "~/.local/share/uv/tools/fabric"
+        else "~/.local/share/uv/tools/fabric/bin/python"
     ).expanduser()
     rich.print(f"Interpreter: {fabric_python}")
     rich.print("fab task -h 可以查看 task\n")
-    uv_run(c, "fab -l", echo=False)
+    c.run("fab -l", encoding=locale.getdefaultlocale()[1], echo=False)
 
 
 @task
@@ -199,10 +199,6 @@ def hint(value: str) -> None:
     color_map = {"clean": "yellow", "configure": "cyan", "install": "green", "remove": "red", "upgrade": "blue"}
     operation, message = value.split(" ", 1)
     rich.print(f"[on {color_map.get(operation, "white")}]{gettext(operation)}", message)
-
-
-def uv_run(c: Context, command: str, *, echo: bool = False) -> None:
-    c.run(f"uv run {command}", encoding=locale.getdefaultlocale()[1], echo=echo)
 
 
 ZH_CN = {
