@@ -34,7 +34,9 @@
     "workbench.activityBar.location": "bottom",
     "workbench.colorTheme": "Visual Studio Dark",
     "workbench.editorAssociations": {
-        "*.csv": "default"
+        "*.copilotmd": "vscode.markdown.preview.editor",
+        "*.csv": "default",
+        "*.parquet": "parquetViewer.parquetViewer"
     },
     "workbench.iconTheme": "vscode-icons",
     "workbench.startupEditor": "none",
