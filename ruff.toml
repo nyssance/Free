@@ -13,7 +13,7 @@ ignore = [# https://docs.astral.sh/ruff/rules/
 ]
 unfixable = [
     "T20", # flake8-print
-    "F401", "F841" # Pyflakes: unused-import, unused-variable
+    "F841" # Pyflakes: unused-variable
 ]
 
 [format]
