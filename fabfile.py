@@ -1,6 +1,6 @@
 import locale
-import platform
 from pathlib import Path
+from platform import system
 from typing import Final, Literal
 
 import rich
@@ -11,8 +11,8 @@ from InquirerPy.base.control import Choice
 from InquirerPy.separator import Separator
 from invoke import Context
 
-VERSION: Final[str] = "0.43"
-PM: Literal["brew", "scoop"] = "scoop" if platform.system() == "Windows" else "brew"
+VERSION: Final[str] = "0.45"
+PM: Literal["brew", "scoop"] = "scoop" if system() == "Windows" else "brew"
 
 
 def check() -> None:
@@ -31,7 +31,7 @@ def hello(c: Context) -> None:
     rich.print(f"Version: {VERSION}")
     fabric_python = Path(
         "~/AppData/Roaming/uv/tools/fabric/Scripts/python.exe"
-        if platform.system() == "Windows"
+        if system() == "Windows"
         else "~/.local/share/uv/tools/fabric/bin/python"
     ).expanduser()
     rich.print(f"Interpreter: {fabric_python}")
@@ -42,7 +42,7 @@ def hello(c: Context) -> None:
 @task
 def profile(c: Context) -> None:
     """配置"""
-    match platform.system():
+    match system():
         case "Darwin":
             c.run("open ~/.zshrc")
         case "Windows":
@@ -85,10 +85,10 @@ def install(c: Context) -> None:  # noqa: C901, PLR0912
             "fastlane",
             Choice("fonts", f"{gettext("fonts")}: Cascadia Code NF"),
             "zoxide",
-            Separator()
+            Separator(),
         ],
         transformer=lambda result: ", ".join(result) if len(result) > 0 else "",
-        instruction="(Space for select)"
+        instruction="(Space for select)",
     ).execute()
     if not roles:
         return
@@ -112,7 +112,7 @@ def install(c: Context) -> None:  # noqa: C901, PLR0912
         c.run("uv tool install ty")
     if "rust" in roles:
         hint("install Rust")
-        if platform.system() == "Windows":
+        if system() == "Windows":
             c.run("start https://www.rust-lang.org/learn/get-started")
         else:
             c.run("curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh")
@@ -157,7 +157,7 @@ def upgrade(c: Context, *, config: bool = False) -> None:
     download(c, f"{remote}fabfile.py")
     if config:
         hint("configure .fabric.yaml")
-        if platform.system() == "Windows":
+        if system() == "Windows":
             download(c, f"{remote}fabric.windows.yaml", ".fabric.yaml")
         else:
             download(c, f"{remote}fabric.yaml", ".fabric.yaml")
@@ -180,7 +180,7 @@ def upgrade(c: Context, *, config: bool = False) -> None:
     hint("upgrade rust")
     c.run("rustup update")
     cleanup(c)
-    if platform.system() == "Windows":
+    if system() == "Windows":
         c.run("winget upgrade")
     hint(f"upgrade {gettext("completed")}")
 
@@ -191,7 +191,7 @@ def download(c: Context, url: str, name: str | None = None) -> None:
 
 
 def gettext(message: str) -> str:
-    chinese = "zh_CN" in locale.getlocale() or "Chinese (Simplified)_China" in locale.getlocale()
+    chinese = ("Chinese (Simplified)_China" if system() == "Windows" else "zh_CN") in locale.getdefaultlocale()
     return ZH_CN[message] if chinese else message.capitalize()
 
 
@@ -209,5 +209,5 @@ ZH_CN = {
     "upgrade": "升级",
     "cancel": "取消",
     "completed": "完成",
-    "fonts": "字体"
+    "fonts": "字体",
 }
