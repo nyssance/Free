@@ -156,10 +156,6 @@ cd ~ && fab upgrade
 - [SwiftFormat](https://github.com/nicklockwood/SwiftFormat)
 - [SwiftLint](https://github.com/realm/SwiftLint)
 
-### Java
-
-- [OpenJDK](https://openjdk.java.net)
-
 ### JavaScript & TypeScript
 
 - [Bun](https://bun.sh)

@@ -74,7 +74,6 @@ def install(c: Context) -> None:  # noqa: C901, PLR0912
             Separator(),
             Choice("android", "Android"),
             Choice("ios", "iOS / macOS"),
-            Choice("java", "Java"),
             Choice("js", "JavaScript & TypeScript"),
             Choice("python", "Python"),
             Choice("rust", "Rust"),
@@ -98,11 +97,6 @@ def install(c: Context) -> None:  # noqa: C901, PLR0912
     if "ios" in roles:
         hint("install CocoaPods, SwiftFormat, SwiftLint")
         c.run(f"{PM} install cocoapods swiftformat swiftlint")
-    if "java" in roles:
-        hint("install OpenJDK")
-        if PM == "scoop":
-            c.run(f"{PM} add bucket java")
-        c.run(f"{PM} install openjdk")
     if "js" in roles:
         hint("install Bun")
         c.run(f"{PM} install {"oven-sh/bun/" if PM == "brew" else ""}bun")
