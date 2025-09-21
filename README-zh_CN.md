@@ -5,7 +5,7 @@
 
 ---
 
-[![macOS](https://img.shields.io/badge/macOS_15-4f4f4f?style=for-the-badge&logo=apple)](https://www.apple.com.cn/macos/macos-sequoia/)
+[![macOS](https://img.shields.io/badge/macOS_26-4f4f4f?style=for-the-badge&logo=apple)](https://www.apple.com.cn/macos/macos-sequoia/)
 [![Homebrew](https://img.shields.io/badge/Homebrew-2d2a25?style=for-the-badge&logo=homebrew)](https://brew.sh)
 
 [![Windows](https://img.shields.io/badge/Windows_11-0078d4?style=for-the-badge&logo=windows11)](https://www.microsoft.com/windows/)
