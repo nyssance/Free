@@ -13,7 +13,7 @@
 
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://opensource.org/licenses/MIT)
-[![python](https://img.shields.io/badge/python-3.13-3776AB)](https://www.python.org)
+[![python](https://img.shields.io/badge/python-3.14-3776AB)](https://www.python.org)
 
 Free [English](https://github.com/nyssance/Free/blob/main/README.md)
 

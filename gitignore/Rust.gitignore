@@ -24,6 +24,7 @@ target
 # [macOS](https://github.com/github/gitignore/blob/main/Global/macOS.gitignore)
 # General
 .DS_Store
+__MACOSX/
 .AppleDouble
 .LSOverride
 Icon
