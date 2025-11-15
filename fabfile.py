@@ -163,7 +163,7 @@ def upgrade(c: Context, *, config: bool = False) -> None:
     match PM:
         case "brew":
             hint("upgrade Homebrew")
-            c.run(f"{PM} update")
+            # c.run(f"{PM} update")
             c.run(f"{PM} upgrade")
         case "scoop":
             hint("upgrade Scoop")
