@@ -11,7 +11,7 @@ from InquirerPy.base.control import Choice
 from InquirerPy.separator import Separator
 from invoke import Context
 
-VERSION: Final[str] = "0.45"
+VERSION: Final[str] = "0.46"
 PM: Literal["brew", "scoop"] = "scoop" if system() == "Windows" else "brew"
 
 
@@ -99,7 +99,9 @@ def install(c: Context) -> None:  # noqa: C901, PLR0912
         c.run(f"{PM} install cocoapods swiftformat swiftlint")
     if "js" in roles:
         hint("install Bun")
-        c.run(f"{PM} install {"oven-sh/bun/" if PM == "brew" else ""}bun")
+        if PM == "brew":
+            c.run("brew tap oven-sh/bun")
+        c.run(f"{PM} install bun")
     if "python" in roles:
         hint("install Ruff, ty")
         c.run("uv tool install ruff")
