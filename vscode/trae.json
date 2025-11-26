@@ -3,12 +3,14 @@
     "editor.defaultFormatter": "trae.ai-code-completion",
     "editor.fontLigatures": true,
     "editor.fontSize": 17,
+    "editor.linkedEditing": true,
     "editor.minimap.autohide": "mouseover",
     "editor.minimap.enabled": true,
     "editor.rulers": [
         120
     ],
     "editor.wordWrap": "on",
+    "explorer.autoReveal": false,
     "explorer.decorations.colors": false,
     "explorer.excludeGitIgnore": true,
     "explorer.fileNesting.enabled": true,
