@@ -11,7 +11,7 @@ from InquirerPy.base.control import Choice
 from InquirerPy.separator import Separator
 from invoke import Context
 
-VERSION: Final[str] = "0.46"
+VERSION: Final[str] = "0.47"
 PM: Literal["brew", "scoop"] = "scoop" if system() == "Windows" else "brew"
 
 
@@ -163,16 +163,15 @@ def upgrade(c: Context, *, config: bool = False) -> None:
     match PM:
         case "brew":
             hint("upgrade Homebrew")
-            # c.run(f"{PM} update")
+            c.run(f"{PM} update")
             c.run(f"{PM} upgrade")
         case "scoop":
             hint("upgrade Scoop")
             c.run(f"{PM} update --all")
-    hint("upgrade uv")
+    hint("upgrade uv/python/tool")
     c.run("uv self update")
-    c.run("uv tool upgrade --all")
-    hint("upgrade python")
     c.run("uv python upgrade")
+    c.run("uv tool upgrade --all")
     hint("upgrade rust")
     c.run("rustup update")
     cleanup(c)
