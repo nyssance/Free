@@ -24,5 +24,7 @@
     "terminal.integrated.fontLigatures.enabled": true,
     "terminal.integrated.fontSize": 15,
     "workbench.colorTheme": "Deep Blue",
-    "workbench.iconTheme": "vscode-icons"
+    "workbench.iconTheme": "vscode-icons",
+    "AI.task.endSound": false,
+    "AI.task.endBanner": false
 }
