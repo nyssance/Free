@@ -6,19 +6,17 @@ future-annotations = true
 preview = true
 dummy-variable-rgx = "^_$"
 select = ["ALL"]
-ignore = [ # https://docs.astral.sh/ruff/rules/
-    "ERA001",  # eradicate: commented-out-code
-    "COM812",  # flake8-commas: missing-trailing-comma
-    "CPY",
-    "FIX",
-    "TD",      # flake8-copyright, flake8-fixme, flake8-todos
-    "D",       # "D100", "D103", "D104", "D400", "D415", # pydocstyle
-    "PLR0913",
-    "PLR2004", # Refactor: too-many-arguments, magic-value-comparison
+ignore = [# https://docs.astral.sh/ruff/rules/
+    "ERA001", # eradicate: commented-out-code
+    "COM812", # flake8-commas: missing-trailing-comma
+    "ARG002",
+    "CPY", "FIX", "TD", # flake8-copyright, flake8-fixme, flake8-todos
+    "D", # "D100", "D103", "D104", "D400", "D415", # pydocstyle
+    "PLR0913", "PLR2004" # Refactor: too-many-arguments, magic-value-comparison
 ]
 unfixable = [
-    "T20",  # flake8-print
-    "F841", # Pyflakes: unused-variable
+    "T20", # flake8-print
+    "F841" # Pyflakes: unused-variable
 ]
 
 [lint.isort]
