@@ -28,6 +28,9 @@
     "git.enableSmartCommit": true,
     "git.openRepositoryInParentFolders": "always",
     "scm.workingSets.enabled": true,
+    "settingsSync.ignoredExtensions": [
+        "ms-vscode.powershell"
+    ],
     "terminal.integrated.enablePersistentSessions": false,
     "terminal.integrated.fontFamily": "MesloLGS NF, MesloLGM Nerd Font",
     "terminal.integrated.fontLigatures.enabled": true,
@@ -58,5 +61,6 @@
     },
     "evenBetterToml.formatter.columnWidth": 120,
     "markdown.preview.typographer": true,
+    "vscode-edge-devtools.webhintInstallNotification": true,
     "vsicons.dontShowNewVersionMessage": true
 }
