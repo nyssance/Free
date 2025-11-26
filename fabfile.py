@@ -172,7 +172,6 @@ def upgrade(c: Context, *, config: bool = False) -> None:
     c.run("uv self update")
     c.run("uv python upgrade")
     c.run("uv tool upgrade --all")
-    c.run("uv tool install ty==0.0.1a27")
     hint("upgrade rust")
     c.run("rustup update")
     cleanup(c)
