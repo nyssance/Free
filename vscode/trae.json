@@ -1,0 +1,26 @@
+{
+    "diffEditor.hideUnchangedRegions.enabled": true,
+    "editor.defaultFormatter": "trae.ai-code-completion",
+    "editor.fontLigatures": true,
+    "editor.fontSize": 17,
+    "editor.minimap.autohide": "mouseover",
+    "editor.minimap.enabled": true,
+    "editor.rulers": [
+        120
+    ],
+    "editor.wordWrap": "on",
+    "explorer.decorations.colors": false,
+    "explorer.excludeGitIgnore": true,
+    "explorer.fileNesting.enabled": true,
+    "files.autoSave": "afterDelay",
+    "files.insertFinalNewline": true,
+    "files.readonlyFromPermissions": true,
+    "files.trimFinalNewlines": true,
+    "files.trimTrailingWhitespace": true,
+    "terminal.integrated.enablePersistentSessions": false,
+    "terminal.integrated.fontFamily": "MesloLGS NF, MesloLGM Nerd Font",
+    "terminal.integrated.fontLigatures.enabled": true,
+    "terminal.integrated.fontSize": 15,
+    "workbench.colorTheme": "Deep Blue",
+    "workbench.iconTheme": "vscode-icons"
+}
