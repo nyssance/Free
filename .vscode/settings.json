@@ -1,10 +1,8 @@
 {
-    "[python]": {
-        "editor.codeActionsOnSave": {
-            "source.organizeImports.ruff": "explicit"
-        },
-        "editor.defaultFormatter": "charliermarsh.ruff",
-        // "editor.formatOnType": true
-    },
-    "ruff.lint.preview": true
+    "python.languageServer": "None",
+    "ruff.configurationPreference": "filesystemFirst",
+    "ruff.format.preview": true,
+    "ruff.lint.preview": true,
+    "ty.inlayHints.callArgumentNames": false,
+    "ty.inlayHints.variableTypes": false
 }
