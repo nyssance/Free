@@ -5,10 +5,12 @@
     "editor.fontSize": 17,
     "editor.linkedEditing": true,
     "editor.minimap.autohide": "mouseover",
-    "editor.minimap.enabled": true,
     "editor.rulers": [
         120
     ],
+    "editor.unicodeHighlight.allowedLocales": {
+        "zh-hans": true
+    },
     "editor.wordWrap": "on",
     "explorer.autoReveal": false,
     "explorer.decorations.colors": false,
@@ -25,6 +27,10 @@
     "terminal.integrated.fontSize": 15,
     "workbench.colorTheme": "Deep Blue",
     "workbench.iconTheme": "vscode-icons",
-    "AI.task.endSound": false,
-    "AI.task.endBanner": false
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "AI.task.endBanner": false,
+    "chat.fontSize": 18,
+    "chat.editor.fontSize": 14
 }

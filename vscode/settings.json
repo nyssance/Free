@@ -8,6 +8,9 @@
     "editor.rulers": [
         120
     ],
+    "editor.unicodeHighlight.allowedLocales": {
+        "zh-hans": true
+    },
     "editor.wordWrap": "on",
     "explorer.autoReveal": false,
     "explorer.decorations.colors": false,
@@ -44,12 +47,6 @@
     },
     "workbench.iconTheme": "vscode-icons",
     "workbench.startupEditor": "none",
-    // "[css]": {
-    //     "editor.defaultFormatter": "vscode.css-language-features"
-    // },
-    "[html]": {
-        "editor.defaultFormatter": "vscode.html-language-features"
-    },
     "[jsonc]": {
         "editor.defaultFormatter": "vscode.json-language-features"
     },
