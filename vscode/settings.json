@@ -3,6 +3,8 @@
     "editor.fontFamily": "'Cascadia Code NF', Consolas, 'Courier New', monospace",
     "editor.fontLigatures": true,
     "editor.fontSize": 17,
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
     "editor.linkedEditing": true,
     "editor.minimap.autohide": "mouseover",
     "editor.rulers": [
