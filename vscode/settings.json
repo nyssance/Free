@@ -37,6 +37,7 @@
     "git.openRepositoryInParentFolders": "always",
     "scm.workingSets.enabled": true,
     "settingsSync.ignoredExtensions": [
+        "ms-edgedevtools.vscode-edge-devtools",
         "ms-vscode.powershell"
     ],
     "terminal.integrated.enablePersistentSessions": false,
@@ -63,6 +64,5 @@
     },
     "evenBetterToml.formatter.columnWidth": 120,
     "markdown.preview.typographer": true,
-    "vscode-edge-devtools.webhintInstallNotification": true,
     "vsicons.dontShowNewVersionMessage": true
 }
