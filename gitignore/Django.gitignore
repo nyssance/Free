@@ -243,6 +243,9 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# User
+!.idea/dictionaries/project.xml
+
 # [Django](https://www.djangoproject.com)
 **/migrations/**
 !**/migrations/__init__.py
