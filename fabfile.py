@@ -41,6 +41,7 @@ def hello(c: Context) -> None:
     rich.print(f"Interpreter: {fabric_python}")
     rich.print("fab task -h 可以查看 task\n")
     c.run("fab -l", encoding=locale.getdefaultlocale()[1], echo=False)
+    c.run("git config --global --list")
 
 
 @task
