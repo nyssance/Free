@@ -87,7 +87,7 @@ Free [English](https://github.com/nyssance/Free/blob/main/README.md)
 1. 安装 [Python]。
 
     ```shell
-    uv install python
+    uv python install
     ```
 
 2. 安装 [Fabric]，[InquirerPy]，[Rich]。
