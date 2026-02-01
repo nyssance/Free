@@ -43,6 +43,12 @@ Free [简体中文](https://github.com/nyssance/Free/blob/main/README-zh_CN.md)
     curl -LsSf https://astral.sh/uv/install.sh | sh
     ```
 
+4. 安装 [WailBrew] Optional.
+
+    ```shell
+    brew install --cask wailbrew
+    ```
+
 > Powerlevel10k
 >
 > - [Installation](https://github.com/romkatv/powerlevel10k?tab=readme-ov-file#installation)
@@ -125,6 +131,7 @@ cd ~ && fab upgrade
 ## Vendor
 
 - [Homebrew]
+  - [WailBrew]
 - [Zsh](https://www.zsh.org)
   - [Oh My Zsh]
   - [zsh-autosuggestions]
@@ -175,6 +182,7 @@ cd ~ && fab upgrade
 Free is released under the MIT license. [See LICENSE](https://github.com/nyssance/Free/blob/main/LICENSE) for details.
 
 [HomeBrew]: https://brew.sh
+[WailBrew]: https://github.com/wickenico/WailBrew
 [Oh My Zsh]: https://ohmyz.sh
 [zsh-autosuggestions]: https://github.com/zsh-users/zsh-autosuggestions
 [zsh-syntax-highlighting]: https://github.com/zsh-users/zsh-syntax-highlighting
