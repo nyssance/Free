@@ -41,7 +41,7 @@ def hello(c: Context) -> None:
     rich.print(f"Interpreter: {fabric_python}")
     rich.print("fab task -h 可以查看 task\n")
     c.run("fab -l", encoding=locale.getencoding(), echo=False)
-    c.run("git config --global --list")
+    c.run("git --no-pager config --global --list")
     if system() == "Windows":
         rich.print("Suggestion: `git config --global core.autocrlf input`")
 
