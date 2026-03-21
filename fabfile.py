@@ -40,7 +40,7 @@ def hello(c: Context) -> None:
     ).expanduser()
     rich.print(f"Interpreter: {fabric_python}")
     rich.print("fab task -h 可以查看 task\n")
-    c.run("fab -l", encoding=locale.getdefaultlocale()[1], echo=False)
+    c.run("fab -l", encoding=locale.getencoding(), echo=False)
     c.run("git config --global --list")
     if system() == "Windows":
         rich.print("Suggestion: `git config --global core.autocrlf input`")
@@ -193,7 +193,7 @@ def download(c: Context, url: str, name: str | None = None) -> None:
 
 
 def gettext(message: str) -> str:
-    chinese = ("Chinese (Simplified)_China" if system() == "Windows" else "zh_CN") in locale.getdefaultlocale()
+    chinese = ("Chinese (Simplified)_China" if system() == "Windows" else "zh_CN") in locale.getlocale()
     return ZH_CN[message] if chinese else message.capitalize()
 
 
