@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import locale
 from pathlib import Path
 from platform import system
