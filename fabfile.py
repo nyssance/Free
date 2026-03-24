@@ -1,7 +1,7 @@
 import locale
 from pathlib import Path
 from platform import system
-from typing import TYPE_CHECKING, Final, Literal
+from typing import Final, Literal
 
 import rich
 from fabric import task
@@ -9,9 +9,8 @@ from fabric.util import get_local_user
 from InquirerPy import inquirer
 from InquirerPy.base.control import Choice
 from InquirerPy.separator import Separator
+from invoke import Context
 
-if TYPE_CHECKING:
-    from invoke import Context
 
 VERSION: Final[str] = "0.50"
 PM: Literal["brew", "scoop"] = "scoop" if system() == "Windows" else "brew"
