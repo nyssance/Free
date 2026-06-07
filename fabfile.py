@@ -12,7 +12,7 @@ from InquirerPy.separator import Separator
 from invoke import Context
 
 
-VERSION: Final[str] = "0.50"
+VERSION: Final[str] = "0.51"
 PM: Literal["brew", "scoop"] = "scoop" if system() == "Windows" else "brew"
 
 
@@ -103,9 +103,10 @@ def install(c: Context) -> None:  # noqa: C901, PLR0912
         c.run(f"{PM} install cocoapods swiftformat swiftlint")
     if "js" in roles:
         hint("install Bun")
-        if PM == "brew":
-            c.run("brew tap oven-sh/bun")
-        c.run(f"{PM} install bun")
+        if system() == "Windows":
+            c.run('powershell -c "irm bun.sh/install.ps1 | iex"')
+        else:
+            c.run("curl -fsSL https://bun.sh/install | bash")
     if "python" in roles:
         hint("install Ruff, ty")
         c.run("uv tool install ruff")
@@ -176,6 +177,8 @@ def upgrade(c: Context, *, config: bool = False) -> None:
     c.run("uv self update")
     c.run("uv python upgrade")
     c.run("uv tool upgrade --all")
+    hint("upgrade bun")
+    c.run("bun upgrade")
     hint("upgrade rust")
     c.run("rustup update")
     cleanup(c)

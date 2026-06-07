@@ -16,3 +16,10 @@ source $ZSH/oh-my-zsh.sh
 # eval "$(uv generate-shell-completion zsh)"
 # eval "$(uvx --generate-shell-completion zsh)"
 export UV_PUBLISH_TOKEN=pypi-xxx
+
+# bun completions
+[ -s "/Users/ny/.bun/_bun" ] && source "/Users/ny/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
