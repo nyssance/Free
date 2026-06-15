@@ -160,10 +160,7 @@ def upgrade(c: Context, *, config: bool = False) -> None:
             instruction="(Space for select)",
         ).execute()
         if ".fabric.yaml" in selected:
-            if system() == "Windows":
-                download(c, f"{remote}fabric.windows.yaml", ".fabric.yaml")
-            else:
-                download(c, f"{remote}fabric.yaml", ".fabric.yaml")
+            download(c, f"{remote}fabric.{"windows." if system() == "Windows" else ""}yaml", ".fabric.yaml")
         if ".zshrc" in selected:
             download(c, f"{remote}zshrc", ".zshrc")
             c.run("zsh -lc 'source .zshrc'")
