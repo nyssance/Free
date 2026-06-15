@@ -3,4 +3,6 @@ run:
   echo: true
   encoding: utf-8
   pty: true
+  env:
+    HOMEBREW_NO_ASK: "1"
   # replace_env: false

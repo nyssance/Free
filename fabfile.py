@@ -12,7 +12,7 @@ from InquirerPy.separator import Separator
 from invoke import Context
 
 
-VERSION: Final[str] = "0.51"
+VERSION: Final[str] = "0.52"
 PM: Literal["brew", "scoop"] = "scoop" if system() == "Windows" else "brew"
 
 
@@ -147,19 +147,24 @@ def remove(c: Context) -> None:
     #     return
 
 
-@task(aliases=["u"], help={"config": "更新 .fabric.yaml, .zshrc 配置文件"})
+@task(aliases=["u"], help={"config": "选择更新配置文件 (.fabric.yaml / .zshrc)"})
 def upgrade(c: Context, *, config: bool = False) -> None:
     """升级"""
     hint(f"upgrade 自己 当前版本 {VERSION} 变化在下次执行时生效")
     remote = "https://raw.githubusercontent.com/nyssance/Free/main/"
     download(c, f"{remote}fabfile.py")
     if config:
-        hint("configure .fabric.yaml")
-        if system() == "Windows":
-            download(c, f"{remote}fabric.windows.yaml", ".fabric.yaml")
-        else:
-            download(c, f"{remote}fabric.yaml", ".fabric.yaml")
-            hint("configure .zshrc")
+        selected = inquirer.checkbox(
+            gettext("configure"),
+            [Separator(), Choice(".fabric.yaml", enabled=True), Choice(".zshrc"), Separator()],
+            instruction="(Space for select)",
+        ).execute()
+        if ".fabric.yaml" in selected:
+            if system() == "Windows":
+                download(c, f"{remote}fabric.windows.yaml", ".fabric.yaml")
+            else:
+                download(c, f"{remote}fabric.yaml", ".fabric.yaml")
+        if ".zshrc" in selected:
             download(c, f"{remote}zshrc", ".zshrc")
             c.run("zsh -lc 'source .zshrc'")
     match PM:
