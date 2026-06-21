@@ -52,6 +52,21 @@ def profile(c: Context) -> None:
             c.run("notepad $PROFILE")
 
 
+@task
+def beautify(c: Context) -> None:
+    """美化"""
+    hint("install starship")
+    c.run(f"{PM} install starship")
+    hint(f"install {gettext("fonts")}: Cascadia Code NF, JetBrainsMono Nerd Font")
+    match PM:
+        case "brew":
+            c.run(f"{PM} install font-cascadia-code-nf font-jetbrains-mono-nerd-font")
+        case "scoop":
+            c.run(f"{PM} bucket add nerd-fonts")
+            c.run(f"{PM} install CascadiaCode-NF")
+    cleanup(c)
+
+
 @task(aliases=["clean"])
 def cleanup(c: Context) -> None:
     """清理"""
@@ -69,7 +84,7 @@ def cleanup(c: Context) -> None:
 
 
 @task
-def install(c: Context) -> None:  # noqa: C901, PLR0912
+def install(c: Context) -> None:  # noqa: C901
     """安装"""
     roles = inquirer.checkbox(
         gettext("install"),
@@ -85,7 +100,6 @@ def install(c: Context) -> None:  # noqa: C901, PLR0912
             Choice("redis", "Redis"),
             Separator("-- Others -----"),
             "fastlane",
-            Choice("fonts", f"{gettext("fonts")}: Cascadia Code NF"),
             "zoxide",
             Separator(),
         ],
@@ -124,14 +138,6 @@ def install(c: Context) -> None:  # noqa: C901, PLR0912
     if "fastlane" in roles:
         hint("install fastlane")
         c.run(f"{PM} install fastlane")
-    if "fonts" in roles:
-        hint(f"install {gettext("fonts")}: Cascadia Code NF")
-        match PM:
-            case "brew":
-                c.run(f"{PM} install font-cascadia-code-nf")
-            case "scoop":
-                c.run(f"{PM} bucket add nerd-fonts")
-                c.run(f"{PM} install CascadiaCode-NF")
     if "zoxide" in roles:
         hint("install zoxide fzf")
         c.run(f"{PM} install zoxide fzf")
@@ -200,6 +206,7 @@ def hint(value: str) -> None:
 
 
 ZH_CN = {
+    "beautify": "美化",
     "clean": "清理",
     "configure": "配置",
     "install": "安装",

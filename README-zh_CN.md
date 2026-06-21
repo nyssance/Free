@@ -49,11 +49,6 @@ Free [English](https://github.com/nyssance/Free/blob/main/README.md)
     brew install --cask wailbrew
     ```
 
-> Powerlevel10k
->
-> - [安装](https://github.com/romkatv/powerlevel10k?tab=readme-ov-file#installation)
-> - [字体](https://github.com/romkatv/powerlevel10k/tree/master?tab=readme-ov-file#fonts)
-
 ### Windows
 
 1. 安装 [Scoop]。
@@ -70,22 +65,6 @@ Free [English](https://github.com/nyssance/Free/blob/main/README.md)
 
     ```powershell
     'powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"'
-    ```
-
-3. 安装 [Oh My Posh] 可选。
-
-    ```powershell
-    winget install JanDeDobbeleer.OhMyPosh -s winget
-    ```
-
-4. 安装 [Terminal-Icons] 可选。
-
-    ```powershell
-    Install-Module -Name Terminal-Icons -Repository PSGallery
-    ```
-
-    ```powershell
-    Import-Module -Name Terminal-Icons
     ```
 
 ### Python
@@ -120,13 +99,27 @@ Free [English](https://github.com/nyssance/Free/blob/main/README.md)
     fab install
     ```
 
-    > macOS - 配置[plugins:vscode](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/vscode)
+    > macOS - 配置 [plugins:vscode](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/vscode)
 
 ## 升级
 
 ```shell
 cd ~ && fab upgrade
 ```
+
+## 终端美化
+
+```shell
+fab beautify
+```
+
+[starship] 配置
+
+```shell
+starship preset nerd-font-symbols -o ~/.config/starship.toml
+```
+
+好看的配色 - [terminal-snazzy](https://github.com/sindresorhus/terminal-snazzy)
 
 ## Vendor
 
@@ -148,10 +141,12 @@ cd ~ && fab upgrade
 
 - [fastlane](https://fastlane.tools)
 
-### 字体
+### 美化
 
-- [Cascadia Code](https://github.com/microsoft/cascadia-code)
-- [Nerd Fonts](https://www.nerdfonts.com)
+- [starship]
+- fonts
+  - [Cascadia Code](https://github.com/microsoft/cascadia-code)
+  - [Nerd Fonts](https://www.nerdfonts.com)
 
 ### Android
 
@@ -187,11 +182,10 @@ Free is released under the MIT license. [See LICENSE](https://github.com/nyssanc
 [Oh My Zsh]: https://ohmyz.sh
 [zsh-autosuggestions]: https://github.com/zsh-users/zsh-autosuggestions
 [zsh-syntax-highlighting]: https://github.com/zsh-users/zsh-syntax-highlighting
-[Powerlevel10k]: https://github.com/romkatv/powerlevel10k
 
 [Scoop]: https://scoop.sh
-[Oh My Posh]: https://ohmyposh.dev
-[Terminal-Icons]: https://github.com/devblackops/Terminal-Icons
+
+[starship]: https://starship.rs
 
 [Python]: https://www.python.org
 [uv]: https://astral.sh/uv

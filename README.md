@@ -27,7 +27,7 @@ Free [简体中文](https://github.com/nyssance/Free/blob/main/README-zh_CN.md)
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     ```
 
-2. Install [Oh My Zsh], [zsh-autosuggestions], [zsh-syntax-highlighting], [Powerlevel10k] Optional.
+2. Install [Oh My Zsh], [zsh-autosuggestions], [zsh-syntax-highlighting], [Powerlevel10k] optional.
 
     ```shell
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -43,16 +43,11 @@ Free [简体中文](https://github.com/nyssance/Free/blob/main/README-zh_CN.md)
     curl -LsSf https://astral.sh/uv/install.sh | sh
     ```
 
-4. 安装 [WailBrew] Optional.
+4. Install [WailBrew] optional.
 
     ```shell
     brew install --cask wailbrew
     ```
-
-> Powerlevel10k
->
-> - [Installation](https://github.com/romkatv/powerlevel10k?tab=readme-ov-file#installation)
-> - [Fonts](https://github.com/romkatv/powerlevel10k/tree/master?tab=readme-ov-file#fonts)
 
 ### Windows
 
@@ -70,22 +65,6 @@ Free [简体中文](https://github.com/nyssance/Free/blob/main/README-zh_CN.md)
 
     ```powershell
     'powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"'
-    ```
-
-3. Install [Oh My Posh] Optional.
-
-    ```powershell
-    winget install JanDeDobbeleer.OhMyPosh -s winget
-    ```
-
-4. Install [Terminal-Icons] Optional.
-
-    ```powershell
-    Install-Module -Name Terminal-Icons -Repository PSGallery
-    ```
-
-    ```powershell
-    Import-Module -Name Terminal-Icons
     ```
 
 ### Python
@@ -120,13 +99,27 @@ Free [简体中文](https://github.com/nyssance/Free/blob/main/README-zh_CN.md)
     fab install
     ```
 
-  > macOS - Config [plugins:vscode](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/vscode)
+    > macOS - Config [plugins:vscode](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/vscode)
 
 ## Upgrading
 
 ```shell
 cd ~ && fab upgrade
 ```
+
+## Terminal Beautification
+
+```shell
+fab beautify
+```
+
+[starship] config
+
+```shell
+starship preset nerd-font-symbols -o ~/.config/starship.toml
+```
+
+Nice color scheme - [terminal-snazzy](https://github.com/sindresorhus/terminal-snazzy)
 
 ## Vendor
 
@@ -148,10 +141,12 @@ cd ~ && fab upgrade
 
 - [fastlane](https://fastlane.tools)
 
-### Font
+### Beautify
 
-- [Cascadia Code](https://github.com/microsoft/cascadia-code)
-- [Nerd Fonts](https://www.nerdfonts.com)
+- [starship]
+- fonts
+  - [Cascadia Code](https://github.com/microsoft/cascadia-code)
+  - [Nerd Fonts](https://www.nerdfonts.com)
 
 ### Android
 
@@ -187,11 +182,10 @@ Free is released under the MIT license. [See LICENSE](https://github.com/nyssanc
 [Oh My Zsh]: https://ohmyz.sh
 [zsh-autosuggestions]: https://github.com/zsh-users/zsh-autosuggestions
 [zsh-syntax-highlighting]: https://github.com/zsh-users/zsh-syntax-highlighting
-[Powerlevel10k]: https://github.com/romkatv/powerlevel10k
 
 [Scoop]: https://scoop.sh
-[Oh My Posh]: https://ohmyposh.dev
-[Terminal-Icons]: https://github.com/devblackops/Terminal-Icons
+
+[starship]: https://starship.rs
 
 [Python]: https://www.python.org
 [uv]: https://astral.sh/uv
