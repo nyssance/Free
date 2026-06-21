@@ -159,6 +159,7 @@ cd ~ && fab upgrade
 
 ### iOS / macOS
 
+- [Baguette](https://github.com/tddworks/baguette)
 - [CocoaPods](https://cocoapods.org)
 - [SwiftFormat](https://github.com/nicklockwood/SwiftFormat)
 - [SwiftLint](https://github.com/realm/SwiftLint)

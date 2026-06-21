@@ -11,8 +11,7 @@ from InquirerPy.base.control import Choice
 from InquirerPy.separator import Separator
 from invoke import Context
 
-
-VERSION: Final[str] = "0.52"
+VERSION: Final[str] = "0.53"
 PM: Literal["brew", "scoop"] = "scoop" if system() == "Windows" else "brew"
 
 
@@ -77,7 +76,7 @@ def install(c: Context) -> None:  # noqa: C901, PLR0912
         [
             Separator(),
             Choice("android", "Android"),
-            Choice("ios", "iOS / macOS"),
+            *([Choice("ios", "iOS / macOS")] if system() == "Darwin" else []),
             Choice("js", "JavaScript & TypeScript"),
             Choice("python", "Python"),
             Choice("rust", "Rust"),
@@ -99,8 +98,8 @@ def install(c: Context) -> None:  # noqa: C901, PLR0912
         hint("install ktlint")
         c.run(f"{PM} install ktlint")
     if "ios" in roles:
-        hint("install CocoaPods, SwiftFormat, SwiftLint")
-        c.run(f"{PM} install cocoapods swiftformat swiftlint")
+        hint("install Baguette, CocoaPods, SwiftFormat, SwiftLint")
+        c.run("brew install baguette cocoapods swiftformat swiftlint")
     if "js" in roles:
         hint("install Bun")
         c.run(f"{PM} install bun")
