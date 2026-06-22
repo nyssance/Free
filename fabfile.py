@@ -11,7 +11,7 @@ from InquirerPy.base.control import Choice
 from InquirerPy.separator import Separator
 from invoke import Context
 
-VERSION: Final[str] = "0.53"
+VERSION: Final[str] = "0.60"
 PM: Literal["brew", "scoop"] = "scoop" if system() == "Windows" else "brew"
 
 
