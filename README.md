@@ -121,6 +121,10 @@ starship preset nerd-font-symbols -o ~/.config/starship.toml
 
 Nice color scheme - [terminal-snazzy](https://github.com/sindresorhus/terminal-snazzy)
 
+```shell
+curl -O https://raw.githubusercontent.com/sindresorhus/terminal-snazzy/main/Snazzy.terminal && open Snazzy.terminal
+```
+
 ## Vendor
 
 - [Homebrew]
