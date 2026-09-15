@@ -43,10 +43,10 @@ Free [English](https://github.com/nyssance/Free/blob/main/README.md)
     curl -LsSf https://astral.sh/uv/install.sh | sh
     ```
 
-4. 安装 [WailBrew] 可选。
+4. 安装 [homebrew-app] 可选。
 
     ```shell
-    brew install --cask wailbrew
+    brew install --cask homebrew-app
     ```
 
 ### Windows
@@ -182,7 +182,7 @@ curl -O https://raw.githubusercontent.com/sindresorhus/terminal-snazzy/main/Snaz
 Free is released under the MIT license. [See LICENSE](https://github.com/nyssance/Free/blob/main/LICENSE) for details.
 
 [HomeBrew]: https://brew.sh/zh-cn/
-[WailBrew]: https://github.com/wickenico/WailBrew
+[homebrew-app]: https://formulae.brew.sh/cask/homebrew-app
 [Oh My Zsh]: https://ohmyz.sh
 [zsh-autosuggestions]: https://github.com/zsh-users/zsh-autosuggestions
 [zsh-syntax-highlighting]: https://github.com/zsh-users/zsh-syntax-highlighting
