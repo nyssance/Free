@@ -11,7 +11,7 @@ from InquirerPy.base.control import Choice
 from InquirerPy.separator import Separator
 from invoke import Context
 
-VERSION: Final[str] = "0.61"
+VERSION: Final[str] = "0.62"
 PM: Literal["brew", "scoop"] = "scoop" if system() == "Windows" else "brew"
 
 
@@ -74,7 +74,7 @@ def cleanup(c: Context) -> None:
         case "brew":
             hint("clean Homebrew")
             c.run(f"{PM} cleanup")
-            c.run(f"{PM} vulns")
+            c.run(f"{PM} vulns", warn=True)
             c.run(f"{PM} doctor", warn=True)
         case "scoop":
             hint("clean Scoop")
