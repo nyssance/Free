@@ -1,0 +1,68 @@
+{
+    "diffEditor.hideUnchangedRegions.enabled": true,
+    "editor.fontFamily": "'Cascadia Code NF', Consolas, 'Courier New', monospace",
+    "editor.fontLigatures": true,
+    "editor.fontSize": 17,
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.linkedEditing": true,
+    "editor.minimap.autohide": "mouseover",
+    "editor.rulers": [
+        120
+    ],
+    "editor.unicodeHighlight.allowedCharacters": {
+        "′": true
+    },
+    "editor.unicodeHighlight.allowedLocales": {
+        "zh-hans": true
+    },
+    "editor.wordWrap": "on",
+    "explorer.autoReveal": false,
+    "explorer.decorations.colors": false,
+    "explorer.excludeGitIgnore": true,
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.expand": false,
+    "explorer.fileNesting.patterns": {
+        ".gitIgnore": ".gitattributes"
+    },
+    "files.autoSave": "afterDelay",
+    "files.eol": "\n",
+    "files.insertFinalNewline": true,
+    "files.readonlyFromPermissions": true,
+    "files.trimFinalNewlines": true,
+    "files.trimTrailingWhitespace": true,
+    "git.autofetch": true,
+    "git.confirmSync": false,
+    "git.enableSmartCommit": true,
+    "git.openRepositoryInParentFolders": "always",
+    "scm.workingSets.enabled": true,
+    "settingsSync.ignoredExtensions": [
+        "ms-edgedevtools.vscode-edge-devtools",
+        "ms-vscode.powershell"
+    ],
+    "terminal.integrated.enablePersistentSessions": false,
+    "terminal.integrated.fontFamily": "MesloLGS NF, MesloLGM Nerd Font",
+    "terminal.integrated.fontLigatures.enabled": true,
+    "terminal.integrated.fontSize": 15,
+    "workbench.activityBar.location": "bottom",
+    "workbench.colorTheme": "Visual Studio Dark",
+    "workbench.editorAssociations": {
+        "*.copilotmd": "vscode.markdown.preview.editor",
+        "*.csv": "default",
+        "*.parquet": "parquetViewer.parquetViewer"
+    },
+    "workbench.iconTheme": "vscode-icons",
+    "workbench.startupEditor": "none",
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[markdown]": {
+        "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+    },
+    "[toml]": {
+        "editor.defaultFormatter": "tamasfe.even-better-toml"
+    },
+    "evenBetterToml.formatter.columnWidth": 120,
+    "markdown.preview.typographer": true,
+    "vsicons.dontShowNewVersionMessage": true
+}

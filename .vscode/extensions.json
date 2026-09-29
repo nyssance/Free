@@ -1,0 +1,8 @@
+{
+    "recommendations": [
+        "charliermarsh.ruff",
+        "astral-sh.ty",
+        "tamasfe.even-better-toml",
+        "vscode-icons-team.vscode-icons"
+    ]
+}

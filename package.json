@@ -1,0 +1,9 @@
+{
+  "name": "free",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@clack/prompts": "^1.8.1",
+    "commander": "^15.0.0"
+  }
+}

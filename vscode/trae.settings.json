@@ -1,0 +1,41 @@
+{
+    "diffEditor.hideUnchangedRegions.enabled": true,
+    "editor.defaultFormatter": "trae.ai-code-completion",
+    "editor.fontLigatures": true,
+    "editor.fontSize": 17,
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.linkedEditing": true,
+    "editor.minimap.autohide": "mouseover",
+    "editor.rulers": [
+        120
+    ],
+    "editor.unicodeHighlight.allowedCharacters": {
+        "′": true
+    },
+    "editor.unicodeHighlight.allowedLocales": {
+        "zh-hans": true
+    },
+    "editor.wordWrap": "on",
+    "explorer.autoReveal": false,
+    "explorer.decorations.colors": false,
+    "explorer.excludeGitIgnore": true,
+    "explorer.fileNesting.enabled": true,
+    "files.autoSave": "afterDelay",
+    "files.insertFinalNewline": true,
+    "files.readonlyFromPermissions": true,
+    "files.trimFinalNewlines": true,
+    "files.trimTrailingWhitespace": true,
+    "terminal.integrated.enablePersistentSessions": false,
+    "terminal.integrated.fontFamily": "MesloLGS NF, MesloLGM Nerd Font",
+    "terminal.integrated.fontLigatures.enabled": true,
+    "terminal.integrated.fontSize": 15,
+    "workbench.colorTheme": "Deep Blue",
+    "workbench.iconTheme": "vscode-icons",
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "AI.task.endBanner": false,
+    "chat.fontSize": 18,
+    "chat.editor.fontSize": 14
+}

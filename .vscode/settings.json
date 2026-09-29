@@ -1,0 +1,8 @@
+{
+    "python.languageServer": "None",
+    "ruff.configurationPreference": "filesystemFirst",
+    "ruff.format.preview": true,
+    "ruff.lint.preview": true,
+    "ty.inlayHints.callArgumentNames": false,
+    "ty.inlayHints.variableTypes": false
+}
