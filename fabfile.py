@@ -3,13 +3,13 @@ from pathlib import Path
 from platform import system
 from typing import Final, Literal
 
-import rich
+lazy import rich
 from fabric import task
 from fabric.util import get_local_user
-from InquirerPy import inquirer
-from InquirerPy.base.control import Choice
-from InquirerPy.separator import Separator
-from invoke import Context
+lazy from InquirerPy import inquirer
+lazy from InquirerPy.base.control import Choice
+lazy from InquirerPy.separator import Separator
+lazy from invoke import Context
 
 VERSION: Final[str] = "0.62"
 PM: Literal["brew", "scoop"] = "scoop" if system() == "Windows" else "brew"
@@ -36,7 +36,7 @@ def hello(c: Context) -> None:
     ).expanduser()
     rich.print(f"Interpreter: {fabric_python}")
     rich.print("fab task -h 可以查看 task\n")
-    c.run("fab -l", encoding=locale.getencoding(), echo=False)
+    c.run("fab -l", echo=False)
     c.run("git --no-pager config --global --list")
     if system() == "Windows":
         rich.print("Suggestion: `git config --global core.autocrlf input`")
