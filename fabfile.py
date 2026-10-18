@@ -1,17 +1,17 @@
-import locale
 from pathlib import Path
 from platform import system
 from typing import Final, Literal
+lazy import locale
 
-lazy import rich
 from fabric import task
-from fabric.util import get_local_user
+lazy import rich
+lazy from fabric.util import get_local_user
 lazy from InquirerPy import inquirer
 lazy from InquirerPy.base.control import Choice
 lazy from InquirerPy.separator import Separator
 lazy from invoke import Context
 
-VERSION: Final[str] = "0.62"
+VERSION: Final = "0.62"
 PM: Literal["brew", "scoop"] = "scoop" if system() == "Windows" else "brew"
 
 
@@ -24,6 +24,7 @@ def check() -> None:
 check()
 
 
+# ruff:file-ignore[missing-trailing-period, missing-terminal-punctuation]
 @task(default=True)
 def hello(c: Context) -> None:
     """Hello"""
@@ -85,7 +86,7 @@ def cleanup(c: Context) -> None:
 
 
 @task
-def install(c: Context) -> None:  # noqa: C901
+def install(c: Context) -> None:  # ruff:ignore[complex-structure]
     """安装"""
     roles = inquirer.checkbox(
         gettext("install"),
@@ -102,10 +103,10 @@ def install(c: Context) -> None:  # noqa: C901
             Separator("-- Others -----"),
             "fastlane",
             "zoxide",
-            Separator(),
+            Separator()
         ],
         transformer=lambda result: ", ".join(result) if len(result) > 0 else "",
-        instruction="(Space for select)",
+        instruction="(Space for select)"
     ).execute()
     if not roles:
         return
@@ -163,7 +164,7 @@ def upgrade(c: Context, *, config: bool = False) -> None:
         selected = inquirer.checkbox(
             gettext("configure"),
             [Separator(), Choice(".fabric.yaml", enabled=True), Choice(".zshrc"), Separator()],
-            instruction="(Space for select)",
+            instruction="(Space for select)"
         ).execute()
         if ".fabric.yaml" in selected:
             download(c, f"{remote}fabric.{"windows." if system() == "Windows" else ""}yaml", ".fabric.yaml")
@@ -215,5 +216,5 @@ ZH_CN = {
     "upgrade": "升级",
     "cancel": "取消",
     "completed": "完成",
-    "fonts": "字体",
+    "fonts": "字体"
 }
