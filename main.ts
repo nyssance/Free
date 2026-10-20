@@ -143,7 +143,15 @@ const groups: [group: string, tools: Tool[]][] = [
   ],
   [
     "JavaScript & TypeScript",
-    [{ name: "Bun", version: "bun --version", brew: ["brew install bun"], scoop: ["scoop install bun"] }]
+    [
+      {
+        name: "Bun",
+        version: "bun --version",
+        brew: ["brew install bun"],
+        scoop: ['powershell -c "irm bun.sh/install.ps1 | iex"'],
+        path: process.platform === "win32" ? `${home}\\.bun\\bin` : undefined
+      }
+    ]
   ],
   [
     "Python",
@@ -177,7 +185,7 @@ const groups: [group: string, tools: Tool[]][] = [
       {
         name: "Rust",
         version: "rustc --version",
-        brew: ["curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh"],
+        brew: ["curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y"],
         scoop: [
           "irm https://win.rustup.rs/x86_64 -OutFile $env:TEMP\\rustup-init.exe; & $env:TEMP\\rustup-init.exe -y"
         ],

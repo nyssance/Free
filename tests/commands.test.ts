@@ -23,7 +23,7 @@ describe("setup", () => {
     const expected = windows
       ? [
           'Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force; iex "& {$(irm get.scoop.sh)} -RunAsAdmin"',
-          "scoop install bun",
+          'powershell -c "irm bun.sh/install.ps1 | iex"',
           'powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"',
           "uv python install",
           "uv tool install ruff",
@@ -37,7 +37,7 @@ describe("setup", () => {
           "uv python install",
           "uv tool install ruff",
           "uv tool install ty",
-          "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh"
+          "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y"
         ]
     expect(lines).toEqual(expected)
   })
