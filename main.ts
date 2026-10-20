@@ -12,7 +12,7 @@ const pm = process.platform === "win32" ? "scoop" : "brew"
 const menus = {
   zh: {
     choose: "选择操作",
-    setup: "安装 Homebrew、Bun、uv、Python、Ruff、ty、Rust，再按项目类型安装所需工具",
+    setup: "安装 Homebrew、GitHub CLI、Bun、uv、Python、Ruff、ty、Rust，再按项目类型安装所需工具",
     profile: "要开发什么",
     cleanup: "清理",
     install: "安装",
@@ -36,7 +36,7 @@ const menus = {
   },
   en: {
     choose: "Choose an action",
-    setup: "Install Homebrew, Bun, uv, Python, Ruff, ty and Rust, then what each project type needs",
+    setup: "Install Homebrew, GitHub CLI, Bun, uv, Python, Ruff, ty and Rust, then what each project type needs",
     profile: "What will you build",
     cleanup: "Clean",
     install: "Install",
@@ -93,7 +93,8 @@ const groups: [group: string, tools: Tool[]][] = [
               'Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force; iex "& {$(irm get.scoop.sh)} -RunAsAdmin"'
             ],
             path: `${home}\\scoop\\shims`
-          }
+          },
+      { name: "GitHub CLI", version: "gh --version", brew: ["brew install gh"], scoop: ["scoop install gh"] }
     ]
   ],
   [
@@ -236,7 +237,7 @@ const groups: [group: string, tools: Tool[]][] = [
   ]
 ]
 const tools = groups.flatMap(([, tools]) => tools)
-const base = [pm === "brew" ? "Homebrew" : "Scoop", "Bun", "uv", "Python", "Ruff", "ty", "Rust"]
+const base = [pm === "brew" ? "Homebrew" : "Scoop", "GitHub CLI", "Bun", "uv", "Python", "Ruff", "ty", "Rust"]
 const profiles: Record<string, string[]> = Object.fromEntries(
   groups
     .slice(1)

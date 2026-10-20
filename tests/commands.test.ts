@@ -18,11 +18,12 @@ function commands(...args: string[]) {
 }
 
 describe("setup", () => {
-  test(`顺序：${pmName} → Bun → uv → Python → Ruff → ty → Rust`, () => {
+  test(`顺序：${pmName} → GitHub CLI → Bun → uv → Python → Ruff → ty → Rust`, () => {
     const lines = commands("setup")
     const expected = windows
       ? [
           'Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force; iex "& {$(irm get.scoop.sh)} -RunAsAdmin"',
+          "scoop install gh",
           'powershell -c "irm bun.sh/install.ps1 | iex"',
           'powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"',
           "uv python install",
@@ -32,6 +33,7 @@ describe("setup", () => {
         ]
       : [
           '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"',
+          "brew install gh",
           "brew install bun",
           "curl -LsSf https://astral.sh/uv/install.sh | sh",
           "uv python install",
