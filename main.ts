@@ -8,22 +8,36 @@ const menus = {
   zh: {
     choose: "选择操作",
     install: "安装",
+    basics: "基础",
     development: "开发",
     database: "数据库",
     others: "其他",
     upgrade: "更新",
     diagnose: "检查环境",
-    exit: "退出"
+    exit: "退出",
+    description: "一条命令装好开发环境",
+    version: "显示版本号",
+    help: "显示帮助",
+    installHelp: "选择要安装的工具",
+    upgradeHelp: "升级已安装软件并清理缓存",
+    diagnoseHelp: "只检查工具路径和版本，不做修改"
   },
   en: {
     choose: "Choose an action",
     install: "Install",
+    basics: "Basics",
     development: "Development",
     database: "Database",
     others: "Others",
     upgrade: "Update",
     diagnose: "Check environment",
-    exit: "Exit"
+    exit: "Exit",
+    description: "Set up a development environment in one command",
+    version: "Show version",
+    help: "Show help",
+    installHelp: "Choose tools to install",
+    upgradeHelp: "Upgrade installed software and clean caches",
+    diagnoseHelp: "Check tool paths and versions without changing anything"
   }
 }
 const locale =
@@ -74,6 +88,7 @@ async function install() {
     selectableGroups: false,
     showInstructions: false,
     options: {
+      [menuText.basics]: [{ value: "pm", label: isWindows ? "Scoop" : "Homebrew" }],
       [menuText.development]: [
         { value: "android", label: "Android" },
         ...(process.platform === "darwin" ? [{ value: "ios", label: "iOS / macOS" }] : []),
@@ -94,6 +109,7 @@ async function install() {
   })
   if (p.isCancel(roles) || roles.length === 0) return
   bootstrap()
+  if (roles.includes("pm")) p.log.success(`${pm} · ${Bun.which(pm)}`)
   if (roles.includes("android") || roles.includes("flutter")) {
     hint("install", "Android CLI, SDK, Emulator, ktlint")
     if (isWindows) {
@@ -266,10 +282,15 @@ async function menu() {
   else diagnose()
 }
 
-const app = new Command().name("free").description("Free").version(version).action(menu)
-app.command("upgrade").alias("u").description("更新已安装软件并清理缓存").action(upgrade)
-app.command("install").description("选择安装工具").action(install)
-app.command("doctor").description("只检查工具路径和版本").action(diagnose)
+const app = new Command()
+  .name("free")
+  .description(menuText.description)
+  .version(version, "-v, --version", menuText.version)
+  .helpOption("-h, --help", menuText.help)
+  .action(menu)
+app.command("install").description(menuText.installHelp).action(install)
+app.command("upgrade").alias("u").description(menuText.upgradeHelp).action(upgrade)
+app.command("doctor").description(menuText.diagnoseHelp).action(diagnose)
 try {
   await app.parseAsync()
 } catch (error) {
