@@ -228,3 +228,6 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# [Node](https://github.com/github/gitignore/blob/main/Node.gitignore)
+node_modules/

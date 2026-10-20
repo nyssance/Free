@@ -1,0 +1,15 @@
+[fmt]
+printWidth = 120
+semi = false
+trailingComma = "none"
+sortImports = true
+ignorePatterns = [".vscode", "vscode", "ruff.toml"]
+
+[fmt.sortTailwindcss]
+
+[[fmt.overrides]]
+files = ["*.toml"]
+options = { tabWidth = 4 }
+
+[lint]
+typeAware = true

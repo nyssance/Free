@@ -23,83 +23,83 @@ Free [English](https://github.com/nyssance/Free/blob/main/README.md)
 
 1. 安装 [Homebrew]。
 
-    ```shell
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    ```
+   ```shell
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   ```
 
 2. 安装 [Oh My Zsh]，[zsh-autosuggestions]，[zsh-syntax-highlighting]，[Powerlevel10k] 可选。
 
-    ```shell
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-    ```
+   ```shell
+   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+   ```
 
-    ```shell
-    brew install zsh-autosuggestions zsh-syntax-highlighting
-    ```
+   ```shell
+   brew install zsh-autosuggestions zsh-syntax-highlighting
+   ```
 
 3. 安装 [uv]。
 
-    ```shell
-    curl -LsSf https://astral.sh/uv/install.sh | sh
-    ```
+   ```shell
+   curl -LsSf https://astral.sh/uv/install.sh | sh
+   ```
 
 4. 安装 [homebrew-app] 可选。
 
-    ```shell
-    brew install --cask homebrew-app
-    ```
+   ```shell
+   brew install --cask homebrew-app
+   ```
 
 ### Windows
 
 1. 安装 [Scoop]。
 
-    ```powershell
-    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-    ```
+   ```powershell
+   Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+   ```
 
-    ```powershell
-    irm get.scoop.sh | iex
-    ```
+   ```powershell
+   irm get.scoop.sh | iex
+   ```
 
 2. 安装 [uv]。
 
-    ```powershell
-    'powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"'
-    ```
+   ```powershell
+   'powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"'
+   ```
 
 ### Python
 
 1. 安装 [Python]。
 
-    ```shell
-    uv python install
-    ```
+   ```shell
+   uv python install
+   ```
 
 2. 安装 [Fabric]，[InquirerPy]，[Rich]。
 
-    ```shell
-    uv tool install fabric --with InquirerPy --with rich
-    ```
+   ```shell
+   uv tool install fabric --with InquirerPy --with rich
+   ```
 
 3. 下载 `fabfile.py`，`.fabric.yaml`，`.zshrc` 到用户主目录并运行安装。
 
-    ```shell
-    cd ~
-    ```
+   ```shell
+   cd ~
+   ```
 
-    ```shell
-    curl -fsSL -O https://raw.githubusercontent.com/nyssance/Free/main/fabfile.py -o .fabric.yaml https://raw.githubusercontent.com/nyssance/Free/main/fabric.yaml -o .zshrc https://raw.githubusercontent.com/nyssance/Free/main/zshrc
-    ```
+   ```shell
+   curl -fsSL -O https://raw.githubusercontent.com/nyssance/Free/main/fabfile.py -o .fabric.yaml https://raw.githubusercontent.com/nyssance/Free/main/fabric.yaml -o .zshrc https://raw.githubusercontent.com/nyssance/Free/main/zshrc
+   ```
 
-    ```shell
-    source .zshrc
-    ```
+   ```shell
+   source .zshrc
+   ```
 
-    ```shell
-    fab install
-    ```
+   ```shell
+   fab install
+   ```
 
-    > macOS - 配置 [plugins:vscode](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/vscode)
+   > macOS - 配置 [plugins:vscode](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/vscode)
 
 ## 升级
 
@@ -186,11 +186,8 @@ Free is released under the MIT license. [See LICENSE](https://github.com/nyssanc
 [Oh My Zsh]: https://ohmyz.sh
 [zsh-autosuggestions]: https://github.com/zsh-users/zsh-autosuggestions
 [zsh-syntax-highlighting]: https://github.com/zsh-users/zsh-syntax-highlighting
-
 [Scoop]: https://scoop.sh
-
 [starship]: https://starship.rs
-
 [Python]: https://www.python.org
 [uv]: https://astral.sh/uv
 [Fabric]: https://www.fabfile.org
