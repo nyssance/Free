@@ -4,7 +4,7 @@ import { chmodSync, existsSync, renameSync, unlinkSync } from "node:fs"
 import * as p from "@clack/prompts"
 import { Command } from "commander"
 
-const version = "0.1.1"
+const version = "0.1.2"
 const pm = process.platform === "win32" ? "scoop" : "brew"
 const menus = {
   zh: {
