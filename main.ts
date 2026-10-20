@@ -5,11 +5,12 @@ import { styleText } from "node:util"
 import * as p from "@clack/prompts"
 import cfonts from "cfonts"
 import { Command } from "commander"
+import terminalLink from "terminal-link"
 
 import { link, links } from "./links"
 import { pick } from "./menu"
 
-const version = "0.1.7"
+let version = "0.1.7"
 const pm = process.platform === "win32" ? "scoop" : "brew"
 const menus = {
   zh: {
@@ -407,6 +408,8 @@ async function selfUpdate() {
   else chmodSync(`${exe}.new`, 0o755)
   renameSync(`${exe}.new`, exe)
   p.log.success(`free ${version} → ${latest}`)
+  version = latest
+  console.log(banner())
 }
 
 function shell(command: string) {
@@ -468,7 +471,10 @@ function banner() {
     space: false
   })
   if (!art) return ""
-  return `\n${art.string.replace(/^\n+|\n+$/g, "")}\n ${styleText("dim", `v${version}`)}\n`
+  const repo = terminalLink(styleText("dim", "github.com/nyssance/Free"), "https://github.com/nyssance/Free", {
+    fallback: (text) => text
+  })
+  return `\n${art.string.replace(/^\n+|\n+$/g, "")}\n ${styleText("dim", `v${version}`)}  ${repo}\n`
 }
 
 async function menu() {
