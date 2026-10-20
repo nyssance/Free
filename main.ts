@@ -239,9 +239,9 @@ const profiles: Record<string, string[]> = Object.fromEntries(
     .filter(([, names]) => names.length > 0)
 )
 
-function versionOf(tool: Tool) {
+async function versionOf(tool: Tool) {
   if (!Bun.which(tool.version.split(" ")[0])) return
-  const out = output(tool.version)
+  const out = await output(tool.version)
   const versions =
     tool.name === "Python"
       ? [...out.matchAll(/cpython-(\d+\.\d+\.\d+)/g)].map((m) => m[1])
@@ -267,7 +267,7 @@ async function setup(extra: string[] = []) {
     chosen = picked
   }
   const installed = installTools([...base, ...chosen.flatMap((name) => profiles[name])])
-  list(installed)
+  await list(installed)
 }
 
 function cleanup() {
@@ -286,10 +286,11 @@ function cleanup() {
 }
 
 async function install() {
+  const versions = await versionsOf(tools)
   const options = Object.fromEntries(
     groups.map(([group, tools]) => [
       group,
-      tools.map((tool) => ({ value: tool.name, label: tool.name, hint: versionOf(tool) ?? menuText.missing }))
+      tools.map((tool) => ({ value: tool.name, label: tool.name, hint: versions.get(tool) ?? menuText.missing }))
     ])
   )
   const names = await p.groupMultiselect({
@@ -343,8 +344,14 @@ async function upgrade() {
   hint("upgrade", menuText.done)
 }
 
-function list(names?: string[]) {
+async function versionsOf(tools: Tool[]) {
+  const versions = await Promise.all(tools.map(versionOf))
+  return new Map(tools.map((tool, i) => [tool, versions[i]]))
+}
+
+async function list(names?: string[]) {
   p.intro(`Free ${version} · ${menuText.list}`)
+  const versions = await versionsOf(tools.filter((tool) => !names || names.includes(tool.name)))
   const width = Math.max(...tools.map((tool) => tool.name.length))
   const pad = (name: string) => " ".repeat(width - name.length + 2)
   const lines = groups.flatMap(([group, tools]) => {
@@ -353,7 +360,7 @@ function list(names?: string[]) {
     return [
       styleText("bold", group),
       ...shown.map(
-        (tool) => `  ${link(tool.name)}${pad(tool.name)}${versionOf(tool) ?? styleText("dim", menuText.missing)}`
+        (tool) => `  ${link(tool.name)}${pad(tool.name)}${versions.get(tool) ?? styleText("dim", menuText.missing)}`
       )
     ]
   })
@@ -410,9 +417,10 @@ function env() {
   return env
 }
 
-function output(command: string) {
-  const { stdout, stderr } = Bun.spawnSync(shell(command), { env: env(), stdout: "pipe", stderr: "pipe" })
-  return (stdout.toString() + stderr.toString()).trim()
+async function output(command: string) {
+  const child = Bun.spawn(shell(command), { env: env(), stdout: "pipe", stderr: "pipe" })
+  const [stdout, stderr] = await Promise.all([new Response(child.stdout).text(), new Response(child.stderr).text()])
+  return (stdout + stderr).trim()
 }
 
 function run(command: string, allowFailure = false) {
@@ -470,7 +478,7 @@ async function menu() {
       await upgrade()
       break
     case "list":
-      list()
+      await list()
       break
     case "exit":
       break

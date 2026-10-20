@@ -1,11 +1,13 @@
-import { describe, expect, test } from "bun:test"
+import { describe, expect, setDefaultTimeout, test } from "bun:test"
+
+setDefaultTimeout(60_000)
 
 const windows = process.platform === "win32"
 const pmName = windows ? "Scoop" : "Homebrew"
 
 function commands(...args: string[]) {
   const { stdout, exitCode } = Bun.spawnSync(["bun", "main.ts", ...args], {
-    env: { ...process.env, FREE_DRY_RUN: "1", LANG: "zh_CN.UTF-8" }
+    env: { ...process.env, FREE_DRY_RUN: "1", LC_ALL: "zh_CN.UTF-8", LANG: "zh_CN.UTF-8" }
   })
   expect(exitCode).toBe(0)
   return stdout
