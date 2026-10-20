@@ -292,7 +292,7 @@ function installPackageManager() {
     case "scoop":
       hint("install", "Scoop")
       run(
-        'Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force; iex "& {$(irm get.scoop.sh)} -RunAsAdmin"'
+        'try { Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force } catch {}; iex "& {$(irm get.scoop.sh)} -RunAsAdmin"'
       )
       process.env.PATH = `${process.env.USERPROFILE}\\scoop\\shims;${process.env.PATH}`
       break

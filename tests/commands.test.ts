@@ -20,7 +20,7 @@ describe("setup", () => {
     const lines = commands("setup")
     const expected = windows
       ? [
-          'Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force; iex "& {$(irm get.scoop.sh)} -RunAsAdmin"',
+          'try { Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force } catch {}; iex "& {$(irm get.scoop.sh)} -RunAsAdmin"',
           'powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"'
         ]
       : [
