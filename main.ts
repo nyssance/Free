@@ -100,7 +100,7 @@ const groups: [group: string, tools: Tool[]][] = [
   [
     "Git",
     [
-      { name: "Git", version: "git --version", brew: ["brew install git"], scoop: ["scoop install git"] },
+      { name: "Git", version: "git --version", brew: [], scoop: ["scoop install git"] },
       { name: "GitHub CLI", version: "gh --version", brew: ["brew install gh"], scoop: ["scoop install gh"] },
       { name: "GitLab CLI", version: "glab --version", brew: ["brew install glab"], scoop: ["scoop install glab"] }
     ]

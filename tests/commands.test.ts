@@ -35,7 +35,6 @@ describe("setup", () => {
         ]
       : [
           '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"',
-          "brew install git",
           "brew install gh",
           "brew install glab",
           "brew install bun",
