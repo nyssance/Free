@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "types": ["bun"],
-    "noEmit": true
+    "noEmit": true,
+    "resolveJsonModule": true
   }
 }

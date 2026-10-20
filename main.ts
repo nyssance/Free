@@ -3,14 +3,14 @@ import { chmodSync, existsSync, renameSync, unlinkSync } from "node:fs"
 import { styleText } from "node:util"
 
 import * as p from "@clack/prompts"
-import cfonts from "cfonts"
+import block from "cfonts/fonts/block.json"
 import { Command } from "commander"
 import terminalLink from "terminal-link"
 
 import { link, links } from "./links"
 import { pick } from "./menu"
 
-let version = "0.1.7"
+let version = "0.1.8"
 const pm = process.platform === "win32" ? "scoop" : "brew"
 const menus = {
   zh: {
@@ -463,18 +463,30 @@ function hint(operation: "upgrade" | "clean" | "install", message: string) {
 
 function banner() {
   if (!process.stdout.isTTY && !process.env.FORCE_COLOR) return ""
-  const art = cfonts.render("Free", {
-    font: "block",
-    gradient: ["#22d3ee", "#a78bfa"],
-    transitionGradient: true,
-    env: "node",
-    space: false
-  })
-  if (!art) return ""
+  const chars = block.chars as Record<string, string[]>
+  const rows = Array.from({ length: block.lines }, (_, row) =>
+    [..."FREE"].map((char) => chars[char][row].replace(/<\/?c\d>/g, "")).join(" ")
+  )
+  const width = Math.max(...rows.map((row) => row.length))
+  const [from, to] = [
+    [0x22, 0xd3, 0xee],
+    [0xa7, 0x8b, 0xfa]
+  ]
+  const hex = (t: number) =>
+    `#${from
+      .map((c, i) =>
+        Math.round(c + (to[i] - c) * t)
+          .toString(16)
+          .padStart(2, "0")
+      )
+      .join("")}` as const
+  const art = rows.map(
+    (row) => ` ${[...row].map((char, i) => (char === " " ? char : styleText(hex(i / (width - 1)), char))).join("")}`
+  )
   const repo = terminalLink(styleText("dim", "github.com/nyssance/Free"), "https://github.com/nyssance/Free", {
     fallback: (text) => text
   })
-  return `\n${art.string.replace(/^\n+|\n+$/g, "")}\n ${styleText("dim", `v${version}`)}  ${repo}\n`
+  return `\n${art.join("\n")}\n ${styleText("dim", `v${version}`)}  ${repo}\n`
 }
 
 async function menu() {

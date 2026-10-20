@@ -38,6 +38,7 @@ jobs:
             bun build --compile --minify --target=bun-$target main.ts --outfile dist/free-$target
           done
           codesign --sign - --force dist/free-darwin-arm64
+          FORCE_COLOR=3 ./dist/free-darwin-arm64 --help | grep -q "███"
           ls -lh dist
       - uses: softprops/action-gh-release@v2
         with:
