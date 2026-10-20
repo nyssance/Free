@@ -18,11 +18,12 @@ function commands(...args: string[]) {
 }
 
 describe("setup", () => {
-  test(`顺序：${pmName} → GitHub CLI → GitLab CLI → Bun → uv → Python → Ruff → ty → Rust`, () => {
+  test(`顺序：${pmName} → Git → GitHub CLI → GitLab CLI → Bun → uv → Python → Ruff → ty → Rust`, () => {
     const lines = commands("setup")
     const expected = windows
       ? [
           'Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force; iex "& {$(irm get.scoop.sh)} -RunAsAdmin"',
+          "scoop install git",
           "scoop install gh",
           "scoop install glab",
           'powershell -c "irm bun.sh/install.ps1 | iex"',
@@ -34,6 +35,7 @@ describe("setup", () => {
         ]
       : [
           '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"',
+          "brew install git",
           "brew install gh",
           "brew install glab",
           "brew install bun",

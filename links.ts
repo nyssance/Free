@@ -4,6 +4,7 @@ import terminalLink from "terminal-link"
 
 export const links: Record<string, string> = {
   Homebrew: "https://brew.sh",
+  Git: "https://git-scm.com",
   "GitHub CLI": "https://cli.github.com",
   "GitLab CLI": "https://gitlab.com/gitlab-org/cli",
   Scoop: "https://scoop.sh",
