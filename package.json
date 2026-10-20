@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "bin": {
-    "free": "main.ts"
+    "free-dev": "main.ts"
   },
   "dependencies": {
     "@clack/prompts": "^1.8.1",

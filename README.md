@@ -19,89 +19,47 @@ Free [简体中文](https://github.com/nyssance/Free/blob/main/README-zh_CN.md)
 
 ## Installation
 
-macOS
+1. Install free.
+
+   macOS
+
+   ```shell
+   curl -fsSL https://raw.githubusercontent.com/nyssance/Free/main/install.sh | sh
+   ```
+
+   Windows
+
+   ```powershell
+   irm https://raw.githubusercontent.com/nyssance/Free/main/install.ps1 | iex
+   ```
+
+2. Install [Homebrew], [uv], [Python], [Ruff], [ty].
+
+   ```shell
+   free setup
+   ```
+
+3. Install other tools, optional.
+
+   ```shell
+   free install
+   ```
+
+## Upgrading
 
 ```shell
-curl -fsSL https://raw.githubusercontent.com/nyssance/Free/main/install.sh | sh
+free upgrade
 ```
-
-Windows
-
-```powershell
-irm https://raw.githubusercontent.com/nyssance/Free/main/install.ps1 | iex
-```
-
-Then run `free` and pick the tools to install from the menu. Homebrew or Scoop is installed automatically when missing.
-
-- `free install` choose tools to install
-- `free upgrade` upgrade installed software and clean caches, alias `free u`
-- `free doctor` check the environment
 
 ## Fabric
 
-### macOS
-
-1. Install [Homebrew].
-
-   ```shell
-   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-   ```
-
-2. Install [Oh My Zsh], [zsh-autosuggestions], [zsh-syntax-highlighting], [Powerlevel10k] optional.
-
-   ```shell
-   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-   ```
-
-   ```shell
-   brew install zsh-autosuggestions zsh-syntax-highlighting
-   ```
-
-3. Install [uv].
-
-   ```shell
-   curl -LsSf https://astral.sh/uv/install.sh | sh
-   ```
-
-4. Install [homebrew-app] optional.
-
-   ```shell
-   brew install --cask homebrew-app
-   ```
-
-### Windows
-
-1. Install [Scoop].
-
-   ```powershell
-   Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-   ```
-
-   ```powershell
-   irm get.scoop.sh | iex
-   ```
-
-2. Install [uv].
-
-   ```powershell
-   'powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"'
-   ```
-
-### Python
-
-1. Install [Python].
-
-   ```shell
-   uv python install
-   ```
-
-2. Install [Fabric], [InquirerPy], [Rich].
+1. Install [Fabric], [InquirerPy], [Rich].
 
    ```shell
    uv tool install fabric --with InquirerPy --with rich
    ```
 
-3. Download `fabfile.py`, `.fabric.yaml`, `.zshrc` to home directory and run install.
+2. Download `fabfile.py`, `.fabric.yaml`, `.zshrc` to home directory and run install.
 
    ```shell
    cd ~
@@ -120,12 +78,6 @@ Then run `free` and pick the tools to install from the menu. Homebrew or Scoop i
    ```
 
    > macOS - Config [plugins:vscode](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/vscode)
-
-### Upgrading
-
-```shell
-cd ~ && fab upgrade
-```
 
 ## Terminal Beautification
 
@@ -210,6 +162,8 @@ Free is released under the MIT license. [See LICENSE](https://github.com/nyssanc
 [starship]: https://starship.rs
 [Python]: https://www.python.org
 [uv]: https://astral.sh/uv
+[Ruff]: https://astral.sh/ruff
+[ty]: https://github.com/astral-sh/ty
 [Fabric]: https://www.fabfile.org
 [InquirerPy]: https://github.com/kazhala/InquirerPy
 [Rich]: https://github.com/Textualize/rich
