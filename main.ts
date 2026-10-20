@@ -292,7 +292,7 @@ function installPackageManager() {
     case "scoop":
       hint("install", "Scoop")
       run(
-        'try { Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force } catch {}; iex "& {$(irm get.scoop.sh)} -RunAsAdmin"'
+        'Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force; iex "& {$(irm get.scoop.sh)} -RunAsAdmin"'
       )
       process.env.PATH = `${process.env.USERPROFILE}\\scoop\\shims;${process.env.PATH}`
       break
@@ -321,8 +321,10 @@ function run(command: string, allowFailure = false) {
           `$ErrorActionPreference = 'Stop'; $env:Path += ';' + [Environment]::GetEnvironmentVariable('Path', 'Machine') + ';' + [Environment]::GetEnvironmentVariable('Path', 'User'); ${command}; if ($LASTEXITCODE) { exit $LASTEXITCODE }`
         ]
       : ["sh", "-c", command]
+  const env: Record<string, string | undefined> = { ...process.env, HOMEBREW_NO_ASK: "1" }
+  if (process.platform === "win32") delete env.PSModulePath
   const child = Bun.spawnSync(shell, {
-    env: { ...process.env, HOMEBREW_NO_ASK: "1" },
+    env,
     stdin: "inherit",
     stdout: "inherit",
     stderr: "inherit"
