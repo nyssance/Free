@@ -7,8 +7,7 @@ case "$(uname -s)" in
 esac
 case "$(uname -m)" in
   arm64 | aarch64) arch=arm64 ;;
-  x86_64) arch=x64 ;;
-  *) echo "不支持的架构: $(uname -m)" >&2; exit 1 ;;
+  *) echo "仅支持 Apple Silicon，当前架构: $(uname -m)" >&2; exit 1 ;;
 esac
 
 dir="${FREE_INSTALL_DIR:-$HOME/.local/bin}"
