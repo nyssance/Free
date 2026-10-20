@@ -8,7 +8,7 @@ import { Command } from "commander"
 import { link, links } from "./links"
 import { pick } from "./menu"
 
-const version = "0.1.5"
+const version = "0.1.6"
 const pm = process.platform === "win32" ? "scoop" : "brew"
 const menus = {
   zh: {
@@ -416,11 +416,22 @@ async function selfUpdate() {
   }
   const asset = process.platform === "win32" ? "free-windows-x64.exe" : "free-darwin-arm64"
   const url = `https://github.com/${repo}/releases/download/${tag}/${asset}`
-  console.log(url)
   const download = await fetch(url)
-  if (!download.ok) throw new Error(`HTTP ${download.status}`)
+  if (!download.ok || !download.body) throw new Error(`HTTP ${download.status}`)
+  const total = Number(download.headers.get("content-length"))
+  const mb = (bytes: number) => (bytes / 1048576).toFixed(1)
+  const bar = p.progress({ style: "block", max: total, size: 30 })
+  bar.start(`${tag} · ${mb(total)} MB`)
   const exe = process.execPath
-  await Bun.write(`${exe}.new`, download)
+  const writer = Bun.file(`${exe}.new`).writer()
+  let received = 0
+  for await (const chunk of download.body) {
+    await writer.write(chunk)
+    received += chunk.byteLength
+    bar.advance(chunk.byteLength, `${tag} · ${mb(received)} / ${mb(total)} MB`)
+  }
+  await writer.end()
+  bar.stop(`${tag} · ${mb(total)} MB`)
   if (process.platform === "win32") renameSync(exe, `${exe}.old`)
   else chmodSync(`${exe}.new`, 0o755)
   renameSync(`${exe}.new`, exe)
