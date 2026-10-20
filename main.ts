@@ -6,8 +6,9 @@ import * as p from "@clack/prompts"
 import { Command } from "commander"
 
 import { link, links } from "./links"
+import { pick } from "./menu"
 
-const version = "0.1.4"
+const version = "0.1.5"
 const pm = process.platform === "win32" ? "scoop" : "brew"
 const menus = {
   zh: {
@@ -31,6 +32,7 @@ const menus = {
     sourceRun: "当前从源码运行，不替换文件",
     done: "完成",
     missing: "未安装",
+    allInstalled: "全部已安装",
     unknown: "未知工具",
     exitCode: "退出码"
   },
@@ -56,6 +58,7 @@ const menus = {
     sourceRun: "Running from source, nothing replaced",
     done: "done",
     missing: "not installed",
+    allInstalled: "Everything is installed",
     unknown: "unknown tool",
     exitCode: "exit code"
   }
@@ -315,21 +318,17 @@ function cleanup() {
 
 async function install() {
   const versions = await versionsOf(tools)
-  const options = Object.fromEntries(
-    groups.map(([group, tools]) => [
-      group,
-      tools.map((tool) => ({ value: tool.name, label: tool.name, hint: versions.get(tool) ?? menuText.missing }))
-    ])
+  if (tools.every((tool) => versions.get(tool))) {
+    p.log.success(menuText.allInstalled)
+    return
+  }
+  const names = await pick(
+    menuText.install,
+    Object.fromEntries(
+      groups.map(([group, tools]) => [group, tools.map((tool) => ({ name: tool.name, version: versions.get(tool) }))])
+    )
   )
-  const names = await p.groupMultiselect({
-    message: menuText.install,
-    withGuide: false,
-    required: false,
-    selectableGroups: false,
-    showInstructions: false,
-    options
-  })
-  if (p.isCancel(names) || names.length === 0) return
+  if (p.isCancel(names) || !names || names.length === 0) return
   const installed = installTools(names)
   if (installed.some((name) => !base.includes(name))) cleanup()
 }

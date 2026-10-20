@@ -22,6 +22,8 @@ jobs:
         with:
           bun-version: latest
       - run: bun install --frozen-lockfile
+      - run: bunx tsc
+      - run: bun lint
       - run: bun test
       - run: bun main.ts setup
       - if: runner.os == 'macOS'
