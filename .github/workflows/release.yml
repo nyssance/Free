@@ -1,0 +1,28 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: bun install --frozen-lockfile
+      - run: |
+          for target in darwin-arm64 darwin-x64 windows-x64; do
+            bun build --compile --minify --target=bun-$target main.ts --outfile dist/free-$target
+          done
+          codesign --sign - --force dist/free-darwin-arm64 dist/free-darwin-x64
+          ls -lh dist
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          generate_release_notes: true

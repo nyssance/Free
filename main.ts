@@ -53,10 +53,17 @@ function run(command: string, allowFailure = false) {
   }
 }
 
-function checkTools() {
-  const tools = [pm, "uv", "rustup"]
-  const missing = tools.filter((tool) => !Bun.which(tool))
-  if (missing.length) throw new Error(`缺少命令：${missing.join("、")}`)
+function bootstrap() {
+  if (Bun.which(pm)) return
+  hint("install", isWindows ? "Scoop" : "Homebrew")
+  if (isWindows) {
+    run("Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force; irm get.scoop.sh | iex")
+    process.env.PATH = `${process.env.USERPROFILE}\\scoop\\shims;${process.env.PATH}`
+  } else {
+    run('/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"')
+    process.env.PATH = `/opt/homebrew/bin:/usr/local/bin:${process.env.PATH}`
+  }
+  if (!Bun.which(pm)) throw new Error(`${pm} 已安装但当前终端找不到，请重新打开终端再运行 free`)
 }
 
 async function install() {
@@ -86,6 +93,7 @@ async function install() {
     }
   })
   if (p.isCancel(roles) || roles.length === 0) return
+  bootstrap()
   if (roles.includes("android") || roles.includes("flutter")) {
     hint("install", "Android CLI, SDK, Emulator, ktlint")
     if (isWindows) {
@@ -171,21 +179,28 @@ async function install() {
 
 function diagnose() {
   p.intro(`Free ${version} · 环境检查`)
-  checkTools()
   for (const tool of [pm, "uv", "rustup"]) {
-    p.log.step(`${tool} · ${Bun.which(tool)}`)
-    run(`${tool} --version`)
+    const path = Bun.which(tool)
+    if (!path) {
+      p.log.warn(`${tool} · 未安装`)
+      continue
+    }
+    p.log.step(`${tool} · ${path}`)
+    run(`${tool} --version`, true)
   }
-  if (isWindows) {
-    run("scoop checkup", true)
-  } else {
-    run("brew vulns", true)
-    run("brew doctor", true)
+  if (Bun.which(pm)) {
+    if (isWindows) {
+      run("scoop checkup", true)
+    } else {
+      run("brew vulns", true)
+      run("brew doctor", true)
+    }
   }
   p.outro("检查完成，没有执行更新")
 }
 
 function upgrade() {
+  bootstrap()
   if (!isWindows || Bun.which("scoop")) {
     hint("upgrade", isWindows ? "Scoop" : "Homebrew")
     run(isWindows ? "scoop update --all" : "brew upgrade")

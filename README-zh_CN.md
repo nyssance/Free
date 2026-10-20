@@ -19,6 +19,26 @@ Free [English](https://github.com/nyssance/Free/blob/main/README.md)
 
 ## 安装
 
+macOS
+
+```shell
+curl -fsSL https://raw.githubusercontent.com/nyssance/Free/main/install.sh | sh
+```
+
+Windows
+
+```powershell
+irm https://raw.githubusercontent.com/nyssance/Free/main/install.ps1 | iex
+```
+
+然后运行 `free`，按菜单选择要安装的工具。缺少 Homebrew 或 Scoop 时会自动安装。
+
+- `free install` 选择安装
+- `free upgrade` 升级已安装软件并清理缓存，别名 `free u`
+- `free doctor` 检查环境
+
+## Fabric 方式
+
 ### macOS
 
 1. 安装 [Homebrew]。
@@ -101,7 +121,7 @@ Free [English](https://github.com/nyssance/Free/blob/main/README.md)
 
    > macOS - 配置 [plugins:vscode](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/vscode)
 
-## 升级
+### 升级
 
 ```shell
 cd ~ && fab upgrade

@@ -19,6 +19,26 @@ Free [简体中文](https://github.com/nyssance/Free/blob/main/README-zh_CN.md)
 
 ## Installation
 
+macOS
+
+```shell
+curl -fsSL https://raw.githubusercontent.com/nyssance/Free/main/install.sh | sh
+```
+
+Windows
+
+```powershell
+irm https://raw.githubusercontent.com/nyssance/Free/main/install.ps1 | iex
+```
+
+Then run `free` and pick the tools to install from the menu. Homebrew or Scoop is installed automatically when missing.
+
+- `free install` choose tools to install
+- `free upgrade` upgrade installed software and clean caches, alias `free u`
+- `free doctor` check the environment
+
+## Fabric
+
 ### macOS
 
 1. Install [Homebrew].
@@ -101,7 +121,7 @@ Free [简体中文](https://github.com/nyssance/Free/blob/main/README-zh_CN.md)
 
    > macOS - Config [plugins:vscode](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/vscode)
 
-## Upgrading
+### Upgrading
 
 ```shell
 cd ~ && fab upgrade
