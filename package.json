@@ -2,6 +2,9 @@
   "name": "free",
   "private": true,
   "type": "module",
+  "bin": {
+    "free": "main.ts"
+  },
   "dependencies": {
     "@clack/prompts": "^1.8.1",
     "commander": "^15.0.0"

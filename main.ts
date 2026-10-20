@@ -1,83 +1,69 @@
+#!/usr/bin/env bun
+import { chmodSync, existsSync, renameSync, unlinkSync } from "node:fs"
+
 import * as p from "@clack/prompts"
 import { Command } from "commander"
 
 const version = "0.1.0"
-const isWindows = process.platform === "win32"
-const pm = isWindows ? "scoop" : "brew"
+const pm = process.platform === "win32" ? "scoop" : "brew"
 const menus = {
   zh: {
     choose: "选择操作",
+    cleanup: "清理",
     install: "安装",
+    upgrade: "升级",
+    diagnose: "检查环境",
+    selfUpdate: "更新 free 自己",
+    exit: "退出",
     basics: "基础",
     development: "开发",
     database: "数据库",
     others: "其他",
-    upgrade: "更新",
-    diagnose: "检查环境",
-    exit: "退出",
     description: "一条命令装好开发环境",
     version: "显示版本号",
     help: "显示帮助",
-    installHelp: "选择要安装的工具",
-    upgradeHelp: "升级已安装软件并清理缓存",
-    diagnoseHelp: "只检查工具路径和版本，不做修改"
+    latest: "已是最新",
+    sourceRun: "当前从源码运行，不替换文件"
   },
   en: {
     choose: "Choose an action",
+    cleanup: "Clean",
     install: "Install",
+    upgrade: "Upgrade",
+    diagnose: "Check environment",
+    selfUpdate: "Update free itself",
+    exit: "Exit",
     basics: "Basics",
     development: "Development",
     database: "Database",
     others: "Others",
-    upgrade: "Update",
-    diagnose: "Check environment",
-    exit: "Exit",
     description: "Set up a development environment in one command",
     version: "Show version",
     help: "Show help",
-    installHelp: "Choose tools to install",
-    upgradeHelp: "Upgrade installed software and clean caches",
-    diagnoseHelp: "Check tool paths and versions without changing anything"
+    latest: "is up to date",
+    sourceRun: "Running from source, nothing replaced"
   }
 }
 const locale =
   process.env.LC_ALL || process.env.LC_MESSAGES || process.env.LANG || Intl.DateTimeFormat().resolvedOptions().locale
 const menuText = menus[/^zh(?:[-_]|$)/i.test(locale) ? "zh" : "en"]
 
-function run(command: string, allowFailure = false) {
-  console.log(`\x1b[1m${command}\x1b[0m`)
-  const shell = isWindows
-    ? [
-        "powershell.exe",
-        "-NoProfile",
-        "-Command",
-        `$ErrorActionPreference = 'Stop'; $env:Path += ';' + [Environment]::GetEnvironmentVariable('Path', 'Machine') + ';' + [Environment]::GetEnvironmentVariable('Path', 'User'); ${command}; if ($LASTEXITCODE) { exit $LASTEXITCODE }`
-      ]
-    : ["sh", "-c", command]
-  const child = Bun.spawnSync(shell, {
-    stdin: "inherit",
-    stdout: "inherit",
-    stderr: "inherit"
-  })
-  if (child.signalCode === "SIGINT" || child.exitCode === 130) {
-    process.exit(130)
+function cleanup() {
+  switch (pm) {
+    case "brew":
+      hint("clean", "Homebrew")
+      run("brew cleanup")
+      run("brew vulns", true)
+      run("brew doctor", true)
+      break
+    case "scoop":
+      hint("clean", "Scoop")
+      run("scoop cleanup --all")
+      run("scoop checkup")
+      break
   }
-  if (child.exitCode !== 0 && !allowFailure) {
-    throw new Error(`${command}：退出码 ${child.exitCode}`)
-  }
-}
-
-function bootstrap() {
-  if (Bun.which(pm)) return
-  hint("install", isWindows ? "Scoop" : "Homebrew")
-  if (isWindows) {
-    run("Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force; irm get.scoop.sh | iex")
-    process.env.PATH = `${process.env.USERPROFILE}\\scoop\\shims;${process.env.PATH}`
-  } else {
-    run('/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"')
-    process.env.PATH = `/opt/homebrew/bin:/usr/local/bin:${process.env.PATH}`
-  }
-  if (!Bun.which(pm)) throw new Error(`${pm} 已安装但当前终端找不到，请重新打开终端再运行 free`)
+  hint("clean", "uv")
+  run("uv cache prune")
 }
 
 async function install() {
@@ -88,7 +74,7 @@ async function install() {
     selectableGroups: false,
     showInstructions: false,
     options: {
-      [menuText.basics]: [{ value: "pm", label: isWindows ? "Scoop" : "Homebrew" }],
+      [menuText.basics]: [{ value: "pm", label: pm === "brew" ? "Homebrew" : "Scoop" }],
       [menuText.development]: [
         { value: "android", label: "Android" },
         ...(process.platform === "darwin" ? [{ value: "ios", label: "iOS / macOS" }] : []),
@@ -108,51 +94,60 @@ async function install() {
     }
   })
   if (p.isCancel(roles) || roles.length === 0) return
-  bootstrap()
-  if (roles.includes("pm")) p.log.success(`${pm} · ${Bun.which(pm)}`)
-  if (roles.includes("android") || roles.includes("flutter")) {
+  const has = (...names: string[]) => names.some((name) => roles.includes(name))
+  if (has("pm")) installPackageManager()
+  if (has("android", "flutter")) {
     hint("install", "Android CLI, SDK, Emulator, ktlint")
-    if (isWindows) {
-      run("winget install --id Google.AndroidCLI --exact")
-      run("scoop install ktlint")
-    } else {
-      run("brew tap android/tap")
-      run("brew install android-cli ktlint")
+    switch (pm) {
+      case "brew":
+        run("brew tap android/tap")
+        run("brew install android-cli ktlint")
+        break
+      case "scoop":
+        run("winget install --id Google.AndroidCLI --exact")
+        run("scoop install ktlint")
+        break
     }
     run("android sdk install platform-tools emulator platforms/android-37.2 build-tools/37.0.0 ndk/30.0.16248370")
   }
-  if (roles.includes("ios") || (roles.includes("flutter") && process.platform === "darwin")) {
+  if (has("ios") || (has("flutter") && process.platform === "darwin")) {
     hint("install", "XcodeGen, Baguette, SwiftLint")
     run("brew install xcodegen baguette swiftlint")
   }
-  if (roles.includes("flutter")) {
+  if (has("flutter")) {
     hint("install", "Flutter")
-    if (isWindows) {
-      run("scoop bucket add extras")
-      run("scoop install extras/flutter")
-    } else {
-      run("brew install --cask flutter")
+    switch (pm) {
+      case "brew":
+        run("brew install --cask flutter")
+        break
+      case "scoop":
+        run("scoop bucket add extras")
+        run("scoop install extras/flutter")
+        break
     }
   }
-  if (roles.some((role) => ["android", "ios", "flutter"].includes(role))) {
+  if (has("android", "ios", "flutter")) {
     hint("install", "Maestro")
-    if (isWindows) {
-      run("scoop bucket add java")
-      run("scoop install java/openjdk maestro")
-    } else {
-      run("brew tap mobile-dev-inc/tap")
-      run("brew trust --formula mobile-dev-inc/tap/maestro")
-      run("brew install mobile-dev-inc/tap/maestro")
+    switch (pm) {
+      case "brew":
+        run("brew tap mobile-dev-inc/tap")
+        run("brew trust --formula mobile-dev-inc/tap/maestro")
+        run("brew install mobile-dev-inc/tap/maestro")
+        break
+      case "scoop":
+        run("scoop bucket add java")
+        run("scoop install java/openjdk maestro")
+        break
     }
   }
-  if (roles.includes("js")) {
+  if (has("js")) {
     hint("install", "Bun")
     run(`${pm} install bun`)
   }
-  if (roles.includes("python")) {
+  if (has("python")) {
     hint("install", "uv, Python, Fabric, Ruff, ty")
     run(
-      isWindows
+      process.platform === "win32"
         ? 'powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"'
         : "curl -LsSf https://astral.sh/uv/install.sh | sh"
     )
@@ -161,40 +156,71 @@ async function install() {
     run("uv tool install ruff")
     run("uv tool install ty")
   }
-  if (roles.includes("rust")) {
+  if (has("rust")) {
     hint("install", "Rust")
     run(
-      isWindows
+      process.platform === "win32"
         ? "Start-Process https://rust-lang.org/tools/install/"
         : "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh"
     )
   }
-  if (roles.includes("mysql")) {
+  if (has("mysql")) {
     hint("install", "MySQL")
     run(`${pm} install mysql`)
   }
-  if (roles.includes("redis")) {
+  if (has("redis")) {
     hint("install", "Redis")
     run(`${pm} install redis`)
   }
-  if (roles.includes("fastlane")) {
+  if (has("fastlane")) {
     hint("install", "fastlane")
-    if (isWindows) {
-      run("scoop install ruby")
-      run("gem install fastlane")
-    } else {
-      run("brew install fastlane")
+    switch (pm) {
+      case "brew":
+        run("brew install fastlane")
+        break
+      case "scoop":
+        run("scoop install ruby")
+        run("gem install fastlane")
+        break
     }
   }
-  if (roles.includes("zoxide")) {
+  if (has("zoxide")) {
     hint("install", "zoxide fzf")
     run(`${pm} install zoxide fzf`)
   }
+  if (roles.some((role) => role !== "pm")) cleanup()
+}
+
+async function upgrade() {
+  await selfUpdate()
+  switch (pm) {
+    case "brew":
+      hint("upgrade", "Homebrew")
+      run("brew update")
+      run("brew upgrade")
+      break
+    case "scoop":
+      hint("upgrade", "Scoop")
+      run("scoop update --all")
+      break
+  }
+  if (Bun.which("android")) {
+    hint("upgrade", "Android SDK")
+    run("android sdk update")
+  }
+  hint("upgrade", "uv/python/tool")
+  run("uv self update")
+  run("uv python upgrade")
+  run("uv tool upgrade --all")
+  hint("upgrade", "Rust")
+  run("rustup update")
   cleanup()
+  if (process.platform === "win32") run("winget upgrade --all")
+  hint("upgrade", "完成")
 }
 
 function diagnose() {
-  p.intro(`Free ${version} · 环境检查`)
+  p.intro(`Free ${version} · ${menuText.diagnose}`)
   for (const tool of [pm, "uv", "rustup"]) {
     const path = Bun.which(tool)
     if (!path) {
@@ -204,52 +230,86 @@ function diagnose() {
     p.log.step(`${tool} · ${path}`)
     run(`${tool} --version`, true)
   }
-  if (Bun.which(pm)) {
-    if (isWindows) {
-      run("scoop checkup", true)
-    } else {
+  switch (pm) {
+    case "brew":
       run("brew vulns", true)
       run("brew doctor", true)
-    }
+      break
+    case "scoop":
+      run("scoop checkup", true)
+      break
   }
   p.outro("检查完成，没有执行更新")
 }
 
-function upgrade() {
-  bootstrap()
-  if (!isWindows || Bun.which("scoop")) {
-    hint("upgrade", isWindows ? "Scoop" : "Homebrew")
-    run(isWindows ? "scoop update --all" : "brew upgrade")
+async function selfUpdate() {
+  const repo = "nyssance/Free"
+  hint("upgrade", "free")
+  const release = await fetch(`https://api.github.com/repos/${repo}/releases/latest`, {
+    headers: { Accept: "application/vnd.github+json" }
+  })
+  if (!release.ok) throw new Error(`GitHub API ${release.status}`)
+  const { tag_name: tag } = (await release.json()) as { tag_name: string }
+  const latest = tag.replace(/^v/, "")
+  if (latest === version) {
+    p.log.success(`free ${version} ${menuText.latest}`)
+    return
   }
-  if (isWindows && Bun.which("winget")) {
-    run("winget upgrade --all")
+  const compiled = Bun.main.startsWith("/$bunfs/") || Bun.main.includes("~BUN")
+  if (!compiled) {
+    p.log.warn(`${version} → ${latest} · ${menuText.sourceRun}`)
+    return
   }
-  if (Bun.which("android")) {
-    hint("upgrade", "Android SDK")
-    run("android sdk update")
-  }
-  if (Bun.which("uv")) {
-    hint("upgrade", "uv/python/tool")
-    run("uv self update")
-    run("uv python upgrade")
-    run("uv tool upgrade --all")
-  }
-  if (Bun.which("rustup")) {
-    hint("upgrade", "Rust")
-    run("rustup update")
-  }
-  cleanup()
-  hint("upgrade", "完成")
+  const asset = process.platform === "win32" ? "free-windows-x64.exe" : "free-darwin-arm64"
+  const url = `https://github.com/${repo}/releases/download/${tag}/${asset}`
+  console.log(url)
+  const download = await fetch(url)
+  if (!download.ok) throw new Error(`HTTP ${download.status}`)
+  const exe = process.execPath
+  await Bun.write(`${exe}.new`, download)
+  if (process.platform === "win32") renameSync(exe, `${exe}.old`)
+  else chmodSync(`${exe}.new`, 0o755)
+  renameSync(`${exe}.new`, exe)
+  p.log.success(`free ${version} → ${latest}`)
 }
 
-function cleanup() {
-  if (!isWindows || Bun.which("scoop")) {
-    hint("clean", isWindows ? "Scoop" : "Homebrew")
-    run(isWindows ? "scoop cleanup --all" : "brew cleanup")
+function installPackageManager() {
+  switch (pm) {
+    case "brew":
+      hint("install", "Homebrew")
+      run('/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"')
+      process.env.PATH = `/opt/homebrew/bin:/usr/local/bin:${process.env.PATH}`
+      break
+    case "scoop":
+      hint("install", "Scoop")
+      run("Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force; irm get.scoop.sh | iex")
+      process.env.PATH = `${process.env.USERPROFILE}\\scoop\\shims;${process.env.PATH}`
+      break
   }
-  if (Bun.which("uv")) {
-    hint("clean", "uv")
-    run("uv cache prune")
+}
+
+function run(command: string, allowFailure = false) {
+  console.log(`\x1b[1m${command}\x1b[0m`)
+  const shell =
+    process.platform === "win32"
+      ? [
+          "powershell.exe",
+          "-NoProfile",
+          "-Command",
+          `$ErrorActionPreference = 'Stop'; $env:Path += ';' + [Environment]::GetEnvironmentVariable('Path', 'Machine') + ';' + [Environment]::GetEnvironmentVariable('Path', 'User'); ${command}; if ($LASTEXITCODE) { exit $LASTEXITCODE }`
+        ]
+      : ["sh", "-c", command]
+  const child = Bun.spawnSync(shell, {
+    env: { ...process.env, HOMEBREW_NO_ASK: "1" },
+    stdin: "inherit",
+    stdout: "inherit",
+    stderr: "inherit"
+  })
+  if (child.signalCode === "SIGINT" || child.exitCode === 130) {
+    process.exit(130)
+  }
+  if (child.exitCode !== 0 && !allowFailure) {
+    throw new Error(`${command}：退出码 ${child.exitCode}`)
   }
 }
 
@@ -268,18 +328,30 @@ async function menu() {
     withGuide: false,
     showInstructions: false,
     options: [
+      { value: "cleanup", label: menuText.cleanup },
       { value: "install", label: menuText.install },
       { value: "upgrade", label: menuText.upgrade },
       { value: "diagnose", label: menuText.diagnose },
       { value: "exit", label: menuText.exit }
     ]
   })
-  if (p.isCancel(action) || action === "exit") {
-    return
+  if (p.isCancel(action)) return
+  switch (action) {
+    case "cleanup":
+      cleanup()
+      break
+    case "install":
+      await install()
+      break
+    case "upgrade":
+      await upgrade()
+      break
+    case "diagnose":
+      diagnose()
+      break
+    case "exit":
+      break
   }
-  if (action === "install") await install()
-  else if (action === "upgrade") upgrade()
-  else diagnose()
 }
 
 const app = new Command()
@@ -288,9 +360,12 @@ const app = new Command()
   .version(version, "-v, --version", menuText.version)
   .helpOption("-h, --help", menuText.help)
   .action(menu)
-app.command("install").description(menuText.installHelp).action(install)
-app.command("upgrade").alias("u").description(menuText.upgradeHelp).action(upgrade)
-app.command("doctor").description(menuText.diagnoseHelp).action(diagnose)
+app.command("cleanup").alias("clean").description(menuText.cleanup).action(cleanup)
+app.command("install").description(menuText.install).action(install)
+app.command("upgrade").alias("u").description(menuText.upgrade).action(upgrade)
+app.command("doctor").description(menuText.diagnose).action(diagnose)
+app.command("self-update").description(menuText.selfUpdate).action(selfUpdate)
+if (process.platform === "win32" && existsSync(`${process.execPath}.old`)) unlinkSync(`${process.execPath}.old`)
 try {
   await app.parseAsync()
 } catch (error) {
