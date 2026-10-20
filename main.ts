@@ -9,6 +9,7 @@ const pm = process.platform === "win32" ? "scoop" : "brew"
 const menus = {
   zh: {
     choose: "选择操作",
+    setup: "安装 Homebrew、uv、Python、Ruff、ty",
     cleanup: "清理",
     install: "安装",
     upgrade: "升级",
@@ -27,6 +28,7 @@ const menus = {
   },
   en: {
     choose: "Choose an action",
+    setup: "Install Homebrew, uv, Python, Ruff and ty",
     cleanup: "Clean",
     install: "Install",
     upgrade: "Upgrade",
@@ -47,6 +49,16 @@ const menus = {
 const locale =
   process.env.LC_ALL || process.env.LC_MESSAGES || process.env.LANG || Intl.DateTimeFormat().resolvedOptions().locale
 const menuText = menus[/^zh(?:[-_]|$)/i.test(locale) ? "zh" : "en"]
+
+function setup() {
+  installPackageManager()
+  installUv()
+  hint("install", "Python, Ruff, ty")
+  run("uv python install")
+  run("uv tool install ruff")
+  run("uv tool install ty")
+  diagnose()
+}
 
 function cleanup() {
   switch (pm) {
@@ -145,12 +157,8 @@ async function install() {
     run(`${pm} install bun`)
   }
   if (has("python")) {
-    hint("install", "uv, Python, Fabric, Ruff, ty")
-    run(
-      process.platform === "win32"
-        ? 'powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"'
-        : "curl -LsSf https://astral.sh/uv/install.sh | sh"
-    )
+    installUv()
+    hint("install", "Python, Fabric, Ruff, ty")
     run("uv python install")
     run("uv tool install fabric --with InquirerPy --with rich")
     run("uv tool install ruff")
@@ -245,6 +253,7 @@ function diagnose() {
 async function selfUpdate() {
   const repo = "nyssance/Free"
   hint("upgrade", "free")
+  if (process.env.FREE_DRY_RUN) return
   const release = await fetch(`https://api.github.com/repos/${repo}/releases/latest`, {
     headers: { Accept: "application/vnd.github+json" }
   })
@@ -282,14 +291,27 @@ function installPackageManager() {
       break
     case "scoop":
       hint("install", "Scoop")
-      run("Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force; irm get.scoop.sh | iex")
+      run(
+        'Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force; iex "& {$(irm get.scoop.sh)} -RunAsAdmin"'
+      )
       process.env.PATH = `${process.env.USERPROFILE}\\scoop\\shims;${process.env.PATH}`
       break
   }
 }
 
+function installUv() {
+  hint("install", "uv")
+  run(
+    process.platform === "win32"
+      ? 'powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"'
+      : "curl -LsSf https://astral.sh/uv/install.sh | sh"
+  )
+  process.env.PATH = `${process.env.HOME ?? process.env.USERPROFILE}/.local/bin${process.platform === "win32" ? ";" : ":"}${process.env.PATH}`
+}
+
 function run(command: string, allowFailure = false) {
   console.log(`\x1b[1m${command}\x1b[0m`)
+  if (process.env.FREE_DRY_RUN) return
   const shell =
     process.platform === "win32"
       ? [
@@ -328,6 +350,7 @@ async function menu() {
     withGuide: false,
     showInstructions: false,
     options: [
+      { value: "setup", label: menuText.setup },
       { value: "cleanup", label: menuText.cleanup },
       { value: "install", label: menuText.install },
       { value: "upgrade", label: menuText.upgrade },
@@ -337,6 +360,9 @@ async function menu() {
   })
   if (p.isCancel(action)) return
   switch (action) {
+    case "setup":
+      setup()
+      break
     case "cleanup":
       cleanup()
       break
@@ -360,6 +386,7 @@ const app = new Command()
   .version(version, "-v, --version", menuText.version)
   .helpOption("-h, --help", menuText.help)
   .action(menu)
+app.command("setup").description(menuText.setup).action(setup)
 app.command("cleanup").alias("clean").description(menuText.cleanup).action(cleanup)
 app.command("install").description(menuText.install).action(install)
 app.command("upgrade").alias("u").description(menuText.upgrade).action(upgrade)

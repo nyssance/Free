@@ -1,0 +1,42 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "0 0 * * 1"
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  setup:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: bun install --frozen-lockfile
+      - run: bun test
+      - run: bun main.ts setup
+      - if: runner.os == 'macOS'
+        run: |
+          export PATH="$HOME/.local/bin:/opt/homebrew/bin:$PATH"
+          brew --version
+          uv --version
+          uv python list --only-installed
+          ruff --version
+          ty --version
+      - if: runner.os == 'Windows'
+        run: |
+          $env:Path = "$env:USERPROFILE\.local\bin;$env:USERPROFILE\scoop\shims;$env:Path"
+          scoop --version
+          uv --version
+          uv python list --only-installed
+          ruff --version
+          ty --version
