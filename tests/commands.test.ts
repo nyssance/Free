@@ -16,18 +16,28 @@ function commands(...args: string[]) {
 }
 
 describe("setup", () => {
-  test(`顺序：${pmName} → uv → Python → Ruff → ty`, () => {
+  test(`顺序：${pmName} → Bun → uv → Python → Ruff → ty → Rust`, () => {
     const lines = commands("setup")
     const expected = windows
       ? [
           'Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force; iex "& {$(irm get.scoop.sh)} -RunAsAdmin"',
-          'powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"'
+          "scoop install bun",
+          'powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"',
+          "uv python install",
+          "uv tool install ruff",
+          "uv tool install ty",
+          "irm https://win.rustup.rs/x86_64 -OutFile $env:TEMP\\rustup-init.exe; & $env:TEMP\\rustup-init.exe -y"
         ]
       : [
           '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"',
-          "curl -LsSf https://astral.sh/uv/install.sh | sh"
+          "brew install bun",
+          "curl -LsSf https://astral.sh/uv/install.sh | sh",
+          "uv python install",
+          "uv tool install ruff",
+          "uv tool install ty",
+          "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh"
         ]
-    expect(lines.slice(0, 5)).toEqual([...expected, "uv python install", "uv tool install ruff", "uv tool install ty"])
+    expect(lines).toEqual(expected)
   })
 })
 
@@ -52,7 +62,7 @@ describe("upgrade", () => {
 describe("cleanup", () => {
   test(`${pmName} 清理后清理 uv`, () => {
     const lines = commands("cleanup")
-    const expected = windows ? ["scoop cleanup --all", "scoop checkup"] : ["brew cleanup", "brew vulns", "brew doctor"]
+    const expected = windows ? ["scoop cleanup --all"] : ["brew cleanup"]
     expect(lines).toEqual([...expected, "uv cache prune"])
   })
 })

@@ -5,62 +5,269 @@ import { styleText } from "node:util"
 import * as p from "@clack/prompts"
 import { Command } from "commander"
 
-import { link } from "./links"
+import { link, links } from "./links"
 
-const version = "0.1.3"
+const version = "0.1.4"
 const pm = process.platform === "win32" ? "scoop" : "brew"
 const menus = {
   zh: {
     choose: "选择操作",
-    setup: "安装 Homebrew、uv、Python、Ruff、ty",
+    setup: "安装 Homebrew、Bun、uv、Python、Ruff、ty、Rust，再按项目类型安装所需工具",
+    profile: "要开发什么",
     cleanup: "清理",
     install: "安装",
     upgrade: "升级",
-    diagnose: "检查环境",
+    list: "已安装的工具",
     selfUpdate: "更新 free 自己",
     exit: "退出",
     basics: "基础",
-    development: "开发",
     database: "数据库",
     others: "其他",
+    ai: "AI",
     description: "一条命令装好开发环境",
     version: "显示版本号",
     help: "显示帮助",
     latest: "已是最新",
-    sourceRun: "当前从源码运行，不替换文件"
+    sourceRun: "当前从源码运行，不替换文件",
+    done: "完成",
+    missing: "未安装",
+    unknown: "未知工具",
+    exitCode: "退出码"
   },
   en: {
     choose: "Choose an action",
-    setup: "Install Homebrew, uv, Python, Ruff and ty",
+    setup: "Install Homebrew, Bun, uv, Python, Ruff, ty and Rust, then what each project type needs",
+    profile: "What will you build",
     cleanup: "Clean",
     install: "Install",
     upgrade: "Upgrade",
-    diagnose: "Check environment",
+    list: "Installed tools",
     selfUpdate: "Update free itself",
     exit: "Exit",
     basics: "Basics",
-    development: "Development",
     database: "Database",
     others: "Others",
+    ai: "AI",
     description: "Set up a development environment in one command",
     version: "Show version",
     help: "Show help",
     latest: "is up to date",
-    sourceRun: "Running from source, nothing replaced"
+    sourceRun: "Running from source, nothing replaced",
+    done: "done",
+    missing: "not installed",
+    unknown: "unknown tool",
+    exitCode: "exit code"
   }
 }
 const locale =
   process.env.LC_ALL || process.env.LC_MESSAGES || process.env.LANG || Intl.DateTimeFormat().resolvedOptions().locale
 const menuText = menus[/^zh(?:[-_]|$)/i.test(locale) ? "zh" : "en"]
 
-function setup() {
-  installPackageManager()
-  installUv()
-  hint("install", "Python, Ruff, ty")
-  run("uv python install")
-  run("uv tool install ruff")
-  run("uv tool install ty")
-  diagnose()
+type Tool = {
+  name: string
+  version: string
+  brew: string[]
+  scoop: string[]
+  path?: string
+}
+const home = process.env.HOME ?? process.env.USERPROFILE ?? "~"
+const androidSdk =
+  "android sdk install platform-tools emulator platforms/android-37.2 build-tools/37.0.0 ndk/30.0.16248370"
+const groups: [group: string, tools: Tool[]][] = [
+  [
+    menuText.basics,
+    [
+      pm === "brew"
+        ? {
+            name: "Homebrew",
+            version: "brew --version",
+            brew: ['/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'],
+            scoop: [],
+            path: "/opt/homebrew/bin:/usr/local/bin"
+          }
+        : {
+            name: "Scoop",
+            version: "scoop --version",
+            brew: [],
+            scoop: [
+              'Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force; iex "& {$(irm get.scoop.sh)} -RunAsAdmin"'
+            ],
+            path: `${home}\\scoop\\shims`
+          }
+    ]
+  ],
+  [
+    "Android",
+    [
+      {
+        name: "Android CLI",
+        version: "android --version",
+        brew: ["brew tap android/tap", "brew install android-cli", androidSdk],
+        scoop: ["winget install --id Google.AndroidCLI --exact", androidSdk]
+      },
+      { name: "ktlint", version: "ktlint --version", brew: ["brew install ktlint"], scoop: ["scoop install ktlint"] }
+    ]
+  ],
+  ...(process.platform === "darwin"
+    ? ([
+        [
+          "iOS / macOS",
+          [
+            { name: "XcodeGen", version: "xcodegen --version", brew: ["brew install xcodegen"], scoop: [] },
+            { name: "Baguette", version: "baguette --version", brew: ["brew install baguette"], scoop: [] },
+            { name: "SwiftLint", version: "swiftlint --version", brew: ["brew install swiftlint"], scoop: [] }
+          ]
+        ]
+      ] as [string, Tool[]][])
+    : []),
+  [
+    "Flutter",
+    [
+      {
+        name: "Flutter",
+        version: "flutter --version",
+        brew: ["brew install --cask flutter"],
+        scoop: ["scoop bucket add extras", "scoop install extras/flutter"]
+      },
+      {
+        name: "Maestro",
+        version: "maestro --version",
+        brew: [
+          "brew tap mobile-dev-inc/tap",
+          "brew trust --formula mobile-dev-inc/tap/maestro",
+          "brew install mobile-dev-inc/tap/maestro"
+        ],
+        scoop: ["scoop bucket add java", "scoop install java/openjdk maestro"]
+      }
+    ]
+  ],
+  [
+    "JavaScript & TypeScript",
+    [{ name: "Bun", version: "bun --version", brew: ["brew install bun"], scoop: ["scoop install bun"] }]
+  ],
+  [
+    "Python",
+    [
+      {
+        name: "uv",
+        version: "uv --version",
+        brew: ["curl -LsSf https://astral.sh/uv/install.sh | sh"],
+        scoop: ['powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"'],
+        path: `${home}/.local/bin`
+      },
+      {
+        name: "Python",
+        version: "uv python list --only-installed",
+        brew: ["uv python install"],
+        scoop: ["uv python install"]
+      },
+      { name: "Ruff", version: "ruff --version", brew: ["uv tool install ruff"], scoop: ["uv tool install ruff"] },
+      { name: "ty", version: "ty --version", brew: ["uv tool install ty"], scoop: ["uv tool install ty"] },
+      {
+        name: "Fabric",
+        version: "fab --version",
+        brew: ["uv tool install fabric --with InquirerPy --with rich"],
+        scoop: ["uv tool install fabric --with InquirerPy --with rich"]
+      }
+    ]
+  ],
+  [
+    "Rust",
+    [
+      {
+        name: "Rust",
+        version: "rustc --version",
+        brew: ["curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh"],
+        scoop: [
+          "irm https://win.rustup.rs/x86_64 -OutFile $env:TEMP\\rustup-init.exe; & $env:TEMP\\rustup-init.exe -y"
+        ],
+        path: `${home}/.cargo/bin`
+      }
+    ]
+  ],
+  [
+    menuText.database,
+    [
+      { name: "MySQL", version: "mysql --version", brew: ["brew install mysql"], scoop: ["scoop install mysql"] },
+      { name: "Redis", version: "redis-server --version", brew: ["brew install redis"], scoop: ["scoop install redis"] }
+    ]
+  ],
+  [
+    menuText.others,
+    [
+      {
+        name: "fastlane",
+        version: "fastlane --version",
+        brew: ["brew install fastlane"],
+        scoop: ["scoop install ruby", "gem install fastlane"]
+      },
+      {
+        name: "zoxide",
+        version: "zoxide --version",
+        brew: ["brew install zoxide fzf"],
+        scoop: ["scoop install zoxide fzf"]
+      }
+    ]
+  ],
+  [
+    menuText.ai,
+    [
+      {
+        name: "Codex",
+        version: "codex --version",
+        brew: ["brew install codex"],
+        scoop: ["bun install -g @openai/codex"]
+      },
+      {
+        name: "Claude Code",
+        version: "claude --version",
+        brew: ["brew install --cask claude-code"],
+        scoop: ["irm https://claude.ai/install.ps1 | iex"]
+      }
+    ]
+  ]
+]
+const tools = groups.flatMap(([, tools]) => tools)
+const base = [pm === "brew" ? "Homebrew" : "Scoop", "Bun", "uv", "Python", "Ruff", "ty", "Rust"]
+const profiles: Record<string, string[]> = Object.fromEntries(
+  groups
+    .slice(1)
+    .map(([group, tools]): [string, string[]] => [
+      group,
+      tools.map((tool) => tool.name).filter((name) => !base.includes(name))
+    ])
+    .filter(([, names]) => names.length > 0)
+)
+
+function versionOf(tool: Tool) {
+  if (!Bun.which(tool.version.split(" ")[0])) return
+  const out = output(tool.version)
+  const versions =
+    tool.name === "Python"
+      ? [...out.matchAll(/cpython-(\d+\.\d+\.\d+)/g)].map((m) => m[1])
+      : [out.match(/\d+(\.\d+)+/)?.[0] ?? out.split("\n")[0]]
+  return [...new Set(versions)].join(", ")
+}
+
+async function setup(extra: string[] = []) {
+  let chosen = extra.map((name) => {
+    const key = Object.keys(profiles).find((key) => key.toLowerCase() === name.toLowerCase())
+    if (!key) throw new Error(`${menuText.unknown}: ${name}`)
+    return key
+  })
+  if (chosen.length === 0 && process.stdin.isTTY) {
+    const picked = await p.multiselect({
+      message: menuText.profile,
+      withGuide: false,
+      required: false,
+      showInstructions: false,
+      options: Object.entries(profiles).map(([name, names]) => ({ value: name, label: name, hint: names.join(", ") }))
+    })
+    if (p.isCancel(picked)) return
+    chosen = picked
+  }
+  const installed = installTools([...base, ...chosen.flatMap((name) => profiles[name])])
+  list(installed)
 }
 
 function cleanup() {
@@ -68,13 +275,10 @@ function cleanup() {
     case "brew":
       hint("clean", "Homebrew")
       run("brew cleanup")
-      run("brew vulns", true)
-      run("brew doctor", true)
       break
     case "scoop":
       hint("clean", "Scoop")
       run("scoop cleanup --all")
-      run("scoop checkup")
       break
   }
   hint("clean", "uv")
@@ -82,124 +286,33 @@ function cleanup() {
 }
 
 async function install() {
-  const roles = await p.groupMultiselect({
+  const options = Object.fromEntries(
+    groups.map(([group, tools]) => [
+      group,
+      tools.map((tool) => ({ value: tool.name, label: tool.name, hint: versionOf(tool) ?? menuText.missing }))
+    ])
+  )
+  const names = await p.groupMultiselect({
     message: menuText.install,
     withGuide: false,
     required: false,
     selectableGroups: false,
     showInstructions: false,
-    options: {
-      [menuText.basics]: [{ value: "pm", label: pm === "brew" ? "Homebrew" : "Scoop" }],
-      [menuText.development]: [
-        { value: "android", label: "Android" },
-        ...(process.platform === "darwin" ? [{ value: "ios", label: "iOS / macOS" }] : []),
-        { value: "flutter", label: "Flutter" },
-        { value: "js", label: "JavaScript & TypeScript" },
-        { value: "python", label: "Python" },
-        { value: "rust", label: "Rust" }
-      ],
-      [menuText.database]: [
-        { value: "mysql", label: "MySQL" },
-        { value: "redis", label: "Redis" }
-      ],
-      [menuText.others]: [
-        { value: "fastlane", label: "fastlane" },
-        { value: "zoxide", label: "zoxide" }
-      ]
-    }
+    options
   })
-  if (p.isCancel(roles) || roles.length === 0) return
-  const has = (...names: string[]) => names.some((name) => roles.includes(name))
-  if (has("pm")) installPackageManager()
-  if (has("android", "flutter")) {
-    hint("install", "Android CLI, SDK, Emulator, ktlint")
-    switch (pm) {
-      case "brew":
-        run("brew tap android/tap")
-        run("brew install android-cli ktlint")
-        break
-      case "scoop":
-        run("winget install --id Google.AndroidCLI --exact")
-        run("scoop install ktlint")
-        break
-    }
-    run("android sdk install platform-tools emulator platforms/android-37.2 build-tools/37.0.0 ndk/30.0.16248370")
+  if (p.isCancel(names) || names.length === 0) return
+  const installed = installTools(names)
+  if (installed.some((name) => !base.includes(name))) cleanup()
+}
+
+function installTools(names: string[]) {
+  const selected = tools.filter((tool) => names.includes(tool.name))
+  for (const tool of selected) {
+    hint("install", tool.name)
+    for (const command of tool[pm]) run(command)
+    if (tool.path) process.env.PATH = `${tool.path}${process.platform === "win32" ? ";" : ":"}${process.env.PATH}`
   }
-  if (has("ios") || (has("flutter") && process.platform === "darwin")) {
-    hint("install", "XcodeGen, Baguette, SwiftLint")
-    run("brew install xcodegen baguette swiftlint")
-  }
-  if (has("flutter")) {
-    hint("install", "Flutter")
-    switch (pm) {
-      case "brew":
-        run("brew install --cask flutter")
-        break
-      case "scoop":
-        run("scoop bucket add extras")
-        run("scoop install extras/flutter")
-        break
-    }
-  }
-  if (has("android", "ios", "flutter")) {
-    hint("install", "Maestro")
-    switch (pm) {
-      case "brew":
-        run("brew tap mobile-dev-inc/tap")
-        run("brew trust --formula mobile-dev-inc/tap/maestro")
-        run("brew install mobile-dev-inc/tap/maestro")
-        break
-      case "scoop":
-        run("scoop bucket add java")
-        run("scoop install java/openjdk maestro")
-        break
-    }
-  }
-  if (has("js")) {
-    hint("install", "Bun")
-    run(`${pm} install bun`)
-  }
-  if (has("python")) {
-    installUv()
-    hint("install", "Python, Fabric, Ruff, ty")
-    run("uv python install")
-    run("uv tool install fabric --with InquirerPy --with rich")
-    run("uv tool install ruff")
-    run("uv tool install ty")
-  }
-  if (has("rust")) {
-    hint("install", "Rust")
-    run(
-      process.platform === "win32"
-        ? "Start-Process https://rust-lang.org/tools/install/"
-        : "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh"
-    )
-  }
-  if (has("mysql")) {
-    hint("install", "MySQL")
-    run(`${pm} install mysql`)
-  }
-  if (has("redis")) {
-    hint("install", "Redis")
-    run(`${pm} install redis`)
-  }
-  if (has("fastlane")) {
-    hint("install", "fastlane")
-    switch (pm) {
-      case "brew":
-        run("brew install fastlane")
-        break
-      case "scoop":
-        run("scoop install ruby")
-        run("gem install fastlane")
-        break
-    }
-  }
-  if (has("zoxide")) {
-    hint("install", "zoxide fzf")
-    run(`${pm} install zoxide fzf`)
-  }
-  if (roles.some((role) => role !== "pm")) cleanup()
+  return selected.map((tool) => tool.name)
 }
 
 async function upgrade() {
@@ -227,30 +340,25 @@ async function upgrade() {
   run("rustup update")
   cleanup()
   if (process.platform === "win32") run("winget upgrade --all")
-  hint("upgrade", "完成")
+  hint("upgrade", menuText.done)
 }
 
-function diagnose() {
-  p.intro(`Free ${version} · ${menuText.diagnose}`)
-  for (const tool of [pm, "uv", "rustup"]) {
-    const path = Bun.which(tool)
-    if (!path) {
-      p.log.warn(`${tool} · 未安装`)
-      continue
-    }
-    p.log.step(`${tool} · ${path}`)
-    run(`${tool} --version`, true)
-  }
-  switch (pm) {
-    case "brew":
-      run("brew vulns", true)
-      run("brew doctor", true)
-      break
-    case "scoop":
-      run("scoop checkup", true)
-      break
-  }
-  p.outro("检查完成，没有执行更新")
+function list(names?: string[]) {
+  p.intro(`Free ${version} · ${menuText.list}`)
+  const width = Math.max(...tools.map((tool) => tool.name.length))
+  const pad = (name: string) => " ".repeat(width - name.length + 2)
+  const lines = groups.flatMap(([group, tools]) => {
+    const shown = tools.filter((tool) => !names || names.includes(tool.name))
+    if (shown.length === 0) return []
+    return [
+      styleText("bold", group),
+      ...shown.map(
+        (tool) => `  ${link(tool.name)}${pad(tool.name)}${versionOf(tool) ?? styleText("dim", menuText.missing)}`
+      )
+    ]
+  })
+  p.log.message(lines.join("\n"))
+  p.outro()
 }
 
 async function selfUpdate() {
@@ -285,70 +393,52 @@ async function selfUpdate() {
   p.log.success(`free ${version} → ${latest}`)
 }
 
-function installPackageManager() {
-  switch (pm) {
-    case "brew":
-      hint("install", "Homebrew")
-      run('/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"')
-      process.env.PATH = `/opt/homebrew/bin:/usr/local/bin:${process.env.PATH}`
-      break
-    case "scoop":
-      hint("install", "Scoop")
-      run(
-        'Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force; iex "& {$(irm get.scoop.sh)} -RunAsAdmin"'
-      )
-      process.env.PATH = `${process.env.USERPROFILE}\\scoop\\shims;${process.env.PATH}`
-      break
-  }
+function shell(command: string) {
+  return process.platform === "win32"
+    ? [
+        "powershell.exe",
+        "-NoProfile",
+        "-Command",
+        `$ErrorActionPreference = 'Stop'; $env:Path += ';' + [Environment]::GetEnvironmentVariable('Path', 'Machine') + ';' + [Environment]::GetEnvironmentVariable('Path', 'User'); ${command}; if ($LASTEXITCODE) { exit $LASTEXITCODE }`
+      ]
+    : ["sh", "-c", command]
 }
 
-function installUv() {
-  hint("install", "uv")
-  run(
-    process.platform === "win32"
-      ? 'powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"'
-      : "curl -LsSf https://astral.sh/uv/install.sh | sh"
-  )
-  process.env.PATH = `${process.env.HOME ?? process.env.USERPROFILE}/.local/bin${process.platform === "win32" ? ";" : ":"}${process.env.PATH}`
+function env() {
+  const env: Record<string, string | undefined> = { ...process.env, HOMEBREW_NO_ASK: "1" }
+  if (process.platform === "win32") delete env.PSModulePath
+  return env
+}
+
+function output(command: string) {
+  const { stdout, stderr } = Bun.spawnSync(shell(command), { env: env(), stdout: "pipe", stderr: "pipe" })
+  return (stdout.toString() + stderr.toString()).trim()
 }
 
 function run(command: string, allowFailure = false) {
   console.log(styleText("bold", command))
   if (process.env.FREE_DRY_RUN) return
-  const shell =
-    process.platform === "win32"
-      ? [
-          "powershell.exe",
-          "-NoProfile",
-          "-Command",
-          `$ErrorActionPreference = 'Stop'; $env:Path += ';' + [Environment]::GetEnvironmentVariable('Path', 'Machine') + ';' + [Environment]::GetEnvironmentVariable('Path', 'User'); ${command}; if ($LASTEXITCODE) { exit $LASTEXITCODE }`
-        ]
-      : ["sh", "-c", command]
-  const env: Record<string, string | undefined> = { ...process.env, HOMEBREW_NO_ASK: "1" }
-  if (process.platform === "win32") delete env.PSModulePath
-  const child = Bun.spawnSync(shell, {
-    env,
-    stdin: "inherit",
-    stdout: "inherit",
-    stderr: "inherit"
-  })
+  const child = Bun.spawnSync(shell(command), { env: env(), stdin: "inherit", stdout: "inherit", stderr: "inherit" })
   if (child.signalCode === "SIGINT" || child.exitCode === 130) {
     process.exit(130)
   }
   if (child.exitCode !== 0 && !allowFailure) {
-    throw new Error(`${command}：退出码 ${child.exitCode}`)
+    throw new Error(`${command} · ${menuText.exitCode} ${child.exitCode}`)
   }
 }
 
 function hint(operation: "upgrade" | "clean" | "install", message: string) {
   const { label, color } = (
     {
-      upgrade: { label: "升级", color: "bgBlue" },
-      clean: { label: "清理", color: "bgYellow" },
-      install: { label: "安装", color: "bgGreen" }
+      upgrade: { label: menuText.upgrade, color: "bgBlue" },
+      clean: { label: menuText.cleanup, color: "bgYellow" },
+      install: { label: menuText.install, color: "bgGreen" }
     } as const
   )[operation]
-  console.log(styleText(color, label), message.replace(/[A-Za-z][\w.-]*/g, link))
+  const linked = Object.keys(links)
+    .sort((a, b) => b.length - a.length)
+    .reduce((text, name) => text.replace(new RegExp(`\\b${name}\\b`, "g"), link(name)), message)
+  console.log(styleText(color, label), linked)
 }
 
 async function menu() {
@@ -361,14 +451,14 @@ async function menu() {
       { value: "cleanup", label: menuText.cleanup },
       { value: "install", label: menuText.install },
       { value: "upgrade", label: menuText.upgrade },
-      { value: "diagnose", label: menuText.diagnose },
+      { value: "list", label: menuText.list },
       { value: "exit", label: menuText.exit }
     ]
   })
   if (p.isCancel(action)) return
   switch (action) {
     case "setup":
-      setup()
+      await setup()
       break
     case "cleanup":
       cleanup()
@@ -379,8 +469,8 @@ async function menu() {
     case "upgrade":
       await upgrade()
       break
-    case "diagnose":
-      diagnose()
+    case "list":
+      list()
       break
     case "exit":
       break
@@ -393,11 +483,15 @@ const app = new Command()
   .version(version, "-v, --version", menuText.version)
   .helpOption("-h, --help", menuText.help)
   .action(menu)
-app.command("setup").description(menuText.setup).action(setup)
+app.command("setup [tools...]").description(menuText.setup).action(setup)
 app.command("cleanup").alias("clean").description(menuText.cleanup).action(cleanup)
 app.command("install").description(menuText.install).action(install)
 app.command("upgrade").alias("u").description(menuText.upgrade).action(upgrade)
-app.command("doctor").description(menuText.diagnose).action(diagnose)
+app
+  .command("list")
+  .alias("ls")
+  .description(menuText.list)
+  .action(() => list())
 app.command("self-update").description(menuText.selfUpdate).action(selfUpdate)
 if (process.platform === "win32" && existsSync(`${process.execPath}.old`)) unlinkSync(`${process.execPath}.old`)
 try {

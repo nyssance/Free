@@ -22,7 +22,11 @@ export const links: Record<string, string> = {
   XcodeGen: "https://github.com/yonaskolb/XcodeGen",
   Baguette: "https://github.com/tddworks/baguette",
   SwiftLint: "https://github.com/realm/SwiftLint",
-  ktlint: "https://github.com/pinterest/ktlint"
+  ktlint: "https://github.com/pinterest/ktlint",
+  "Android CLI": "https://developer.android.com/tools/agents/android-cli",
+  Codex: "https://github.com/openai/codex",
+  "Claude Code": "https://claude.com/claude-code",
+  Tauri: "https://tauri.app"
 }
 
 export function link(text: string) {

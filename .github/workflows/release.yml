@@ -8,13 +8,27 @@ permissions:
   contents: write
 
 jobs:
+  tested:
+    runs-on: ubuntu-latest
+    outputs:
+      ok: ${{ steps.query.outputs.ok }}
+    steps:
+      - id: query
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          n=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow test.yml --commit "$GITHUB_SHA" --status success --json databaseId --jq length)
+          echo "ok=$([ "$n" -gt 0 ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
   test:
+    needs: tested
+    if: needs.tested.outputs.ok != 'true'
     uses: ./.github/workflows/test.yml
   build:
-    needs: test
+    needs: [tested, test]
+    if: ${{ !cancelled() && needs.tested.result == 'success' && (needs.test.result == 'success' || needs.test.result == 'skipped') }}
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest

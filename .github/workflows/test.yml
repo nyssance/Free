@@ -17,7 +17,7 @@ jobs:
         os: [macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
@@ -28,15 +28,19 @@ jobs:
         run: |
           export PATH="$HOME/.local/bin:/opt/homebrew/bin:$PATH"
           brew --version
+          bun --version
           uv --version
           uv python list --only-installed
           ruff --version
           ty --version
+          rustc --version
       - if: runner.os == 'Windows'
         run: |
-          $env:Path = "$env:USERPROFILE\.local\bin;$env:USERPROFILE\scoop\shims;$env:Path"
+          $env:Path = "$env:USERPROFILE\.local\bin;$env:USERPROFILE\scoop\shims;$env:USERPROFILE\.cargo\bin;$env:Path"
           scoop --version
+          bun --version
           uv --version
           uv python list --only-installed
           ruff --version
           ty --version
+          rustc --version
