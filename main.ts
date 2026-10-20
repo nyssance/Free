@@ -3,18 +3,18 @@ import { chmodSync, existsSync, renameSync, unlinkSync } from "node:fs"
 import { styleText } from "node:util"
 
 import * as p from "@clack/prompts"
+import cfonts from "cfonts"
 import { Command } from "commander"
 
 import { link, links } from "./links"
 import { pick } from "./menu"
 
-const version = "0.1.6"
+const version = "0.1.7"
 const pm = process.platform === "win32" ? "scoop" : "brew"
 const menus = {
   zh: {
     choose: "选择操作",
-    setup: "安装 Homebrew、Git、GitHub CLI、GitLab CLI、Bun、uv、Python、Ruff、ty、Rust，再按项目类型安装所需工具",
-    profile: "要开发什么",
+    setup: "安装 Homebrew、Git、GitHub CLI、GitLab CLI、Bun、uv、Python、Ruff、ty、Rust",
     cleanup: "清理",
     install: "安装",
     upgrade: "升级",
@@ -33,14 +33,11 @@ const menus = {
     done: "完成",
     missing: "未安装",
     allInstalled: "全部已安装",
-    unknown: "未知工具",
     exitCode: "退出码"
   },
   en: {
     choose: "Choose an action",
-    setup:
-      "Install Homebrew, Git, GitHub CLI, GitLab CLI, Bun, uv, Python, Ruff, ty and Rust, then what each project type needs",
-    profile: "What will you build",
+    setup: "Install Homebrew, Git, GitHub CLI, GitLab CLI, Bun, uv, Python, Ruff, ty and Rust",
     cleanup: "Clean",
     install: "Install",
     upgrade: "Upgrade",
@@ -59,7 +56,6 @@ const menus = {
     done: "done",
     missing: "not installed",
     allInstalled: "Everything is installed",
-    unknown: "unknown tool",
     exitCode: "exit code"
   }
 }
@@ -260,15 +256,6 @@ const base = [
   "ty",
   "Rust"
 ]
-const profiles: Record<string, string[]> = Object.fromEntries(
-  groups
-    .slice(1)
-    .map(([group, tools]): [string, string[]] => [
-      group,
-      tools.map((tool) => tool.name).filter((name) => !base.includes(name))
-    ])
-    .filter(([, names]) => names.length > 0)
-)
 
 async function versionOf(tool: Tool) {
   if (!Bun.which(tool.version.split(" ")[0])) return
@@ -280,25 +267,9 @@ async function versionOf(tool: Tool) {
   return [...new Set(versions)].join(", ")
 }
 
-async function setup(extra: string[] = []) {
-  let chosen = extra.map((name) => {
-    const key = Object.keys(profiles).find((key) => key.toLowerCase() === name.toLowerCase())
-    if (!key) throw new Error(`${menuText.unknown}: ${name}`)
-    return key
-  })
-  if (chosen.length === 0 && process.stdin.isTTY) {
-    const picked = await p.multiselect({
-      message: menuText.profile,
-      withGuide: false,
-      required: false,
-      showInstructions: false,
-      options: Object.entries(profiles).map(([name, names]) => ({ value: name, label: name, hint: names.join(", ") }))
-    })
-    if (p.isCancel(picked)) return
-    chosen = picked
-  }
-  const installed = installTools([...base, ...chosen.flatMap((name) => profiles[name])])
-  await list(installed)
+async function setup() {
+  console.log(banner())
+  await list(installTools(base))
 }
 
 function cleanup() {
@@ -487,7 +458,21 @@ function hint(operation: "upgrade" | "clean" | "install", message: string) {
   console.log(styleText(color, label), linked)
 }
 
+function banner() {
+  if (!process.stdout.isTTY && !process.env.FORCE_COLOR) return ""
+  const art = cfonts.render("Free", {
+    font: "block",
+    gradient: ["#22d3ee", "#a78bfa"],
+    transitionGradient: true,
+    env: "node",
+    space: false
+  })
+  if (!art) return ""
+  return `\n${art.string.replace(/^\n+|\n+$/g, "")}\n ${styleText("dim", `v${version}`)}\n`
+}
+
 async function menu() {
+  console.log(banner())
   const action = await p.select({
     message: menuText.choose,
     withGuide: false,
@@ -528,8 +513,13 @@ const app = new Command()
   .description(menuText.description)
   .version(version, "-v, --version", menuText.version)
   .helpOption("-h, --help", menuText.help)
+  .addHelpText("beforeAll", banner)
+  .configureOutput({
+    getOutHasColors: () => Boolean(process.stdout.isTTY || process.env.FORCE_COLOR) && !process.env.NO_COLOR,
+    getErrHasColors: () => Boolean(process.stderr.isTTY || process.env.FORCE_COLOR) && !process.env.NO_COLOR
+  })
   .action(menu)
-app.command("setup [tools...]").description(menuText.setup).action(setup)
+app.command("setup").description(menuText.setup).action(setup)
 app.command("cleanup").alias("clean").description(menuText.cleanup).action(cleanup)
 app.command("install").description(menuText.install).action(install)
 app.command("upgrade").alias("u").description(menuText.upgrade).action(upgrade)
