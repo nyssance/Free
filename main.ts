@@ -1,10 +1,13 @@
 #!/usr/bin/env bun
 import { chmodSync, existsSync, renameSync, unlinkSync } from "node:fs"
+import { styleText } from "node:util"
 
 import * as p from "@clack/prompts"
 import { Command } from "commander"
 
-const version = "0.1.2"
+import { link } from "./links"
+
+const version = "0.1.3"
 const pm = process.platform === "win32" ? "scoop" : "brew"
 const menus = {
   zh: {
@@ -310,7 +313,7 @@ function installUv() {
 }
 
 function run(command: string, allowFailure = false) {
-  console.log(`\x1b[1m${command}\x1b[0m`)
+  console.log(styleText("bold", command))
   if (process.env.FREE_DRY_RUN) return
   const shell =
     process.platform === "win32"
@@ -338,12 +341,14 @@ function run(command: string, allowFailure = false) {
 }
 
 function hint(operation: "upgrade" | "clean" | "install", message: string) {
-  const { label, color } = {
-    upgrade: { label: "升级", color: 44 },
-    clean: { label: "清理", color: 43 },
-    install: { label: "安装", color: 42 }
-  }[operation]
-  console.log(`\x1b[${color}m${label}\x1b[0m ${message}`)
+  const { label, color } = (
+    {
+      upgrade: { label: "升级", color: "bgBlue" },
+      clean: { label: "清理", color: "bgYellow" },
+      install: { label: "安装", color: "bgGreen" }
+    } as const
+  )[operation]
+  console.log(styleText(color, label), message.replace(/[A-Za-z][\w.-]*/g, link))
 }
 
 async function menu() {

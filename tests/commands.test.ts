@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test"
 
 const windows = process.platform === "win32"
-const pm = windows ? "scoop" : "brew"
+const pmName = windows ? "Scoop" : "Homebrew"
 
 function commands(...args: string[]) {
   const { stdout, exitCode } = Bun.spawnSync(["bun", "main.ts", ...args], {
@@ -16,7 +16,7 @@ function commands(...args: string[]) {
 }
 
 describe("setup", () => {
-  test("顺序：包管理器 → uv → Python → Ruff → ty", () => {
+  test(`顺序：${pmName} → uv → Python → Ruff → ty`, () => {
     const lines = commands("setup")
     const expected = windows
       ? [
@@ -32,7 +32,7 @@ describe("setup", () => {
 })
 
 describe("upgrade", () => {
-  test("顺序：包管理器 → uv → Rust → 清理", () => {
+  test(`顺序：${pmName} → uv → Rust → 清理`, () => {
     const lines = commands("upgrade")
     const index = (command: string) => {
       const i = lines.indexOf(command)
@@ -50,7 +50,7 @@ describe("upgrade", () => {
 })
 
 describe("cleanup", () => {
-  test(`${pm} 清理后清理 uv`, () => {
+  test(`${pmName} 清理后清理 uv`, () => {
     const lines = commands("cleanup")
     const expected = windows ? ["scoop cleanup --all", "scoop checkup"] : ["brew cleanup", "brew vulns", "brew doctor"]
     expect(lines).toEqual([...expected, "uv cache prune"])
