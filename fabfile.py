@@ -2,6 +2,7 @@ from pathlib import Path
 from platform import system
 from typing import Final, Literal
 lazy import locale
+lazy from shutil import which
 
 from fabric import task
 lazy import rich
@@ -11,7 +12,7 @@ lazy from InquirerPy.base.control import Choice
 lazy from InquirerPy.separator import Separator
 lazy from invoke import Context
 
-VERSION: Final = "0.62"
+VERSION: Final = "0.63"
 PM: Literal["brew", "scoop"] = "scoop" if system() == "Windows" else "brew"
 
 
@@ -179,6 +180,9 @@ def upgrade(c: Context, *, config: bool = False) -> None:
         case "scoop":
             hint("upgrade Scoop")
             c.run(f"{PM} update --all")
+    if which("android"):
+        hint("upgrade Android SDK")
+        c.run("android sdk update")
     hint("upgrade uv/python/tool")
     c.run("uv self update")
     c.run("uv python upgrade")
@@ -186,9 +190,14 @@ def upgrade(c: Context, *, config: bool = False) -> None:
     hint("upgrade Rust")
     c.run("rustup update")
     cleanup(c)
-    if system() == "Windows":
-        c.run("winget upgrade")
     hint(f"upgrade {gettext("completed")}")
+
+
+@task
+def winget(c: Context) -> None:
+    """升级 winget 软件"""
+    hint("upgrade winget")
+    c.run("winget upgrade --all")
 
 
 def download(c: Context, url: str, name: str | None = None) -> None:

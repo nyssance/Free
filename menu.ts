@@ -5,14 +5,14 @@ import { GroupMultiSelectPrompt } from "@clack/core"
 export type Item = { name: string; version?: string }
 type Option = { value: string; label: string; hint?: string }
 
-const symbols: Record<string, string> = {
+const symbols = {
   initial: "◆",
   active: "◆",
   validating: "◆",
   error: "▲",
   submit: "◇",
   cancel: "■"
-}
+} as const
 
 export function pick(message: string, groups: Record<string, Item[]>) {
   const width = Math.max(...Object.values(groups).flatMap((items) => items.map((item) => item.name.length)))
@@ -27,7 +27,7 @@ export function pick(message: string, groups: Record<string, Item[]>) {
     required: false,
     selectableGroups: false,
     render() {
-      const head = `${styleText("cyan", symbols[this.state] ?? "◆")}  ${message}\n`
+      const head = `${styleText("cyan", symbols[this.state])}  ${message}\n`
       const chosen = this.value ?? []
       if (this.state === "submit" || this.state === "cancel") {
         return `${head}${styleText("gray", "│")}  ${styleText("dim", chosen.join(", "))}`

@@ -10,15 +10,17 @@ import terminalLink from "terminal-link"
 import { link, links } from "./links"
 import { pick } from "./menu"
 
-let version = "0.1.13"
+let version = "0.1.14"
 const pm = process.platform === "win32" ? "scoop" : "brew"
+const pmName = pm === "brew" ? "Homebrew" : "Scoop"
 const menus = {
   zh: {
     choose: "选择操作",
-    setup: "安装 Homebrew、Git、GitHub CLI、GitLab CLI、Bun、uv、Python、Ruff、ty、Rust",
+    setup: `安装 ${pmName}、Git、GitHub CLI、GitLab CLI、Bun、uv、Python、Ruff、ty、Rust`,
     cleanup: "清理",
     install: "安装",
     upgrade: "升级",
+    winget: "升级 winget 软件",
     list: "已安装的工具",
     selfUpdate: "更新 free 自己",
     exit: "退出",
@@ -32,15 +34,15 @@ const menus = {
     latest: "已是最新",
     sourceRun: "当前从源码运行，不替换文件",
     done: "完成",
-    missing: "未安装",
-    exitCode: "退出码"
+    missing: "未安装"
   },
   en: {
     choose: "Choose an action",
-    setup: "Install Homebrew, Git, GitHub CLI, GitLab CLI, Bun, uv, Python, Ruff, ty and Rust",
+    setup: `Install ${pmName}, Git, GitHub CLI, GitLab CLI, Bun, uv, Python, Ruff, ty and Rust`,
     cleanup: "Clean",
     install: "Install",
     upgrade: "Upgrade",
+    winget: "Upgrade winget packages",
     list: "Installed tools",
     selfUpdate: "Update free itself",
     exit: "Exit",
@@ -54,8 +56,7 @@ const menus = {
     latest: "is up to date",
     sourceRun: "Running from source, nothing replaced",
     done: "done",
-    missing: "not installed",
-    exitCode: "exit code"
+    missing: "not installed"
   }
 }
 const locale =
@@ -243,18 +244,7 @@ const groups: [group: string, tools: Tool[]][] = [
   ]
 ]
 const tools = groups.flatMap(([, tools]) => tools)
-const base = [
-  pm === "brew" ? "Homebrew" : "Scoop",
-  "Git",
-  "GitHub CLI",
-  "GitLab CLI",
-  "Bun",
-  "uv",
-  "Python",
-  "Ruff",
-  "ty",
-  "Rust"
-]
+const base = [pmName, "Git", "GitHub CLI", "GitLab CLI", "Bun", "uv", "Python", "Ruff", "ty", "Rust"]
 
 async function versionOf(tool: Tool) {
   if (!Bun.which(tool.version.split(" ")[0])) return
@@ -294,7 +284,7 @@ async function install() {
       groups.map(([group, tools]) => [group, tools.map((tool) => ({ name: tool.name, version: versions.get(tool) }))])
     )
   )
-  if (p.isCancel(names) || !names || names.length === 0) return
+  if (p.isCancel(names) || !names) return
   const installed = installTools(names)
   if (installed.some((name) => !base.includes(name))) cleanup()
 }
@@ -310,7 +300,7 @@ function installTools(names: string[]) {
 }
 
 async function upgrade() {
-  await selfUpdate().catch((error) => p.log.warn(Error.isError(error) ? error.message : String(error)))
+  await selfUpdate().catch((error) => p.log.warn(Bun.inspect(error)))
   switch (pm) {
     case "brew":
       hint("upgrade", "Homebrew")
@@ -333,8 +323,12 @@ async function upgrade() {
   hint("upgrade", "Rust")
   run("rustup update")
   cleanup()
-  if (process.platform === "win32") run("winget upgrade --all")
   hint("upgrade", menuText.done)
+}
+
+function winget() {
+  hint("upgrade", "winget")
+  run("winget upgrade --all")
 }
 
 async function versionsOf(tools: Tool[]) {
@@ -365,9 +359,10 @@ async function selfUpdate() {
   const repo = "nyssance/Free"
   hint("upgrade", "free")
   if (process.env.FREE_DRY_RUN) return
-  const release = await fetch(`https://github.com/${repo}/releases/latest`, { redirect: "manual" })
+  const latestUrl = `https://github.com/${repo}/releases/latest`
+  const release = await fetch(latestUrl, { redirect: "manual" })
   const tag = release.headers.get("location")?.split("/tag/")[1]
-  if (!tag) throw new Error(`GitHub ${release.status}`)
+  if (!tag) throw new Error(`${latestUrl} ${release.status} ${release.statusText}`)
   const latest = tag.replace(/^v/, "")
   if (latest === version) {
     p.log.success(`free ${version} ${menuText.latest}`)
@@ -379,8 +374,9 @@ async function selfUpdate() {
     return
   }
   const asset = process.platform === "win32" ? "free-windows-x64.exe" : "free-darwin-arm64"
-  const download = await fetch(`https://github.com/${repo}/releases/download/${tag}/${asset}.gz`)
-  if (!download.ok || !download.body) throw new Error(`HTTP ${download.status}`)
+  const url = `https://github.com/${repo}/releases/download/${tag}/${asset}.gz`
+  const download = await fetch(url)
+  if (!download.ok || !download.body) throw new Error(`${url} ${download.status} ${download.statusText}`)
   const total = Number(download.headers.get("content-length"))
   const mb = (bytes: number) => (bytes / 1048576).toFixed(1)
   const bar = p.progress({ style: "block", max: total, size: 30 })
@@ -438,12 +434,8 @@ function run(command: string, allowFailure = false) {
   console.log(styleText("bold", command))
   if (process.env.FREE_DRY_RUN) return
   const child = Bun.spawnSync(shell(command), { env: env(), stdin: "inherit", stdout: "inherit", stderr: "inherit" })
-  if (child.signalCode === "SIGINT" || child.exitCode === 130) {
-    process.exit(130)
-  }
-  if (child.exitCode !== 0 && !allowFailure) {
-    throw new Error(`${command} · ${menuText.exitCode} ${child.exitCode}`)
-  }
+  if (child.signalCode === "SIGINT" || child.exitCode === 130) process.exit(130)
+  if (child.exitCode !== 0 && !allowFailure) process.exit(child.exitCode ?? 1)
 }
 
 function hint(operation: "upgrade" | "clean" | "install", message: string) {
@@ -499,6 +491,7 @@ async function menu() {
       { value: "cleanup", label: menuText.cleanup },
       { value: "install", label: menuText.install },
       { value: "upgrade", label: menuText.upgrade },
+      ...(process.platform === "win32" ? [{ value: "winget", label: menuText.winget }] : []),
       { value: "list", label: menuText.list },
       { value: "exit", label: menuText.exit }
     ]
@@ -516,6 +509,9 @@ async function menu() {
       break
     case "upgrade":
       await upgrade()
+      break
+    case "winget":
+      winget()
       break
     case "list":
       await list()
@@ -545,11 +541,12 @@ app
   .alias("ls")
   .description(menuText.list)
   .action(() => list())
+if (process.platform === "win32") app.command("winget").description(menuText.winget).action(winget)
 app.command("self-update").description(menuText.selfUpdate).action(selfUpdate)
 if (process.platform === "win32") rmSync(`${process.execPath}.old`, { force: true })
 try {
   await app.parseAsync()
 } catch (error) {
-  p.log.error(Error.isError(error) ? error.message : String(error))
+  p.log.error(Bun.inspect(error))
   process.exitCode = 1
 }
