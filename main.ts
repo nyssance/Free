@@ -10,7 +10,7 @@ import terminalLink from "terminal-link"
 import { link, links } from "./links"
 import { pick } from "./menu"
 
-let version = "0.1.11"
+let version = "0.1.12"
 const pm = process.platform === "win32" ? "scoop" : "brew"
 const menus = {
   zh: {
@@ -314,7 +314,7 @@ async function upgrade() {
   switch (pm) {
     case "brew":
       hint("upgrade", "Homebrew")
-      run("brew update")
+      run("brew update", true)
       run("brew upgrade")
       break
     case "scoop":
