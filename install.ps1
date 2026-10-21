@@ -8,7 +8,7 @@ $exe = Join-Path $dir "free.exe"
 Invoke-WebRequest -Uri "https://github.com/nyssance/Free/releases/latest/download/free-windows-x64.exe.gz" -OutFile "$exe.gz"
 $gz = [IO.File]::OpenRead("$exe.gz")
 $out = [IO.File]::Create($exe)
-[IO.Compression.GZipStream]::new($gz, "Decompress").CopyTo($out)
+[IO.Compression.GZipStream]::new($gz, [IO.Compression.CompressionMode]::Decompress).CopyTo($out)
 $out.Close()
 $gz.Close()
 Remove-Item "$exe.gz"

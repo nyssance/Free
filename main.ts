@@ -10,7 +10,7 @@ import terminalLink from "terminal-link"
 import { link, links } from "./links"
 import { pick } from "./menu"
 
-let version = "0.1.10"
+let version = "0.1.11"
 const pm = process.platform === "win32" ? "scoop" : "brew"
 const menus = {
   zh: {

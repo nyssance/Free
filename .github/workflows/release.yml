@@ -57,7 +57,7 @@ jobs:
       - run: |
           $gz = [IO.File]::OpenRead("dist\free-windows-x64.exe.gz")
           $out = [IO.File]::Create("free.exe")
-          [IO.Compression.GZipStream]::new($gz, "Decompress").CopyTo($out)
+          [IO.Compression.GZipStream]::new($gz, [IO.Compression.CompressionMode]::Decompress).CopyTo($out)
           $out.Close()
           $gz.Close()
           $env:FORCE_COLOR = "3"
