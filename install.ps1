@@ -1,5 +1,4 @@
 $ErrorActionPreference = "Stop"
-$ProgressPreference = "SilentlyContinue"
 $zh = (Get-UICulture).Name -like "zh*"
 
 $dir = if ($env:FREE_INSTALL_DIR) { $env:FREE_INSTALL_DIR } else { Join-Path $env:LOCALAPPDATA "Programs\Free" }

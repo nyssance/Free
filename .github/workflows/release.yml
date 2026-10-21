@@ -40,7 +40,7 @@ jobs:
           codesign --sign - --force dist/free-darwin-arm64
           FORCE_COLOR=3 ./dist/free-darwin-arm64 --help | grep -q "nyssance/Free"
           test "$(./dist/free-darwin-arm64 -v)" = "${GITHUB_REF_NAME#v}"
-          gzip -9 -k dist/*
+          gzip -9 dist/*
           ls -lh dist
       - uses: actions/upload-artifact@v4
         with:

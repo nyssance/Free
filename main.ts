@@ -10,7 +10,7 @@ import terminalLink from "terminal-link"
 import { link, links } from "./links"
 import { pick } from "./menu"
 
-let version = "0.1.12"
+let version = "0.1.13"
 const pm = process.platform === "win32" ? "scoop" : "brew"
 const menus = {
   zh: {
@@ -69,7 +69,7 @@ type Tool = {
   scoop: string[]
   path?: string
 }
-const home = process.env.HOME ?? process.env.USERPROFILE ?? "~"
+const home = process.env.HOME ?? process.env.USERPROFILE
 const androidSdk =
   "android sdk install platform-tools emulator platforms/android-37.2 build-tools/37.0.0 ndk/30.0.16248370"
 const groups: [group: string, tools: Tool[]][] = [
@@ -155,7 +155,7 @@ const groups: [group: string, tools: Tool[]][] = [
         name: "Bun",
         version: "bun --version",
         brew: ["brew install bun"],
-        scoop: ['powershell -c "irm bun.sh/install.ps1 | iex"'],
+        scoop: ["irm bun.sh/install.ps1 | iex"],
         path: process.platform === "win32" ? `${home}\\.bun\\bin` : undefined
       }
     ]
@@ -167,7 +167,7 @@ const groups: [group: string, tools: Tool[]][] = [
         name: "uv",
         version: "uv --version",
         brew: ["curl -LsSf https://astral.sh/uv/install.sh | sh"],
-        scoop: ['powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"'],
+        scoop: ["irm https://astral.sh/uv/install.ps1 | iex"],
         path: `${home}/.local/bin`
       },
       {
@@ -416,7 +416,7 @@ async function selfUpdate() {
 function shell(command: string) {
   return process.platform === "win32"
     ? [
-        "powershell.exe",
+        "pwsh",
         "-NoProfile",
         "-Command",
         `$ErrorActionPreference = 'Stop'; $env:Path += ';' + [Environment]::GetEnvironmentVariable('Path', 'Machine') + ';' + [Environment]::GetEnvironmentVariable('Path', 'User'); ${command}; if ($LASTEXITCODE) { exit $LASTEXITCODE }`
@@ -425,9 +425,7 @@ function shell(command: string) {
 }
 
 function env() {
-  const env: Record<string, string | undefined> = { ...process.env, HOMEBREW_NO_ASK: "1" }
-  if (process.platform === "win32") delete env.PSModulePath
-  return env
+  return { ...process.env, HOMEBREW_NO_ASK: "1" }
 }
 
 async function output(command: string) {
