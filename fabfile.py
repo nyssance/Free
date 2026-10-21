@@ -198,7 +198,7 @@ def winget(c: Context) -> None:
     """升级 winget 软件"""
     command = inquirer.select(
         "winget",
-        [Choice("winget upgrade", gettext("list only")), Choice("winget upgrade --all", gettext("upgrade all"))]
+        [Choice("winget upgrade", gettext("list")), Choice("winget upgrade --all", gettext("upgrade all"))]
     ).execute()
     hint("upgrade winget")
     c.run(command)
@@ -230,6 +230,6 @@ ZH_CN = {
     "cancel": "取消",
     "completed": "完成",
     "fonts": "字体",
-    "list only": "只看",
-    "upgrade all": "更新全部"
+    "list": "查看",
+    "upgrade all": "全部升级"
 }

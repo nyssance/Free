@@ -10,7 +10,7 @@ import terminalLink from "terminal-link"
 import { link, links } from "./links"
 import { pick } from "./menu"
 
-let version = "0.1.15"
+let version = "0.1.16"
 const pm = process.platform === "win32" ? "scoop" : "brew"
 const pmName = pm === "brew" ? "Homebrew" : "Scoop"
 const menus = {
@@ -21,8 +21,8 @@ const menus = {
     install: "安装",
     upgrade: "升级",
     winget: "升级 winget 软件",
-    listOnly: "只看",
-    upgradeAll: "更新全部",
+    listUpgrades: "查看",
+    upgradeAll: "全部升级",
     list: "已安装的工具",
     selfUpdate: "更新 free 自己",
     exit: "退出",
@@ -45,7 +45,7 @@ const menus = {
     install: "Install",
     upgrade: "Upgrade",
     winget: "Upgrade winget packages",
-    listOnly: "List only",
+    listUpgrades: "List",
     upgradeAll: "Upgrade all",
     list: "Installed tools",
     selfUpdate: "Update free itself",
@@ -336,7 +336,7 @@ async function winget() {
     withGuide: false,
     showInstructions: false,
     options: [
-      { value: "winget upgrade", label: menuText.listOnly },
+      { value: "winget upgrade", label: menuText.listUpgrades },
       { value: "winget upgrade --all", label: menuText.upgradeAll }
     ]
   })
