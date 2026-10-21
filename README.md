@@ -33,7 +33,7 @@ Free [简体中文](https://github.com/nyssance/Free/blob/main/README-zh_CN.md)
    irm https://raw.githubusercontent.com/nyssance/Free/main/install.ps1 | iex
    ```
 
-2. Install [Homebrew], [uv], [Python], [Ruff], [ty].
+2. Install [Homebrew], [Git], [GitHub CLI], [GitLab CLI], [Bun], [uv], [Python], [Ruff], [ty], [Rust].
 
    ```shell
    free setup
@@ -159,6 +159,11 @@ Free is released under the MIT license. [See LICENSE](https://github.com/nyssanc
 [zsh-autosuggestions]: https://github.com/zsh-users/zsh-autosuggestions
 [zsh-syntax-highlighting]: https://github.com/zsh-users/zsh-syntax-highlighting
 [Scoop]: https://scoop.sh
+[Git]: https://git-scm.com
+[GitHub CLI]: https://cli.github.com
+[GitLab CLI]: https://gitlab.com/gitlab-org/cli
+[Bun]: https://bun.sh
+[Rust]: https://www.rust-lang.org
 [starship]: https://starship.rs
 [Python]: https://www.python.org
 [uv]: https://astral.sh/uv

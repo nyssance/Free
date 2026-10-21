@@ -39,7 +39,38 @@ jobs:
           done
           codesign --sign - --force dist/free-darwin-arm64
           FORCE_COLOR=3 ./dist/free-darwin-arm64 --help | grep -q "nyssance/Free"
+          test "$(./dist/free-darwin-arm64 -v)" = "${GITHUB_REF_NAME#v}"
+          gzip -9 -k dist/*
           ls -lh dist
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+  windows:
+    needs: build
+    runs-on: windows-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+      - run: |
+          $gz = [IO.File]::OpenRead("dist\free-windows-x64.exe.gz")
+          $out = [IO.File]::Create("free.exe")
+          [IO.Compression.GZipStream]::new($gz, "Decompress").CopyTo($out)
+          $out.Close()
+          $gz.Close()
+          $env:FORCE_COLOR = "3"
+          if (-not (.\free.exe --help | Select-String "nyssance/Free")) { exit 1 }
+          if ((.\free.exe -v) -ne $env:GITHUB_REF_NAME.TrimStart("v")) { exit 1 }
+  release:
+    needs: windows
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
       - uses: softprops/action-gh-release@v2
         with:
           files: dist/*

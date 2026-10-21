@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-import { chmodSync, existsSync, renameSync, unlinkSync } from "node:fs"
+import { chmodSync, renameSync, rmSync } from "node:fs"
 import { styleText } from "node:util"
 
 import * as p from "@clack/prompts"
@@ -10,7 +10,7 @@ import terminalLink from "terminal-link"
 import { link, links } from "./links"
 import { pick } from "./menu"
 
-let version = "0.1.9"
+let version = "0.1.10"
 const pm = process.platform === "win32" ? "scoop" : "brew"
 const menus = {
   zh: {
@@ -33,7 +33,6 @@ const menus = {
     sourceRun: "当前从源码运行，不替换文件",
     done: "完成",
     missing: "未安装",
-    allInstalled: "全部已安装",
     exitCode: "退出码"
   },
   en: {
@@ -56,7 +55,6 @@ const menus = {
     sourceRun: "Running from source, nothing replaced",
     done: "done",
     missing: "not installed",
-    allInstalled: "Everything is installed",
     exitCode: "exit code"
   }
 }
@@ -290,10 +288,6 @@ function cleanup() {
 
 async function install() {
   const versions = await versionsOf(tools)
-  if (tools.every((tool) => versions.get(tool))) {
-    p.log.success(menuText.allInstalled)
-    return
-  }
   const names = await pick(
     menuText.install,
     Object.fromEntries(
@@ -316,7 +310,7 @@ function installTools(names: string[]) {
 }
 
 async function upgrade() {
-  await selfUpdate()
+  await selfUpdate().catch((error) => p.log.warn(Error.isError(error) ? error.message : String(error)))
   switch (pm) {
     case "brew":
       hint("upgrade", "Homebrew")
@@ -371,11 +365,9 @@ async function selfUpdate() {
   const repo = "nyssance/Free"
   hint("upgrade", "free")
   if (process.env.FREE_DRY_RUN) return
-  const release = await fetch(`https://api.github.com/repos/${repo}/releases/latest`, {
-    headers: { Accept: "application/vnd.github+json" }
-  })
-  if (!release.ok) throw new Error(`GitHub API ${release.status}`)
-  const { tag_name: tag } = (await release.json()) as { tag_name: string }
+  const release = await fetch(`https://github.com/${repo}/releases/latest`, { redirect: "manual" })
+  const tag = release.headers.get("location")?.split("/tag/")[1]
+  if (!tag) throw new Error(`GitHub ${release.status}`)
   const latest = tag.replace(/^v/, "")
   if (latest === version) {
     p.log.success(`free ${version} ${menuText.latest}`)
@@ -387,22 +379,31 @@ async function selfUpdate() {
     return
   }
   const asset = process.platform === "win32" ? "free-windows-x64.exe" : "free-darwin-arm64"
-  const url = `https://github.com/${repo}/releases/download/${tag}/${asset}`
-  const download = await fetch(url)
+  const download = await fetch(`https://github.com/${repo}/releases/download/${tag}/${asset}.gz`)
   if (!download.ok || !download.body) throw new Error(`HTTP ${download.status}`)
   const total = Number(download.headers.get("content-length"))
   const mb = (bytes: number) => (bytes / 1048576).toFixed(1)
   const bar = p.progress({ style: "block", max: total, size: 30 })
   bar.start(`${tag} · ${mb(total)} MB`)
   const exe = process.execPath
-  const writer = Bun.file(`${exe}.new`).writer()
   let received = 0
-  for await (const chunk of download.body) {
-    await writer.write(chunk)
-    received += chunk.byteLength
-    bar.advance(chunk.byteLength, `${tag} · ${mb(received)} / ${mb(total)} MB`)
+  const counted = new TransformStream({
+    transform(chunk: Uint8Array, controller) {
+      received += chunk.byteLength
+      bar.advance(chunk.byteLength, `${tag} · ${mb(received)} / ${mb(total)} MB`)
+      controller.enqueue(chunk)
+    }
+  })
+  try {
+    await Bun.write(
+      `${exe}.new`,
+      new Response(download.body.pipeThrough(counted).pipeThrough(new DecompressionStream("gzip")))
+    )
+  } catch (error) {
+    bar.error(tag)
+    rmSync(`${exe}.new`, { force: true })
+    throw error
   }
-  await writer.end()
   bar.stop(`${tag} · ${mb(total)} MB`)
   if (process.platform === "win32") renameSync(exe, `${exe}.old`)
   else chmodSync(`${exe}.new`, 0o755)
@@ -547,10 +548,10 @@ app
   .description(menuText.list)
   .action(() => list())
 app.command("self-update").description(menuText.selfUpdate).action(selfUpdate)
-if (process.platform === "win32" && existsSync(`${process.execPath}.old`)) unlinkSync(`${process.execPath}.old`)
+if (process.platform === "win32") rmSync(`${process.execPath}.old`, { force: true })
 try {
   await app.parseAsync()
 } catch (error) {
-  p.log.error(error instanceof Error ? error.message : String(error))
+  p.log.error(Error.isError(error) ? error.message : String(error))
   process.exitCode = 1
 }
