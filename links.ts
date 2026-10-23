@@ -34,5 +34,5 @@ export const links: Record<string, string> = {
 
 export function link(text: string) {
   const url = links[text]
-  return url ? terminalLink(styleText(["underline", "cyan"], text), url) : text
+  return url ? terminalLink(styleText(["underline", "cyan"], text), url, { fallback: () => text }) : text
 }
