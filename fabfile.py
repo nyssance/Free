@@ -158,6 +158,7 @@ def remove(c: Context) -> None:
 @task(aliases=["u"], help={"config": "选择更新配置文件 (.fabric.yaml / .zshrc)"})
 def upgrade(c: Context, *, config: bool = False) -> None:
     """升级"""
+    c.run("git pull --ff-only")
     hint(f"upgrade 自己 当前版本 {VERSION} 变化在下次执行时生效")
     remote = "https://raw.githubusercontent.com/nyssance/Free/main/"
     download(c, f"{remote}fabfile.py")
