@@ -26,7 +26,7 @@ describe("setup", () => {
           "scoop install git",
           "scoop install gh",
           "scoop install glab",
-          "irm bun.sh/install.ps1 | iex",
+          "scoop install bun",
           "irm https://astral.sh/uv/install.ps1 | iex",
           "uv python install",
           "uv tool install ruff",
@@ -39,7 +39,7 @@ describe("setup", () => {
           "brew install glab",
           "brew install bun",
           "curl -LsSf https://astral.sh/uv/install.sh | sh",
-          "uv python install",
+          "uv python install 3.15",
           "uv tool install ruff",
           "uv tool install ty",
           "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y"
@@ -59,7 +59,8 @@ describe("upgrade", () => {
     const pmUpgrade = index(windows ? "scoop update --all" : "brew upgrade")
     expect(pmUpgrade).toBeLessThan(index("uv self update"))
     expect(index("uv self update")).toBeLessThan(index("uv python upgrade"))
-    expect(index("uv python upgrade")).toBeLessThan(index("uv tool upgrade --all"))
+    expect(index("uv python upgrade")).toBeLessThan(index("uv python uninstall '<3.15.1'"))
+    expect(index("uv python uninstall '<3.15.1'")).toBeLessThan(index("uv tool upgrade --all"))
     expect(index("uv tool upgrade --all")).toBeLessThan(index("rustup update"))
     expect(index("rustup update")).toBeLessThan(index(windows ? "scoop cleanup --all" : "brew cleanup"))
     if (!windows) expect(index("brew update")).toBeLessThan(pmUpgrade)

@@ -2,6 +2,6 @@
   "compilerOptions": {
     "types": ["bun"],
     "noEmit": true,
-    "resolveJsonModule": true
+    "module": "preserve"
   }
 }
