@@ -8,7 +8,7 @@ import { windows } from "./tools"
 
 const compiled = Bun.main.startsWith("/$bunfs/") || Bun.main.includes("~BUN")
 
-export let version = "0.1.17"
+export let version = "0.1.18"
 
 export function cleanupUpdate() {
   if (compiled && windows) rmSync(`${process.execPath}.old`, { force: true })
