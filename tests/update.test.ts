@@ -24,7 +24,7 @@ describe("update installation", () => {
   test("installs the decompressed executable and removes staging files", async () => {
     await installUpdate(exe, body("replacement"))
     expect(readFileSync(exe, "utf8")).toBe("replacement")
-    expect(readdirSync(directory).sort()).toEqual(windows ? ["free", "free.old"] : ["free"])
+    expect(readdirSync(directory).toSorted()).toEqual(windows ? ["free", "free.old"] : ["free"])
     if (windows) expect(readFileSync(`${exe}.old`, "utf8")).toBe("original")
     else expect(statSync(exe).mode & 0o777).toBe(0o755)
   })

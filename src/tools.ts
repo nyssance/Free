@@ -95,7 +95,7 @@ export const groups = {
       version: "rustc --version",
       install: [
         windows
-          ? "irm https://win.rustup.rs/x86_64 -OutFile $env:TEMP\\rustup-init.exe; & $env:TEMP\\rustup-init.exe -y"
+          ? String.raw`irm https://win.rustup.rs/x86_64 -OutFile $env:TEMP\rustup-init.exe; & $env:TEMP\rustup-init.exe -y`
           : "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y"
       ],
       path: join(home, ".cargo", "bin")

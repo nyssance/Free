@@ -157,7 +157,7 @@ export function run(command: string, allowFailure = false) {
 
 const linkPattern = new RegExp(
   `\\b(?:${Object.keys(links)
-    .sort((a, b) => b.length - a.length)
+    .toSorted((a, b) => b.length - a.length)
     .map(RegExp.escape)
     .join("|")})\\b`,
   "g"
@@ -179,7 +179,7 @@ export function banner(version: string) {
   if (!process.stdout.isTTY && !process.env.FORCE_COLOR) return ""
   const chars: Record<string, string[]> = block.chars
   const rows = Array.from({ length: block.lines }, (_, row) =>
-    [..."FREE"].map((char) => chars[char][row].replace(/<\/?c\d>/g, "")).join(" ")
+    [..."FREE"].map((char) => chars[char][row].replaceAll(/<\/?c\d>/g, "")).join(" ")
   )
   const width = Math.max(...rows.map((row) => row.length))
   const [from, to] = [

@@ -13,3 +13,4 @@ options = { tabWidth = 4 }
 
 [lint]
 typeAware = true
+ignorePatterns = ["**/node_modules/**", "**/dist/**", "**/build/**", "**/target/**", "**/coverage/**", "Vendor/**", "vendor/**", "**/src-tauri/gen/**"]
