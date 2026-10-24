@@ -178,7 +178,7 @@ const groups: [group: string, tools: Tool[]][] = [
       {
         name: "Python",
         version: "uv python list --only-installed",
-        brew: ["uv python install"],
+        brew: ["uv python install 3.15"],
         scoop: ["uv python install"]
       },
       { name: "Ruff", version: "ruff --version", brew: ["uv tool install ruff"], scoop: ["uv tool install ruff"] },
@@ -323,6 +323,7 @@ async function upgrade() {
   hint("upgrade", "uv/python/tool")
   run("uv self update")
   run("uv python upgrade")
+  run("uv python uninstall '<3.15.1'")
   run("uv tool upgrade --all")
   hint("upgrade", "Rust")
   run("rustup update")
