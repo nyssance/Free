@@ -19,6 +19,7 @@ function cleanup() {
   hint("clean", pmName)
   run(pm === "brew" ? "brew cleanup" : "scoop cleanup --all")
   hint("clean", "uv")
+  run("uv python uninstall '<3.15.1'")
   run("uv cache prune")
 }
 
@@ -61,7 +62,6 @@ async function upgrade() {
   hint("upgrade", "uv/python/tool")
   run("uv self update")
   run("uv python upgrade")
-  run("uv python uninstall '<3.15.1'")
   run("uv tool upgrade --all")
   hint("upgrade", "Rust")
   run("rustup update")
