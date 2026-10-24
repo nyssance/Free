@@ -18,7 +18,6 @@
     "@nyssance/ts7-lint": "^0.1.3"
   },
   "scripts": {
-    "ts7-lint": "ts7-lint",
-    "format": "bun fmt"
+    "ts7-lint": "ts7-lint"
   }
 }
