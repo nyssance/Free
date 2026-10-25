@@ -13,7 +13,7 @@
     "terminal-link": "^5.0.0"
   },
   "devDependencies": {
-    "@types/bun": "^1.4.3",
+    "@types/bun": "^1.4.4",
     "typescript": "^7.0.2",
     "@nyssance/ts7-lint": "^0.1.3"
   }
