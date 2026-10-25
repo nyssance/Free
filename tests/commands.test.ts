@@ -59,8 +59,7 @@ describe("upgrade", () => {
     const pmUpgrade = index(windows ? "scoop update --all" : "brew upgrade")
     expect(pmUpgrade).toBeLessThan(index("uv self update"))
     expect(index("uv self update")).toBeLessThan(index("uv python upgrade"))
-    expect(index("uv python upgrade")).toBeLessThan(index("uv python uninstall '<3.15.1'"))
-    expect(index("uv python uninstall '<3.15.1'")).toBeLessThan(index("uv tool upgrade --all"))
+    expect(index("uv python upgrade")).toBeLessThan(index("uv tool upgrade --all"))
     expect(index("uv tool upgrade --all")).toBeLessThan(index("rustup update"))
     expect(index("rustup update")).toBeLessThan(index(windows ? "scoop cleanup --all" : "brew cleanup"))
     if (!windows) expect(index("brew update")).toBeLessThan(pmUpgrade)
@@ -71,6 +70,6 @@ describe("cleanup", () => {
   test(`${pmName} 清理后清理 uv`, () => {
     const lines = commands("cleanup")
     const expected = windows ? ["scoop cleanup --all"] : ["brew cleanup"]
-    expect(lines).toEqual([...expected, "uv cache prune"])
+    expect(lines).toEqual([...expected, "uv python uninstall '<3.15.1'", "uv cache prune"])
   })
 })
