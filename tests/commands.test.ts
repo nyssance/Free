@@ -70,6 +70,6 @@ describe("cleanup", () => {
   test(`${pmName} 清理后清理 uv`, () => {
     const lines = commands("cleanup")
     const expected = windows ? ["scoop cleanup --all"] : ["brew cleanup"]
-    expect(lines).toEqual([...expected, "uv python uninstall '<3.15.1'", "uv cache prune"])
+    expect(lines).toEqual([...expected, "uv python uninstall '<3.15.2'", "uv cache prune"])
   })
 })

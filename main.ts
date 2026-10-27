@@ -19,7 +19,7 @@ function cleanup() {
   hint("clean", pmName)
   run(pm === "brew" ? "brew cleanup" : "scoop cleanup --all")
   hint("clean", "uv")
-  run("uv python uninstall '<3.15.1'")
+  run("uv python uninstall '<3.15.2'")
   run("uv cache prune")
 }
 

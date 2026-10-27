@@ -3,12 +3,13 @@ import { dirname, join } from "node:path"
 
 import * as p from "@clack/prompts"
 
+import pkg from "../package.json"
 import { banner, CommandError, hint, menuText } from "./terminal"
 import { windows } from "./tools"
 
 const compiled = Bun.main.startsWith("/$bunfs/") || Bun.main.includes("~BUN")
 
-export let version = "0.1.19"
+export let version: string = pkg.version
 
 export function cleanupUpdate() {
   if (compiled && windows) rmSync(`${process.execPath}.old`, { force: true })
