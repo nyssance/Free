@@ -51,6 +51,14 @@ Free [简体中文](https://github.com/nyssance/Free/blob/main/README-zh_CN.md)
 free upgrade
 ```
 
+## Integrity check
+
+```shell
+free check
+```
+
+Checks that Homebrew (Scoop on Windows) is the official one and unmodified: the command on PATH is the one in the official installation and not an alias, the repository points at the official GitHub source, no file differs from the official commit, no hidden-change flags, custom git hooks or redirecting git settings, the installed commit matches GitHub, permissions and environment overrides. `free setup`, `free install` and `free upgrade` run the same check on an existing installation before anything goes through it and stop if it fails; a fresh install by the official script is not re-checked.
+
 ## Fabric
 
 1. Install [Fabric], [InquirerPy], [Rich].

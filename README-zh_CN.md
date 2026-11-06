@@ -51,6 +51,14 @@ Free [English](https://github.com/nyssance/Free/blob/main/README.md)
 free upgrade
 ```
 
+## 完整性检查
+
+```shell
+free check
+```
+
+检查 Homebrew（Windows 为 Scoop）是否为官方未改动的版本：PATH 里的命令就是官方安装位置的那个且没被 alias，仓库指向官方 GitHub 源，没有任何文件与官方提交不同，没有隐藏改动标记、自定义 git 钩子或改写来源的 git 配置，已安装的提交与 GitHub 一致，权限和环境变量没有被改写。`free setup`、`free install`、`free upgrade` 在通过已有的包管理器安装任何东西之前都会先做同样的检查，不通过就停止；官方脚本全新装的不再查。
+
 ## Fabric
 
 1. 安装 [Fabric]，[InquirerPy]，[Rich]。

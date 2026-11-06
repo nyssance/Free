@@ -8,10 +8,11 @@ import { Command } from "commander"
 import { banner, CommandError, groupName, hint, link, menuText, output, pick, run } from "./src/terminal"
 import { base, groups, pm, pmName, type Tool, tools, windows } from "./src/tools"
 import { cleanupUpdate, selfUpdate, version } from "./src/update"
+import { ensureIntact, verify } from "./src/verify"
 
 async function setup() {
   console.log(banner(version))
-  installTools(base)
+  await installTools(base)
   await list(base)
 }
 
@@ -35,16 +36,26 @@ async function install() {
     )
   )
   if (p.isCancel(names) || !names) return
-  installTools(names)
+  if (Bun.which(pm) && !names.includes(pmName)) await ensureIntact()
+  await installTools(names)
   if (names.some((name) => !base.includes(name))) cleanup()
 }
 
-function installTools(names: string[]) {
+async function installTools(names: string[]) {
   for (const tool of tools.filter((tool) => names.includes(tool.name))) {
+    // An existing package manager is verified first: the official installer leaves an existing copy untouched. A fresh install is not re-checked.
+    if (tool.name === pmName && Bun.which(pm)) await ensureIntact()
     hint("install", tool.name)
     for (const command of tool.install) run(command)
     if (tool.path) process.env.PATH = `${tool.path}${delimiter}${process.env.PATH ?? ""}`
   }
+}
+
+async function check() {
+  p.intro(`Free ${version} · ${menuText.check}`)
+  const { fails } = process.env.FREE_DRY_RUN ? { fails: 0 } : await verify()
+  p.outro()
+  if (fails) process.exitCode = 1
 }
 
 async function upgrade() {
@@ -52,6 +63,7 @@ async function upgrade() {
     if (error instanceof CommandError && error.exitCode === 130) throw error
     p.log.warn(Bun.inspect(error))
   })
+  if (Bun.which(pm)) await ensureIntact()
   hint("upgrade", pmName)
   if (pm === "brew") run("brew update", true)
   run(pm === "brew" ? "brew upgrade" : "scoop update --all")
@@ -129,6 +141,7 @@ const actions: Action[] = [
   { name: "cleanup", label: menuText.cleanup, run: cleanup, alias: "clean" },
   { name: "install", label: menuText.install, run: install },
   { name: "upgrade", label: menuText.upgrade, run: upgrade, alias: "u" },
+  { name: "check", label: menuText.check, run: check },
   ...(windows ? [{ name: "winget", label: menuText.winget, run: winget }] : []),
   { name: "list", label: menuText.list, run: () => list(), alias: "ls" },
   { name: "self-update", label: menuText.selfUpdate, run: selfUpdate, menu: false }

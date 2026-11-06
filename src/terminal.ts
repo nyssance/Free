@@ -18,6 +18,7 @@ const menus = {
     listUpgrades: "查看",
     upgradeAll: "全部升级",
     list: "已安装的工具",
+    check: `检查 ${pmName} 是否被篡改`,
     selfUpdate: "更新 free 自己",
     exit: "退出",
     basics: "基础",
@@ -42,6 +43,7 @@ const menus = {
     listUpgrades: "List",
     upgradeAll: "Upgrade all",
     list: "Installed tools",
+    check: `Verify ${pmName} is untampered`,
     selfUpdate: "Update free itself",
     exit: "Exit",
     basics: "Basics",
@@ -59,7 +61,8 @@ const menus = {
 }
 const locale =
   process.env.LC_ALL || process.env.LC_MESSAGES || process.env.LANG || Intl.DateTimeFormat().resolvedOptions().locale
-export const menuText = menus[/^zh(?:[-_]|$)/i.test(locale) ? "zh" : "en"]
+export const lang = /^zh(?:[-_]|$)/i.test(locale) ? "zh" : "en"
+export const menuText = menus[lang]
 
 export function groupName(group: string) {
   const names: Record<string, string> = {
