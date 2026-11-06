@@ -232,3 +232,6 @@ Temporary Items
 # [Node](https://github.com/github/gitignore/blob/main/Node.gitignore)
 node_modules/
 *.bun-build
+
+# Aegis is maintained in a separate private repository.
+/security-check/
