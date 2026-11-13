@@ -7,6 +7,7 @@ export const pmName = pm === "brew" ? "Homebrew" : "Scoop"
 
 export type Tool = {
   name: string
+  url: string
   version: string
   install: string[]
   path?: string
@@ -16,6 +17,7 @@ export const groups = {
   Basics: [
     {
       name: pmName,
+      url: windows ? "https://scoop.sh" : "https://brew.sh",
       version: `${pm} --version`,
       install: [
         windows
@@ -26,13 +28,24 @@ export const groups = {
     }
   ],
   Git: [
-    { name: "Git", version: "git --version", install: windows ? ["scoop install git"] : [] },
-    { name: "GitHub CLI", version: "gh --version", install: [`${pm} install gh`] },
-    { name: "GitLab CLI", version: "glab --version", install: [`${pm} install glab`] }
+    {
+      name: "Git",
+      url: "https://git-scm.com",
+      version: "git --version",
+      install: windows ? ["scoop install git"] : []
+    },
+    { name: "GitHub CLI", url: "https://cli.github.com", version: "gh --version", install: [`${pm} install gh`] },
+    {
+      name: "GitLab CLI",
+      url: "https://gitlab.com/gitlab-org/cli",
+      version: "glab --version",
+      install: [`${pm} install glab`]
+    }
   ],
   Android: [
     {
       name: "Android CLI",
+      url: "https://developer.android.com/tools/agents/android-cli",
       version: "android --version",
       install: [
         ...(windows
@@ -41,25 +54,47 @@ export const groups = {
         "android sdk install platform-tools emulator platforms/android-37.2 build-tools/37.0.0 ndk/30.0.16248370"
       ]
     },
-    { name: "ktlint", version: "ktlint --version", install: [`${pm} install ktlint`] }
+    {
+      name: "ktlint",
+      url: "https://github.com/pinterest/ktlint",
+      version: "ktlint --version",
+      install: [`${pm} install ktlint`]
+    }
   ],
   ...(process.platform === "darwin"
     ? {
         "iOS / macOS": [
-          { name: "XcodeGen", version: "xcodegen --version", install: ["brew install xcodegen"] },
-          { name: "Baguette", version: "baguette --version", install: ["brew install baguette"] },
-          { name: "SwiftLint", version: "swiftlint --version", install: ["brew install swiftlint"] }
+          {
+            name: "XcodeGen",
+            url: "https://github.com/yonaskolb/XcodeGen",
+            version: "xcodegen --version",
+            install: ["brew install xcodegen"]
+          },
+          {
+            name: "Baguette",
+            url: "https://github.com/tddworks/baguette",
+            version: "baguette --version",
+            install: ["brew install baguette"]
+          },
+          {
+            name: "SwiftLint",
+            url: "https://github.com/realm/SwiftLint",
+            version: "swiftlint --version",
+            install: ["brew install swiftlint"]
+          }
         ]
       }
     : {}),
   Flutter: [
     {
       name: "Flutter",
+      url: "https://flutter.dev",
       version: "flutter --version",
       install: windows ? ["scoop bucket add extras", "scoop install extras/flutter"] : ["brew install --cask flutter"]
     },
     {
       name: "Maestro",
+      url: "https://maestro.dev",
       version: "maestro --version",
       install: windows
         ? ["scoop bucket add java", "scoop install java/openjdk maestro"]
@@ -70,10 +105,13 @@ export const groups = {
           ]
     }
   ],
-  "JavaScript & TypeScript": [{ name: "Bun", version: "bun --version", install: [`${pm} install bun`] }],
+  "JavaScript & TypeScript": [
+    { name: "Bun", url: "https://bun.sh", version: "bun --version", install: [`${pm} install bun`] }
+  ],
   Python: [
     {
       name: "uv",
+      url: "https://astral.sh/uv",
       version: "uv --version",
       install: [
         windows ? "irm https://astral.sh/uv/install.ps1 | iex" : "curl -LsSf https://astral.sh/uv/install.sh | sh"
@@ -82,16 +120,23 @@ export const groups = {
     },
     {
       name: "Python",
+      url: "https://www.python.org",
       version: "uv python list --only-installed",
       install: [windows ? "uv python install" : "uv python install 3.15"]
     },
-    { name: "Ruff", version: "ruff --version", install: ["uv tool install ruff"] },
-    { name: "ty", version: "ty --version", install: ["uv tool install ty"] },
-    { name: "Fabric", version: "fab --version", install: ["uv tool install fabric --with InquirerPy --with rich"] }
+    { name: "Ruff", url: "https://astral.sh/ruff", version: "ruff --version", install: ["uv tool install ruff"] },
+    { name: "ty", url: "https://github.com/astral-sh/ty", version: "ty --version", install: ["uv tool install ty"] },
+    {
+      name: "Fabric",
+      url: "https://www.fabfile.org",
+      version: "fab --version",
+      install: ["uv tool install fabric --with InquirerPy --with rich"]
+    }
   ],
   Rust: [
     {
       name: "Rust",
+      url: "https://www.rust-lang.org",
       version: "rustc --version",
       install: [
         windows
@@ -102,21 +147,33 @@ export const groups = {
     }
   ],
   Database: [
-    { name: "MySQL", version: "mysql --version", install: [`${pm} install mysql`] },
-    { name: "Redis", version: "redis-server --version", install: [`${pm} install redis`] }
+    { name: "MySQL", url: "https://www.mysql.com", version: "mysql --version", install: [`${pm} install mysql`] },
+    { name: "Redis", url: "https://redis.io", version: "redis-server --version", install: [`${pm} install redis`] }
   ],
   Others: [
     {
       name: "fastlane",
+      url: "https://fastlane.tools",
       version: "fastlane --version",
       install: windows ? ["scoop install ruby", "gem install fastlane"] : ["brew install fastlane"]
     },
-    { name: "zoxide", version: "zoxide --version", install: [`${pm} install zoxide fzf`] }
+    {
+      name: "zoxide",
+      url: "https://github.com/ajeetdsouza/zoxide",
+      version: "zoxide --version",
+      install: [`${pm} install zoxide fzf`]
+    }
   ],
   AI: [
-    { name: "Codex", version: "codex --version", install: [`${pm} install codex`] },
+    {
+      name: "Codex",
+      url: "https://github.com/openai/codex",
+      version: "codex --version",
+      install: [`${pm} install codex`]
+    },
     {
       name: "Claude Code",
+      url: "https://claude.com/claude-code",
       version: "claude --version",
       install: [windows ? "scoop install claude-code" : "brew install --cask claude-code"]
     }

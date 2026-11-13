@@ -5,7 +5,7 @@ import { GroupMultiSelectPrompt } from "@clack/core"
 import block from "cfonts/fonts/block.json" with { type: "json" }
 import terminalLink from "terminal-link"
 
-import { pmName, windows } from "./tools"
+import { pmName, tools, windows } from "./tools"
 
 const menus = {
   zh: {
@@ -74,35 +74,7 @@ export function groupName(group: string) {
   return names[group] ?? group
 }
 
-const links: Record<string, string> = {
-  Homebrew: "https://brew.sh",
-  Git: "https://git-scm.com",
-  "GitHub CLI": "https://cli.github.com",
-  "GitLab CLI": "https://gitlab.com/gitlab-org/cli",
-  Scoop: "https://scoop.sh",
-  uv: "https://astral.sh/uv",
-  Python: "https://www.python.org",
-  Ruff: "https://astral.sh/ruff",
-  ty: "https://github.com/astral-sh/ty",
-  Fabric: "https://www.fabfile.org",
-  Bun: "https://bun.sh",
-  Rust: "https://www.rust-lang.org",
-  Flutter: "https://flutter.dev",
-  Maestro: "https://maestro.dev",
-  fastlane: "https://fastlane.tools",
-  zoxide: "https://github.com/ajeetdsouza/zoxide",
-  fzf: "https://github.com/junegunn/fzf",
-  MySQL: "https://www.mysql.com",
-  Redis: "https://redis.io",
-  XcodeGen: "https://github.com/yonaskolb/XcodeGen",
-  Baguette: "https://github.com/tddworks/baguette",
-  SwiftLint: "https://github.com/realm/SwiftLint",
-  ktlint: "https://github.com/pinterest/ktlint",
-  "Android CLI": "https://developer.android.com/tools/agents/android-cli",
-  Codex: "https://github.com/openai/codex",
-  "Claude Code": "https://claude.com/claude-code",
-  Tauri: "https://tauri.app"
-}
+const links: Record<string, string> = Object.fromEntries(tools.map((tool) => [tool.name, tool.url]))
 
 export function link(text: string) {
   const url = links[text]
@@ -121,23 +93,30 @@ function shell(command: string) {
 }
 
 function env() {
-  return { ...process.env, HOMEBREW_NO_ASK: "1" }
+  return { ...process.env, HOMEBREW_NO_ASK: "1", GIT_TERMINAL_PROMPT: "0", GIT_OPTIONAL_LOCKS: "0" }
 }
 
-export async function output(command: string, timeout = 10_000) {
-  const child = Bun.spawn(shell(command), {
+/** Runs a program without a shell and captures its output. A timeout or signal counts as failure. */
+export async function capture(args: string[], timeout = 10_000) {
+  const child = Bun.spawn(args, {
     env: env(),
+    stdin: "ignore",
     stdout: "pipe",
     stderr: "pipe",
     timeout,
     killSignal: "SIGKILL"
   })
-  const [stdout, stderr, exitCode] = await Promise.all([
+  const [out, err, code] = await Promise.all([
     new Response(child.stdout).text(),
     new Response(child.stderr).text(),
     child.exited
   ])
-  if (exitCode === 0 && !child.signalCode) return (stdout + stderr).trim()
+  return { code: child.signalCode ? 1 : code, out: out.trim(), err: err.trim() }
+}
+
+export async function output(command: string, timeout = 10_000) {
+  const { code, out, err } = await capture(shell(command), timeout)
+  if (code === 0) return [out, err].filter(Boolean).join("\n")
 }
 
 export class CommandError extends Error {

@@ -70,6 +70,8 @@ describe("cleanup", () => {
   test(`${pmName} 清理后清理 uv`, () => {
     const lines = commands("cleanup")
     const expected = windows ? ["scoop cleanup --all"] : ["brew cleanup"]
-    expect(lines).toEqual([...expected, "uv python uninstall '<3.15.2'", "uv cache prune"])
+    // The uninstall line appears only when uv manages more than one Python version.
+    const rest = lines.filter((line) => !/^uv python uninstall '<\d+\.\d+\.\d+'$/.test(line))
+    expect(rest).toEqual([...expected, "uv cache prune"])
   })
 })

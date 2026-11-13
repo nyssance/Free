@@ -5,7 +5,7 @@ import { styleText } from "node:util"
 
 import * as p from "@clack/prompts"
 
-import { lang, output } from "./terminal"
+import { capture, lang, menuText, output } from "./terminal"
 import { pm, pmName, windows } from "./tools"
 
 /** Integrity check of the package manager: is this the official Homebrew / Scoop, unmodified, from the official source? */
@@ -19,7 +19,6 @@ const official = windows
 
 const texts = {
   zh: {
-    title: `检查 ${pmName} 是否被篡改`,
     missing: `${pmName} 未安装`,
     noRepo: "找不到安装仓库",
     location: "安装位置",
@@ -53,7 +52,6 @@ const texts = {
     stop: `已停止，不在可疑的 ${pmName} 上继续执行。修复：重新运行官方安装脚本，或删除后重装`
   },
   en: {
-    title: `Verify ${pmName} is untampered`,
     missing: `${pmName} is not installed`,
     noRepo: "installation repository not found",
     location: "Location",
@@ -90,23 +88,7 @@ const texts = {
 }
 const text = texts[lang]
 
-async function exec(args: string[], timeout = 10_000) {
-  const child = Bun.spawn(args, {
-    stdin: "ignore",
-    stdout: "pipe",
-    stderr: "pipe",
-    timeout,
-    killSignal: "SIGKILL",
-    env: { ...process.env, GIT_TERMINAL_PROMPT: "0", GIT_OPTIONAL_LOCKS: "0" }
-  })
-  const [out, err, code] = await Promise.all([
-    new Response(child.stdout).text(),
-    new Response(child.stderr).text(),
-    child.exited
-  ])
-  return { code: child.signalCode ? 1 : code, out: out.trim(), err: err.trim() }
-}
-const git = (repo: string, ...args: string[]) => exec(["git", "-C", repo, ...args])
+const git = (repo: string, ...args: string[]) => capture(["git", "-C", repo, ...args])
 
 export const normalizeRemote = (url: string) =>
   url
@@ -188,7 +170,7 @@ async function shellResolution(): Promise<Finding> {
   const kind = basename(shell)
   const probe = kind === "zsh" ? "whence -w brew" : kind === "bash" ? "type -t brew" : undefined
   if (!probe) return { level: "ok", name: text.shell, detail: kind }
-  const result = await exec([shell, "-ic", probe])
+  const result = await capture([shell, "-ic", probe])
   const line = result.out.split("\n").findLast((item) => /brew|file|alias|function/.test(item)) ?? ""
   if (/^brew: command$/.test(line) || /^file$/.test(line)) return { level: "ok", name: text.shell, detail: kind }
   if (!result.out) return { level: "warn", name: text.shell, detail: text.shellUnknown }
@@ -240,7 +222,9 @@ async function repoFindings(repo: string, remote: string, label: string): Promis
   return findings
 }
 
-export async function verify(): Promise<{ fails: number; warns: number }> {
+/** Prints the findings and returns how many of them are failures. */
+export async function verify() {
+  if (process.env.FREE_DRY_RUN) return 0
   const findings: Finding[] = []
   const command = Bun.which(pm)
   const repo = command ? (await output(official.repository))?.split("\n")[0].trim() : undefined
@@ -277,7 +261,7 @@ export async function verify(): Promise<{ fails: number; warns: number }> {
     const head = (await git(repo, "rev-parse", "HEAD")).out
     const describe = await git(repo, "describe", "--tags", "--exact-match", "HEAD")
     const tag = describe.code === 0 ? describe.out : undefined
-    const remote = await exec(
+    const remote = await capture(
       ["git", "ls-remote", "--symref", official.remote, "HEAD", ...(tag ? [`refs/tags/${tag}`] : [])],
       20_000
     )
@@ -319,11 +303,7 @@ export async function verify(): Promise<{ fails: number; warns: number }> {
       }
     }
   }
-  report(findings)
-  return {
-    fails: findings.filter((f) => f.level === "fail").length,
-    warns: findings.filter((f) => f.level === "warn").length
-  }
+  return report(findings)
 }
 
 function report(findings: Finding[]) {
@@ -342,12 +322,11 @@ function report(findings: Finding[]) {
   if (fails) p.log.error(text.fail(fails))
   else if (warns) p.log.warn(text.warn(warns))
   else p.log.success(text.ok)
+  return fails
 }
 
 /** Runs the check and refuses to go on when the package manager looks tampered with. */
 export async function ensureIntact() {
-  if (process.env.FREE_DRY_RUN) return
-  p.log.step(text.title)
-  const { fails } = await verify()
-  if (fails) throw new Error(text.stop)
+  p.log.step(menuText.check)
+  if (await verify()) throw new Error(text.stop)
 }

@@ -16,11 +16,16 @@ async function setup() {
   await list(base)
 }
 
-function cleanup() {
+const pythonVersions = (out = "") => [...new Set([...out.matchAll(/cpython-(\d+\.\d+\.\d+)/g)].map((m) => m[1]))]
+
+async function cleanup() {
   hint("clean", pmName)
   run(pm === "brew" ? "brew cleanup" : "scoop cleanup --all")
   hint("clean", "uv")
-  run("uv python uninstall '<3.15.2'")
+  // Only the newest Python that uv installed is kept. System Pythons are not uv's to remove.
+  const installed = pythonVersions(await output("uv python list --only-installed --managed-python"))
+  const latest = installed.toSorted(Bun.semver.order).at(-1)
+  if (latest && installed.length > 1) run(`uv python uninstall '<${latest}'`)
   run("uv cache prune")
 }
 
@@ -36,15 +41,14 @@ async function install() {
     )
   )
   if (p.isCancel(names) || !names) return
-  if (Bun.which(pm) && !names.includes(pmName)) await ensureIntact()
   await installTools(names)
-  if (names.some((name) => !base.includes(name))) cleanup()
+  if (names.some((name) => !base.includes(name))) await cleanup()
 }
 
 async function installTools(names: string[]) {
+  // An existing package manager is verified before anything runs on it. A fresh install is not re-checked.
+  if (Bun.which(pm)) await ensureIntact()
   for (const tool of tools.filter((tool) => names.includes(tool.name))) {
-    // An existing package manager is verified first: the official installer leaves an existing copy untouched. A fresh install is not re-checked.
-    if (tool.name === pmName && Bun.which(pm)) await ensureIntact()
     hint("install", tool.name)
     for (const command of tool.install) run(command)
     if (tool.path) process.env.PATH = `${tool.path}${delimiter}${process.env.PATH ?? ""}`
@@ -53,7 +57,7 @@ async function installTools(names: string[]) {
 
 async function check() {
   p.intro(`Free ${version} · ${menuText.check}`)
-  const { fails } = process.env.FREE_DRY_RUN ? { fails: 0 } : await verify()
+  const fails = await verify()
   p.outro()
   if (fails) process.exitCode = 1
 }
@@ -77,7 +81,7 @@ async function upgrade() {
   run("uv tool upgrade --all")
   hint("upgrade", "Rust")
   run("rustup update")
-  cleanup()
+  await cleanup()
   hint("upgrade", menuText.done)
 }
 
@@ -100,11 +104,8 @@ async function versionOf(tool: Tool) {
   if (!Bun.which(tool.version.split(" ")[0])) return
   const out = await output(tool.version)
   if (!out) return
-  const versions =
-    tool.name === "Python"
-      ? [...out.matchAll(/cpython-(\d+\.\d+\.\d+)/g)].map((m) => m[1])
-      : [out.match(/\d+(\.\d+)+/)?.[0] ?? out.split("\n")[0]]
-  return [...new Set(versions)].join(", ") || undefined
+  const versions = tool.name === "Python" ? pythonVersions(out) : [out.match(/\d+(\.\d+)+/)?.[0] ?? out.split("\n")[0]]
+  return versions.join(", ") || undefined
 }
 
 async function versionsOf(tools: Tool[]) {
