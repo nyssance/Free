@@ -234,4 +234,4 @@ node_modules/
 *.bun-build
 
 # Aegis is maintained in a separate private repository.
-/security-check/
+/security-check

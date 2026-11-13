@@ -3,5 +3,6 @@
     "types": ["bun"],
     "noEmit": true,
     "module": "preserve"
-  }
+  },
+  "exclude": ["security-check", "node_modules"]
 }
