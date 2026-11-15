@@ -106,11 +106,7 @@ export async function capture(args: string[], timeout = 10_000) {
     timeout,
     killSignal: "SIGKILL"
   })
-  const [out, err, code] = await Promise.all([
-    new Response(child.stdout).text(),
-    new Response(child.stderr).text(),
-    child.exited
-  ])
+  const [out, err, code] = await Promise.all([child.stdout.text(), child.stderr.text(), child.exited])
   return { code: child.signalCode ? 1 : code, out: out.trim(), err: err.trim() }
 }
 

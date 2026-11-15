@@ -1,4 +1,4 @@
-import { chmodSync, mkdtempSync, renameSync, rmSync, statSync } from "node:fs"
+import { chmodSync, mkdtempDisposableSync, renameSync, rmSync, statSync } from "node:fs"
 import { dirname, join } from "node:path"
 
 import * as p from "@clack/prompts"
@@ -75,15 +75,11 @@ export function releaseAsset(platform: string = process.platform, arch: string =
 }
 
 export async function installUpdate(exe: string, body: ReadableStream<Uint8Array<ArrayBuffer>>) {
-  const directory = mkdtempSync(join(dirname(exe), ".free-update-"))
-  const staged = join(directory, "free")
-  try {
-    await Bun.write(staged, new Response(body.pipeThrough(new DecompressionStream("gzip"))))
-    if (statSync(staged).size === 0) throw new Error("Downloaded executable is empty")
-    replaceExecutable(exe, staged)
-  } finally {
-    rmSync(directory, { recursive: true, force: true })
-  }
+  using directory = mkdtempDisposableSync(join(dirname(exe), ".free-update-"))
+  const staged = join(directory.path, "free")
+  await Bun.write(staged, new Response(body.pipeThrough(new DecompressionStream("gzip"))))
+  if (statSync(staged).size === 0) throw new Error("Downloaded executable is empty")
+  replaceExecutable(exe, staged)
 }
 
 export function replaceExecutable(exe: string, staged: string) {

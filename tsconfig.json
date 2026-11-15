@@ -2,6 +2,7 @@
   "compilerOptions": {
     "types": ["bun"],
     "noEmit": true,
-    "module": "preserve"
+    "module": "preserve",
+    "lib": ["ESNext"]
   }
 }

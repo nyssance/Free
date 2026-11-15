@@ -296,7 +296,7 @@ export async function verify() {
     } else {
       const file = join(homedir(), ".config", "scoop", "config.json")
       if (existsSync(file)) {
-        const config = JSON.parse(readFileSync(file, "utf8")) as Record<string, unknown>
+        const config = (await Bun.file(file).json()) as Record<string, unknown>
         for (const [key, value] of Object.entries(config))
           if (/^scoop_(repo|branch)$/i.test(key))
             findings.push({ level: "warn", name: text.env, detail: `${key}=${String(value)}` })

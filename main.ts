@@ -16,7 +16,7 @@ async function setup() {
   await list(base)
 }
 
-const pythonVersions = (out = "") => [...new Set([...out.matchAll(/cpython-(\d+\.\d+\.\d+)/g)].map((m) => m[1]))]
+const pythonVersions = (out = "") => [...new Set(out.matchAll(/cpython-(\d+\.\d+\.\d+)/g).map((m) => m[1]))]
 
 async function cleanup() {
   hint("clean", pmName)
