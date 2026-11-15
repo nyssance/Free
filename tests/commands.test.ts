@@ -56,7 +56,7 @@ describe("upgrade", () => {
       expect(i, command).toBeGreaterThanOrEqual(0)
       return i
     }
-    const pmUpgrade = index(windows ? "scoop update --all" : "brew upgrade")
+    const pmUpgrade = index(windows ? "scoop update --all" : "brew upgrade --greedy")
     expect(pmUpgrade).toBeLessThan(index("uv self update"))
     expect(index("uv self update")).toBeLessThan(index("uv python upgrade"))
     expect(index("uv python upgrade")).toBeLessThan(index("uv tool upgrade --all"))

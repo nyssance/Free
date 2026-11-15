@@ -176,7 +176,8 @@ def upgrade(c: Context, *, config: bool = False) -> None:
         case "brew":
             hint("upgrade Homebrew")
             c.run(f"{PM} update")
-            c.run(f"{PM} upgrade")
+            # --greedy: 自动更新(auto_updates,如 Flutter)与 version :latest 的 cask 默认会被跳过;brew 装的由 brew 升
+            c.run(f"{PM} upgrade --greedy")
         case "scoop":
             hint("upgrade Scoop")
             c.run(f"{PM} update --all")

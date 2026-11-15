@@ -70,7 +70,9 @@ async function upgrade() {
   if (Bun.which(pm)) await ensureIntact()
   hint("upgrade", pmName)
   if (pm === "brew") run("brew update", true)
-  run(pm === "brew" ? "brew upgrade" : "scoop update --all")
+  // --greedy: casks that update themselves (auto_updates, e.g. Flutter) or are
+  // version :latest are skipped by a plain `brew upgrade`; brew installed them, so brew upgrades them.
+  run(pm === "brew" ? "brew upgrade --greedy" : "scoop update --all")
   if (Bun.which("android")) {
     hint("upgrade", "Android SDK")
     run("android sdk update")
