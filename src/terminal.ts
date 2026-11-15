@@ -116,11 +116,11 @@ export async function output(command: string, timeout = 10_000) {
 }
 
 export class CommandError extends Error {
-  constructor(
-    command: string,
-    readonly exitCode: number
-  ) {
+  readonly exitCode: number
+
+  constructor(command: string, exitCode: number) {
     super(`Command failed (${exitCode}): ${command}`)
+    this.exitCode = exitCode
   }
 }
 
