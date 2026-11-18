@@ -42,9 +42,9 @@ jobs:
       - uses: actions/checkout@v7
       - uses: oven-sh/setup-bun@v2
         with:
-          bun-version: latest
+          bun-version: canary
       - run: bun install --frozen-lockfile
-      - run: bun build --compile --minify --target=bun-${{ matrix.target }} main.ts --outfile dist/${{ matrix.file }}
+      - run: bun build --compile --aot --minify --target=bun-${{ matrix.target }} main.ts --outfile dist/${{ matrix.file }}
       - if: runner.os == 'macOS'
         run: |
           codesign --sign - --force dist/${{ matrix.file }}
