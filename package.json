@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "test": "bun test --parallel"
+  },
   "name": "free",
   "version": "0.1.27",
   "private": true,
