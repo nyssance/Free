@@ -12,7 +12,18 @@ say() { if [ -n "$zh" ]; then echo "$1"; else echo "$2"; fi }
 
 dir="${FREE_INSTALL_DIR:-$HOME/.local/bin}"
 mkdir -p "$dir"
-curl -fsSL "https://github.com/nyssance/Free/releases/latest/download/free-darwin-arm64.gz" -o "$dir/free.gz"
+# One release for both files: the executable and the checksum it is verified against.
+release=$(curl -fsSL -o /dev/null -w '%{url_effective}' "https://github.com/nyssance/Free/releases/latest")
+base="https://github.com/nyssance/Free/releases/download/${release##*/}"
+asset=free-darwin-arm64.gz
+curl -fsSL "$base/$asset" -o "$dir/free.gz"
+expected=$(curl -fsSL "$base/SHA256SUMS" | awk -v name="$asset" '$2 == name {print $1}')
+actual=$(shasum -a 256 "$dir/free.gz" | awk '{print $1}')
+if [ -z "$expected" ] || [ "$actual" != "$expected" ]; then
+  rm -f "$dir/free.gz"
+  say "校验和不一致，未安装" "Checksum mismatch, nothing installed" >&2
+  exit 1
+fi
 gunzip -f "$dir/free.gz"
 chmod +x "$dir/free"
 say "已安装 $dir/free" "Installed $dir/free"

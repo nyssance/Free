@@ -33,8 +33,12 @@ export async function selfUpdate() {
     p.log.warn(`${version} → ${latest} · ${menuText.sourceRun}`)
     return
   }
-  const asset = releaseAsset()
-  const url = `https://github.com/${repo}/releases/download/${tag}/${asset}.gz`
+  const asset = `${releaseAsset()}.gz`
+  const base = `https://github.com/${repo}/releases/download/${tag}`
+  const url = `${base}/${asset}`
+  const sums = await fetch(`${base}/SHA256SUMS`, { signal: AbortSignal.timeout(15_000) })
+  if (!sums.ok) throw new Error(`${base}/SHA256SUMS ${sums.status} ${sums.statusText}`)
+  const expected = releaseChecksum(await sums.text(), asset)
   const controller = new AbortController()
   const signal = AbortSignal.any([controller.signal, AbortSignal.timeout(300_000)])
   const download = await fetch(url, { signal })
@@ -56,7 +60,7 @@ export async function selfUpdate() {
     }
   })
   try {
-    await installUpdate(process.execPath, download.body.pipeThrough(counted))
+    await installUpdate(process.execPath, download.body.pipeThrough(counted), expected)
   } catch (error) {
     bar.error(tag)
     if (controller.signal.aborted) throw new CommandError("self-update", 130)
@@ -74,10 +78,27 @@ export function releaseAsset(platform: string = process.platform, arch: string =
   throw new Error(`No release available for ${platform}-${arch}`)
 }
 
-export async function installUpdate(exe: string, body: ReadableStream<Uint8Array<ArrayBuffer>>) {
+/** The checksum a release publishes for one of its files. */
+export function releaseChecksum(sums: string, asset: string) {
+  const line = sums.split("\n").find((entry) => entry.trim().split(/\s+/)[1] === asset)
+  const checksum = line?.trim().split(/\s+/)[0]
+  if (!checksum || !/^[0-9a-f]{64}$/.test(checksum)) throw new Error(`No checksum published for ${asset}`)
+  return checksum
+}
+
+/** Installs the gzip-compressed executable in `body`, only when the file as downloaded has the `expected` SHA-256. */
+export async function installUpdate(exe: string, body: ReadableStream<Uint8Array<ArrayBuffer>>, expected: string) {
   using directory = mkdtempDisposableSync(join(dirname(exe), ".free-update-"))
   const staged = join(directory.path, "free")
-  await Bun.write(staged, new Response(body.pipeThrough(new DecompressionStream("gzip"))))
+  const hasher = new Bun.CryptoHasher("sha256")
+  const hashed = new TransformStream<Uint8Array<ArrayBuffer>, Uint8Array<ArrayBuffer>>({
+    transform(chunk, controller) {
+      hasher.update(chunk)
+      controller.enqueue(chunk)
+    }
+  })
+  await Bun.write(staged, new Response(body.pipeThrough(hashed).pipeThrough(new DecompressionStream("gzip"))))
+  if (hasher.digest("hex") !== expected) throw new Error("Downloaded executable does not match its checksum")
   if (statSync(staged).size === 0) throw new Error("Downloaded executable is empty")
   replaceExecutable(exe, staged)
 }

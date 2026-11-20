@@ -4,7 +4,7 @@ import { tmpdir } from "node:os"
 import { join } from "node:path"
 
 import { windows } from "../src/tools"
-import { installUpdate, releaseAsset, replaceExecutable, selfUpdate, version } from "../src/update"
+import { installUpdate, releaseAsset, releaseChecksum, replaceExecutable, selfUpdate, version } from "../src/update"
 
 describe("update installation", () => {
   let directory: string
@@ -20,13 +20,22 @@ describe("update installation", () => {
   function body(content: string) {
     return new Response(new Uint8Array(Bun.gzipSync(content))).body!
   }
+  function checksum(content: string) {
+    return new Bun.CryptoHasher("sha256").update(Bun.gzipSync(content)).digest("hex")
+  }
 
   test("installs the decompressed executable and removes staging files", async () => {
-    await installUpdate(exe, body("replacement"))
+    await installUpdate(exe, body("replacement"), checksum("replacement"))
     expect(readFileSync(exe, "utf8")).toBe("replacement")
     expect(readdirSync(directory).toSorted()).toEqual(windows ? ["free", "free.old"] : ["free"])
     if (windows) expect(readFileSync(`${exe}.old`, "utf8")).toBe("original")
     else expect(statSync(exe).mode & 0o777).toBe(0o755)
+  })
+
+  test("preserves the original when the download does not match its checksum", async () => {
+    await expect(installUpdate(exe, body("tampered"), checksum("replacement"))).rejects.toThrow("checksum")
+    expect(readFileSync(exe, "utf8")).toBe("original")
+    expect(readdirSync(directory)).toEqual(["free"])
   })
 
   test.each(["invalid gzip", "empty executable", "interrupted stream"])(
@@ -42,7 +51,7 @@ describe("update installation", () => {
                   controller.error(new Error("Connection lost"))
                 }
               })
-      await expect(installUpdate(exe, stream)).rejects.toThrow()
+      await expect(installUpdate(exe, stream, checksum(""))).rejects.toThrow()
       expect(readFileSync(exe, "utf8")).toBe("original")
       expect(readdirSync(directory)).toEqual(["free"])
     }
@@ -59,6 +68,11 @@ describe("release selection", () => {
   test("matches the assets published by the release workflow", () => {
     expect(releaseAsset("darwin", "arm64")).toBe("free-darwin-arm64")
     expect(releaseAsset("win32", "x64")).toBe("free-windows-x64.exe")
+  })
+  test("reads the checksum published for a file", () => {
+    const sums = `${"a".repeat(64)}  free-darwin-arm64.gz\n${"b".repeat(64)}  free-windows-x64.exe.gz\n`
+    expect(releaseChecksum(sums, "free-windows-x64.exe.gz")).toBe("b".repeat(64))
+    expect(() => releaseChecksum(sums, "free-windows-x64.exe")).toThrow("No checksum published")
   })
   test.each([
     ["linux", "x64"],

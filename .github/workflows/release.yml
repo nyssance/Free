@@ -70,6 +70,7 @@ jobs:
           pattern: dist-*
           path: dist
           merge-multiple: true
+      - run: cd dist && sha256sum free-*.gz > SHA256SUMS && cat SHA256SUMS
       - uses: softprops/action-gh-release@v3
         with:
           files: dist/*

@@ -24,6 +24,16 @@ jobs:
       - run: bun install --frozen-lockfile
       - run: bun check --no-script
       - run: bun run test
+      # The installers as people run them: the latest release, verified against its published checksum.
+      - if: runner.os == 'macOS'
+        run: FREE_INSTALL_DIR="$RUNNER_TEMP/free-bin" sh install.sh && "$RUNNER_TEMP/free-bin/free" -v
+      - if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $env:FREE_INSTALL_DIR = Join-Path $env:RUNNER_TEMP "free-bin"
+          ./install.ps1
+          & (Join-Path $env:FREE_INSTALL_DIR "free.exe") -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - run: bun main.ts setup
       - if: runner.os == 'macOS'
         run: |
