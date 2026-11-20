@@ -44,7 +44,7 @@ jobs:
         with:
           bun-version: canary
       - run: bun install --frozen-lockfile
-      - run: bun build --compile --aot --minify --target=bun-${{ matrix.target }} main.ts --outfile dist/${{ matrix.file }}
+      - run: bun build --compile --aot --trim --disallow-code-generation-from-strings --minify --target=bun-${{ matrix.target }} main.ts --outfile dist/${{ matrix.file }}
       - if: runner.os == 'macOS'
         run: |
           codesign --sign - --force dist/${{ matrix.file }}
