@@ -1,17 +1,18 @@
-import locale
 from pathlib import Path
 from platform import system
 from typing import Final, Literal
+lazy import locale
+lazy from shutil import which
 
-import rich
 from fabric import task
-from fabric.util import get_local_user
-from InquirerPy import inquirer
-from InquirerPy.base.control import Choice
-from InquirerPy.separator import Separator
-from invoke import Context
+lazy import rich
+lazy from fabric.util import get_local_user
+lazy from InquirerPy import inquirer
+lazy from InquirerPy.base.control import Choice
+lazy from InquirerPy.separator import Separator
+lazy from invoke import Context
 
-VERSION: Final[str] = "0.62"
+VERSION: Final = "0.63"
 PM: Literal["brew", "scoop"] = "scoop" if system() == "Windows" else "brew"
 
 
@@ -24,6 +25,7 @@ def check() -> None:
 check()
 
 
+# ruff:file-ignore[missing-trailing-period, missing-terminal-punctuation]
 @task(default=True)
 def hello(c: Context) -> None:
     """Hello"""
@@ -36,7 +38,7 @@ def hello(c: Context) -> None:
     ).expanduser()
     rich.print(f"Interpreter: {fabric_python}")
     rich.print("fab task -h 可以查看 task\n")
-    c.run("fab -l", encoding=locale.getencoding(), echo=False)
+    c.run("fab -l", echo=False)
     c.run("git --no-pager config --global --list")
     if system() == "Windows":
         rich.print("Suggestion: `git config --global core.autocrlf input`")
@@ -85,7 +87,7 @@ def cleanup(c: Context) -> None:
 
 
 @task
-def install(c: Context) -> None:  # noqa: C901
+def install(c: Context) -> None:  # ruff:ignore[complex-structure]
     """安装"""
     roles = inquirer.checkbox(
         gettext("install"),
@@ -102,10 +104,10 @@ def install(c: Context) -> None:  # noqa: C901
             Separator("-- Others -----"),
             "fastlane",
             "zoxide",
-            Separator(),
+            Separator()
         ],
         transformer=lambda result: ", ".join(result) if len(result) > 0 else "",
-        instruction="(Space for select)",
+        instruction="(Space for select)"
     ).execute()
     if not roles:
         return
@@ -163,7 +165,7 @@ def upgrade(c: Context, *, config: bool = False) -> None:
         selected = inquirer.checkbox(
             gettext("configure"),
             [Separator(), Choice(".fabric.yaml", enabled=True), Choice(".zshrc"), Separator()],
-            instruction="(Space for select)",
+            instruction="(Space for select)"
         ).execute()
         if ".fabric.yaml" in selected:
             download(c, f"{remote}fabric.{"windows." if system() == "Windows" else ""}yaml", ".fabric.yaml")
@@ -174,10 +176,14 @@ def upgrade(c: Context, *, config: bool = False) -> None:
         case "brew":
             hint("upgrade Homebrew")
             c.run(f"{PM} update")
-            c.run(f"{PM} upgrade")
+            # --greedy: 自动更新(auto_updates,如 Flutter)与 version :latest 的 cask 默认会被跳过;brew 装的由 brew 升
+            c.run(f"{PM} upgrade --greedy")
         case "scoop":
             hint("upgrade Scoop")
             c.run(f"{PM} update --all")
+    if which("android"):
+        hint("upgrade Android SDK")
+        c.run("android sdk update")
     hint("upgrade uv/python/tool")
     c.run("uv self update")
     c.run("uv python upgrade")
@@ -185,9 +191,17 @@ def upgrade(c: Context, *, config: bool = False) -> None:
     hint("upgrade Rust")
     c.run("rustup update")
     cleanup(c)
-    if system() == "Windows":
-        c.run("winget upgrade")
     hint(f"upgrade {gettext("completed")}")
+
+
+@task
+def winget(c: Context) -> None:
+    """升级 winget 软件"""
+    command = inquirer.select(
+        "winget", [Choice("winget upgrade", gettext("list")), Choice("winget upgrade --all", gettext("upgrade all"))]
+    ).execute()
+    hint("upgrade winget")
+    c.run(command)
 
 
 def download(c: Context, url: str, name: str | None = None) -> None:
@@ -216,4 +230,6 @@ ZH_CN = {
     "cancel": "取消",
     "completed": "完成",
     "fonts": "字体",
+    "list": "查看",
+    "upgrade all": "全部升级"
 }

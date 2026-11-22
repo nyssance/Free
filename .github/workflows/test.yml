@@ -1,0 +1,63 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "0 0 * * 1"
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  setup:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.5
+      - run: bun install --frozen-lockfile
+      - run: bun check --no-script
+      - run: bun run test
+      # The installers as people run them: the latest release, verified against its published checksum.
+      - if: runner.os == 'macOS'
+        run: FREE_INSTALL_DIR="$RUNNER_TEMP/free-bin" sh install.sh && "$RUNNER_TEMP/free-bin/free" -v
+      - if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $env:FREE_INSTALL_DIR = Join-Path $env:RUNNER_TEMP "free-bin"
+          ./install.ps1
+          & (Join-Path $env:FREE_INSTALL_DIR "free.exe") -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - run: bun main.ts setup
+      - if: runner.os == 'macOS'
+        run: |
+          export PATH="$HOME/.local/bin:/opt/homebrew/bin:$PATH"
+          brew --version
+          git --version
+          gh --version
+          glab --version
+          bun --version
+          uv --version
+          uv python list --only-installed
+          ruff --version
+          ty --version
+          rustc --version
+      - if: runner.os == 'Windows'
+        run: |
+          $env:Path = "$env:USERPROFILE\.local\bin;$env:USERPROFILE\scoop\shims;$env:USERPROFILE\.bun\bin;$env:USERPROFILE\.cargo\bin;$env:Path"
+          scoop --version
+          git --version
+          gh --version
+          glab --version
+          bun --version
+          uv --version
+          uv python list --only-installed
+          ruff --version
+          ty --version
+          rustc --version

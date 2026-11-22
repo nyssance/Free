@@ -19,93 +19,73 @@ Free [简体中文](https://github.com/nyssance/Free/blob/main/README-zh_CN.md)
 
 ## Installation
 
-### macOS
+1. Install free.
 
-1. Install [Homebrew].
+   macOS
 
-    ```shell
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    ```
+   ```shell
+   curl -fsSL https://raw.githubusercontent.com/nyssance/Free/main/install.sh | sh
+   ```
 
-2. Install [Oh My Zsh], [zsh-autosuggestions], [zsh-syntax-highlighting], [Powerlevel10k] optional.
+   Windows
 
-    ```shell
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-    ```
+   ```powershell
+   irm https://raw.githubusercontent.com/nyssance/Free/main/install.ps1 | iex
+   ```
 
-    ```shell
-    brew install zsh-autosuggestions zsh-syntax-highlighting
-    ```
+2. Install [Homebrew], [Git], [GitHub CLI], [GitLab CLI], [Bun], [uv], [Python], [Ruff], [ty], [Rust].
 
-3. Install [uv].
+   ```shell
+   free setup
+   ```
 
-    ```shell
-    curl -LsSf https://astral.sh/uv/install.sh | sh
-    ```
+3. Install other tools, optional.
 
-4. Install [homebrew-app] optional.
-
-    ```shell
-    brew install --cask homebrew-app
-    ```
-
-### Windows
-
-1. Install [Scoop].
-
-    ```powershell
-    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-    ```
-
-    ```powershell
-    irm get.scoop.sh | iex
-    ```
-
-2. Install [uv].
-
-    ```powershell
-    'powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"'
-    ```
-
-### Python
-
-1. Install [Python].
-
-    ```shell
-    uv python install
-    ```
-
-2. Install [Fabric], [InquirerPy], [Rich].
-
-    ```shell
-    uv tool install fabric --with InquirerPy --with rich
-    ```
-
-3. Download `fabfile.py`, `.fabric.yaml`, `.zshrc` to home directory and run install.
-
-    ```shell
-    cd ~
-    ```
-
-    ```shell
-    curl -fsSL -O https://raw.githubusercontent.com/nyssance/Free/main/fabfile.py -o .fabric.yaml https://raw.githubusercontent.com/nyssance/Free/main/fabric.yaml -o .zshrc https://raw.githubusercontent.com/nyssance/Free/main/zshrc
-    ```
-
-    ```shell
-    source .zshrc
-    ```
-
-    ```shell
-    fab install
-    ```
-
-    > macOS - Config [plugins:vscode](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/vscode)
+   ```shell
+   free install
+   ```
 
 ## Upgrading
 
 ```shell
-cd ~ && fab upgrade
+free upgrade
 ```
+
+## Integrity check
+
+```shell
+free check
+```
+
+Checks that Homebrew (Scoop on Windows) is the official one and unmodified: the command on PATH is the one in the official installation and not an alias, the repository points at the official GitHub source, no file differs from the official commit, no hidden-change flags, custom git hooks or redirecting git settings, the installed commit matches GitHub, permissions and environment overrides. `free setup`, `free install` and `free upgrade` run the same check on an existing installation before anything goes through it and stop if it fails; a fresh install by the official script is not re-checked.
+
+## Fabric
+
+1. Install [Fabric], [InquirerPy], [Rich].
+
+   ```shell
+   uv tool install fabric --with InquirerPy --with rich
+   ```
+
+2. Download `fabfile.py`, `.fabric.yaml`, `.zshrc` to home directory and run install.
+
+   ```shell
+   cd ~
+   ```
+
+   ```shell
+   curl -fsSL -O https://raw.githubusercontent.com/nyssance/Free/main/fabfile.py -o .fabric.yaml https://raw.githubusercontent.com/nyssance/Free/main/fabric.yaml -o .zshrc https://raw.githubusercontent.com/nyssance/Free/main/zshrc
+   ```
+
+   ```shell
+   source .zshrc
+   ```
+
+   ```shell
+   fab install
+   ```
+
+   > macOS - Config [plugins:vscode](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/vscode)
 
 ## Terminal Beautification
 
@@ -186,13 +166,17 @@ Free is released under the MIT license. [See LICENSE](https://github.com/nyssanc
 [Oh My Zsh]: https://ohmyz.sh
 [zsh-autosuggestions]: https://github.com/zsh-users/zsh-autosuggestions
 [zsh-syntax-highlighting]: https://github.com/zsh-users/zsh-syntax-highlighting
-
 [Scoop]: https://scoop.sh
-
+[Git]: https://git-scm.com
+[GitHub CLI]: https://cli.github.com
+[GitLab CLI]: https://gitlab.com/gitlab-org/cli
+[Bun]: https://bun.sh
+[Rust]: https://www.rust-lang.org
 [starship]: https://starship.rs
-
 [Python]: https://www.python.org
 [uv]: https://astral.sh/uv
+[Ruff]: https://astral.sh/ruff
+[ty]: https://github.com/astral-sh/ty
 [Fabric]: https://www.fabfile.org
 [InquirerPy]: https://github.com/kazhala/InquirerPy
 [Rich]: https://github.com/Textualize/rich

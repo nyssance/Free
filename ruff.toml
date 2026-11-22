@@ -1,5 +1,5 @@
 line-length = 120
-target-version = "py314"
+target-version = "py315"
 
 [lint]
 allowed-confusables = ["，", "′"]
@@ -7,16 +7,16 @@ dummy-variable-rgx = "^_$"
 future-annotations = true
 preview = true
 select = ["ALL"]
-ignore = [# https://docs.astral.sh/ruff/rules/
-    "ERA001", # eradicate: commented-out-code
-    "COM812", # flake8-commas: missing-trailing-comma
-    "CPY", "FIX", "TD", # flake8-copyright, flake8-fixme, flake8-todos
-    "D102", "D103", "D100", "D104", "D203", "D213", # pydocstyle
-    "PLR0913", "PLR2004" # Refactor: too-many-arguments, magic-value-comparison
+ignore = [ # https://docs.astral.sh/ruff/rules/
+    "commented-out-code", # ERA
+    "missing-trailing-comma", # COM
+    "CPY", "FIX", "TD",
+    "undocumented-public-method", "undocumented-public-function", "undocumented-public-module", "undocumented-public-package", "incorrect-blank-line-before-class", "multi-line-summary-second-line", # D
+    "too-many-arguments", "magic-value-comparison" # PLR
 ]
 unfixable = [
     "T20", # flake8-print
-    "F841" # Pyflakes: unused-variable
+    "unused-variable" # F
 ]
 
 [lint.isort]

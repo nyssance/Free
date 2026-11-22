@@ -1,0 +1,3 @@
+{
+  "extends": "@nyssance/tsconfig/bun.json"
+}
