@@ -10,7 +10,7 @@ import { pmName, tools, windows } from "./tools"
 const menus = {
   zh: {
     choose: "选择操作",
-    setup: `安装 ${pmName}、Git、GitHub CLI、GitLab CLI、Bun、uv、Python、Ruff、ty、Rust`,
+    setup: `安装 ${pmName}、Git、GitHub CLI、GitLab CLI、Bun、uv、Python、Ruff、ty、Rust、Tauri Hasgard`,
     cleanup: "清理",
     install: "安装",
     upgrade: "升级",
@@ -35,7 +35,7 @@ const menus = {
   },
   en: {
     choose: "Choose an action",
-    setup: `Install ${pmName}, Git, GitHub CLI, GitLab CLI, Bun, uv, Python, Ruff, ty and Rust`,
+    setup: `Install ${pmName}, Git, GitHub CLI, GitLab CLI, Bun, uv, Python, Ruff, ty, Rust and Tauri Hasgard`,
     cleanup: "Clean",
     install: "Install",
     upgrade: "Upgrade",
@@ -86,6 +86,8 @@ function shell(command: string) {
     ? [
         Bun.which("pwsh") ?? "powershell",
         "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
         "-Command",
         `$ErrorActionPreference = 'Stop'; $env:Path += ';' + [Environment]::GetEnvironmentVariable('Path', 'Machine') + ';' + [Environment]::GetEnvironmentVariable('Path', 'User'); ${command}; if ($LASTEXITCODE) { exit $LASTEXITCODE }`
       ]

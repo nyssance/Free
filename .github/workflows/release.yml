@@ -41,8 +41,6 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: canary
       - run: bun install --frozen-lockfile
       - run: bun build --compile --aot --trim --disallow-code-generation-from-strings --minify --target=bun-${{ matrix.target }} main.ts --outfile dist/${{ matrix.file }}
       - if: runner.os == 'macOS'

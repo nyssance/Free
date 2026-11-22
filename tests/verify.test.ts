@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test"
 import { mkdirSync, rmSync, writeFileSync } from "node:fs"
 
-import { classifyHead, customHooks, normalizeRemote, suspiciousConfig } from "../src/verify"
+import { classifyHead, customHooks, normalizeRemote, suspiciousConfig, suspiciousScoopConfig } from "../src/verify"
 
 describe("verify helpers", () => {
   test("remote URLs normalize to one official form", () => {
@@ -15,6 +15,19 @@ describe("verify helpers", () => {
     expect(normalizeRemote("https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git")).not.toBe(
       "https://github.com/homebrew/brew"
     )
+  })
+  test("official Scoop defaults are not suspicious", () => {
+    expect(
+      suspiciousScoopConfig({
+        scoop_branch: "master",
+        scoop_repo: "https://github.com/ScoopInstaller/Scoop",
+        last_update: "2026-11-23T00:42:42.4901194+08:00"
+      })
+    ).toEqual([])
+    expect(suspiciousScoopConfig({ scoop_branch: "dev", scoop_repo: "https://mirror.example/Scoop" })).toEqual([
+      "scoop_branch=dev",
+      "scoop_repo=https://mirror.example/Scoop"
+    ])
   })
   test("Homebrew's own fsmonitor setting is not suspicious, redirects and hooks paths are", () => {
     const lines = [

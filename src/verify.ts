@@ -17,6 +17,16 @@ const official = windows
   ? { remote: "https://github.com/ScoopInstaller/Scoop", repository: "scoop prefix scoop" }
   : { remote: "https://github.com/Homebrew/brew", repository: "brew --repository" }
 
+export function suspiciousScoopConfig(config: Record<string, unknown>) {
+  return Object.entries(config)
+    .filter(([key, value]) => {
+      if (/^scoop_branch$/i.test(key)) return String(value).toLowerCase() !== "master"
+      if (/^scoop_repo$/i.test(key)) return normalizeRemote(String(value)) !== "https://github.com/scoopinstaller/scoop"
+      return false
+    })
+    .map(([key, value]) => `${key}=${String(value)}`)
+}
+
 const texts = {
   zh: {
     missing: `${pmName} 未安装`,
@@ -297,9 +307,8 @@ export async function verify() {
       const file = join(homedir(), ".config", "scoop", "config.json")
       if (existsSync(file)) {
         const config = (await Bun.file(file).json()) as Record<string, unknown>
-        for (const [key, value] of Object.entries(config))
-          if (/^scoop_(repo|branch)$/i.test(key))
-            findings.push({ level: "warn", name: text.env, detail: `${key}=${String(value)}` })
+        for (const value of suspiciousScoopConfig(config))
+          findings.push({ level: "warn", name: text.env, detail: value })
       }
     }
   }

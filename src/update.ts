@@ -19,7 +19,7 @@ export async function selfUpdate() {
   const repo = "nyssance/Free"
   hint("upgrade", "free")
   if (process.env.FREE_DRY_RUN) return
-  const latestUrl = `https://github.com/${repo}/releases/latest`
+  const latestUrl = `https://github.com/${repo}/releases/latest?cacheBust=${Date.now()}`
   const release = await fetch(latestUrl, { redirect: "manual", signal: AbortSignal.timeout(15_000) })
   const tag = release.headers.get("location")?.split("/tag/")[1]
   if (![301, 302, 303, 307, 308].includes(release.status) || !tag || !/^v?\d+\.\d+\.\d+$/.test(tag))
@@ -50,17 +50,31 @@ export async function selfUpdate() {
   const bar = progress ?? p.spinner({ onCancel })
   bar.start(total > 0 ? `${tag} · ${mb(total)} MB` : tag)
   let received = 0
+  let pending = 0
+  let scheduled = false
+  const flush = () => {
+    scheduled = false
+    if (!pending) return
+    const bytes = pending
+    pending = 0
+    const message = total > 0 ? `${tag} · ${mb(received)} / ${mb(total)} MB` : `${tag} · ${mb(received)} MB`
+    if (progress) progress.advance(bytes, message)
+    else bar.message(message)
+  }
   const counted = new TransformStream({
     transform(chunk: Uint8Array, controller) {
       received += chunk.byteLength
-      const message = total > 0 ? `${tag} · ${mb(received)} / ${mb(total)} MB` : `${tag} · ${mb(received)} MB`
-      if (progress) progress.advance(chunk.byteLength, message)
-      else bar.message(message)
+      pending += chunk.byteLength
+      if (!scheduled) {
+        scheduled = true
+        setImmediate(flush)
+      }
       controller.enqueue(chunk)
     }
   })
   try {
     await installUpdate(process.execPath, download.body.pipeThrough(counted), expected)
+    flush()
   } catch (error) {
     bar.error(tag)
     if (controller.signal.aborted) throw new CommandError("self-update", 130)

@@ -9,7 +9,8 @@ export type Tool = {
   name: string
   url: string
   version: string
-  install: string[]
+  /** Shell commands, or a function that works one out when it is reached. */
+  install: (string | (() => Promise<string>))[]
   path?: string
 }
 const home = homedir()
@@ -21,7 +22,7 @@ export const groups = {
       version: `${pm} --version`,
       install: [
         windows
-          ? 'Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force; iex "& {$(irm get.scoop.sh)} -RunAsAdmin"'
+          ? 'iex "& {$(irm get.scoop.sh)} -RunAsAdmin"'
           : '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
       ],
       path: windows ? join(home, "scoop", "shims") : "/opt/homebrew/bin:/usr/local/bin"
@@ -51,7 +52,12 @@ export const groups = {
         ...(windows
           ? ["winget install --id Google.AndroidCLI --exact"]
           : ["brew tap android/tap", "brew install android-cli"]),
-        "android sdk install platform-tools emulator platforms/android-37.2 build-tools/37.0.0 ndk/30.0.16248370"
+        async () => {
+          const { output } = await import("./terminal")
+          const list = await output("android sdk list --all", 60_000)
+          if (!list) throw new Error("android sdk list --all failed")
+          return `android sdk install platform-tools emulator ${latestAndroidPackages(list).join(" ")}`
+        }
       ]
     },
     {
@@ -122,7 +128,7 @@ export const groups = {
       name: "Python",
       url: "https://www.python.org",
       version: "uv python list --only-installed",
-      install: [windows ? "uv python install" : "uv python install 3.15"]
+      install: ["uv python install"]
     },
     { name: "Ruff", url: "https://astral.sh/ruff", version: "ruff --version", install: ["uv tool install ruff"] },
     { name: "ty", url: "https://github.com/astral-sh/ty", version: "ty --version", install: ["uv tool install ty"] },
@@ -152,6 +158,17 @@ export const groups = {
   ],
   Others: [
     {
+      name: "Tauri Hasgard",
+      url: "https://github.com/nyssance/tauri-hasgard",
+      version: "tauri-hasgard --version",
+      install: windows
+        ? [
+            "if (-not (scoop bucket list | Where-Object Name -eq 'nyssance')) { scoop bucket add nyssance https://github.com/nyssance/scoop-bucket }",
+            "scoop install nyssance/tauri-hasgard"
+          ]
+        : ["brew tap nyssance/tap", "brew trust --formula nyssance/tap/tauri-hasgard", "brew install tauri-hasgard"]
+    },
+    {
       name: "fastlane",
       url: "https://fastlane.tools",
       version: "fastlane --version",
@@ -180,4 +197,31 @@ export const groups = {
   ]
 } satisfies Record<string, Tool[]>
 export const tools: Tool[] = Object.values(groups).flat()
-export const base = [pmName, "Git", "GitHub CLI", "GitLab CLI", "Bun", "uv", "Python", "Ruff", "ty", "Rust"]
+export const base = [
+  pmName,
+  "Git",
+  "GitHub CLI",
+  "GitLab CLI",
+  "Bun",
+  "uv",
+  "Python",
+  "Ruff",
+  "ty",
+  "Rust",
+  "Tauri Hasgard"
+]
+
+const versionOrder = (a: string, b: string) => {
+  const [x, y] = [a, b].map((version) => version.split(".").map(Number))
+  return x.map((n, i) => n - (y[i] ?? 0)).find(Boolean) ?? x.length - y.length
+}
+
+/** The newest stable SDK platform, build tools and NDK in the Android CLI's package list. */
+export function latestAndroidPackages(list: string) {
+  return ["platforms/android-", "build-tools/", "ndk/"].map((prefix) => {
+    const pattern = new RegExp(String.raw`^\s*${RegExp.escape(prefix)}(\d+(?:\.\d+)*)\s`, "gm")
+    const latest = [...list.matchAll(pattern).map((m) => m[1])].toSorted(versionOrder).at(-1)
+    if (!latest) throw new Error(`No ${prefix} package in the Android SDK list`)
+    return `${prefix}${latest}`
+  })
+}

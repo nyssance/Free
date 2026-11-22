@@ -50,7 +50,7 @@ async function installTools(names: string[]) {
   if (Bun.which(pm)) await ensureIntact()
   for (const tool of tools.filter((tool) => names.includes(tool.name))) {
     hint("install", tool.name)
-    for (const command of tool.install) run(command)
+    for (const command of tool.install) run(typeof command === "string" ? command : await command())
     if (tool.path) process.env.PATH = `${tool.path}${delimiter}${process.env.PATH ?? ""}`
   }
 }
