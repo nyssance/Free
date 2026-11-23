@@ -20,10 +20,11 @@ function commands(...args: string[]) {
 }
 
 describe("setup", () => {
-  test(`顺序：${pmName} → Git → GitHub CLI → GitLab CLI → Bun → uv → Python → Ruff → ty → Rust → Tauri Hasgard`, () => {
+  test(`顺序：${windows ? "PowerShell → " : ""}${pmName} → Git → GitHub CLI → GitLab CLI → Bun → uv → Python → Ruff → ty → Rust → Tauri Hasgard`, () => {
     const lines = commands("setup")
     const expected = windows
       ? [
+          "if (-not (Get-Command pwsh -ErrorAction SilentlyContinue)) { winget install --id 9MZ1SNWT0N5D --source msstore --accept-package-agreements --accept-source-agreements }",
           'iex "& {$(irm get.scoop.sh)} -RunAsAdmin"',
           "scoop install git",
           "scoop install gh",

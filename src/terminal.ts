@@ -10,7 +10,7 @@ import { pmName, tools, windows } from "./tools"
 const menus = {
   zh: {
     choose: "选择操作",
-    setup: `安装 ${pmName}、Git、GitHub CLI、GitLab CLI、Bun、uv、Python、Ruff、ty、Rust、Tauri Hasgard`,
+    setup: `安装 ${windows ? "PowerShell、" : ""}${pmName}、Git、GitHub CLI、GitLab CLI、Bun、uv、Python、Ruff、ty、Rust、Tauri Hasgard`,
     cleanup: "清理",
     install: "安装",
     upgrade: "升级",
@@ -35,7 +35,7 @@ const menus = {
   },
   en: {
     choose: "Choose an action",
-    setup: `Install ${pmName}, Git, GitHub CLI, GitLab CLI, Bun, uv, Python, Ruff, ty, Rust and Tauri Hasgard`,
+    setup: `Install ${windows ? "PowerShell, " : ""}${pmName}, Git, GitHub CLI, GitLab CLI, Bun, uv, Python, Ruff, ty, Rust and Tauri Hasgard`,
     cleanup: "Clean",
     install: "Install",
     upgrade: "Upgrade",

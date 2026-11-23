@@ -16,6 +16,20 @@ export type Tool = {
 const home = homedir()
 export const groups = {
   Basics: [
+    ...(windows
+      ? [
+          {
+            name: "PowerShell",
+            url: "https://learn.microsoft.com/powershell",
+            version: "pwsh --version",
+            // From the Microsoft Store, which keeps it up to date. Skipped when any PowerShell 7 is already there.
+            install: [
+              "if (-not (Get-Command pwsh -ErrorAction SilentlyContinue)) { winget install --id 9MZ1SNWT0N5D --source msstore --accept-package-agreements --accept-source-agreements }"
+            ],
+            path: join(home, "AppData", "Local", "Microsoft", "WindowsApps")
+          }
+        ]
+      : []),
     {
       name: pmName,
       url: windows ? "https://scoop.sh" : "https://brew.sh",
@@ -198,6 +212,7 @@ export const groups = {
 } satisfies Record<string, Tool[]>
 export const tools: Tool[] = Object.values(groups).flat()
 export const base = [
+  ...(windows ? ["PowerShell"] : []),
   pmName,
   "Git",
   "GitHub CLI",
