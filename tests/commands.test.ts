@@ -34,7 +34,7 @@ describe("setup", () => {
           "uv python install",
           "uv tool install ruff",
           "uv tool install ty",
-          String.raw`irm https://win.rustup.rs/x86_64 -OutFile $env:TEMP\rustup-init.exe; & $env:TEMP\rustup-init.exe -y`,
+          String.raw`irm https://win.rustup.rs/x86_64 -OutFile $env:TEMP\rustup-init.exe; & $env:TEMP\rustup-init.exe -y --component rust-analyzer,rust-src`,
           "if (-not (scoop bucket list | Where-Object Name -eq 'nyssance')) { scoop bucket add nyssance https://github.com/nyssance/scoop-bucket }",
           "scoop install nyssance/tauri-hasgard"
         ]
@@ -47,7 +47,7 @@ describe("setup", () => {
           "uv python install",
           "uv tool install ruff",
           "uv tool install ty",
-          "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y",
+          "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --component rust-analyzer,rust-src",
           "brew tap nyssance/tap",
           "brew trust --formula nyssance/tap/tauri-hasgard",
           "brew install tauri-hasgard"

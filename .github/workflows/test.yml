@@ -46,6 +46,7 @@ jobs:
           ruff --version
           ty --version
           rustc --version
+          rust-analyzer --version
       - if: runner.os == 'Windows'
         run: |
           $env:Path = "$env:USERPROFILE\.local\bin;$env:USERPROFILE\scoop\shims;$env:USERPROFILE\.bun\bin;$env:USERPROFILE\.cargo\bin;$env:Path"
@@ -59,3 +60,4 @@ jobs:
           ruff --version
           ty --version
           rustc --version
+          rust-analyzer --version

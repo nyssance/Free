@@ -160,8 +160,8 @@ export const groups = {
       version: "rustc --version",
       install: [
         windows
-          ? String.raw`irm https://win.rustup.rs/x86_64 -OutFile $env:TEMP\rustup-init.exe; & $env:TEMP\rustup-init.exe -y`
-          : "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y"
+          ? String.raw`irm https://win.rustup.rs/x86_64 -OutFile $env:TEMP\rustup-init.exe; & $env:TEMP\rustup-init.exe -y --component rust-analyzer,rust-src`
+          : "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --component rust-analyzer,rust-src"
       ],
       path: join(home, ".cargo", "bin")
     }
